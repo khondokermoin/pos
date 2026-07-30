@@ -1,0 +1,27 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.7 error css start
+/*----------------------------------------*/
+.tp-error{
+    &-title {
+        font-weight: 700;
+        font-size: 48px;
+        margin-bottom: 40px;
+        @media #{$xxl}{
+            font-size: 45px;
+        }
+        @media #{$xl}{
+            font-size: 40px;
+        }
+        @media #{$lg,$md}{
+            font-size: 36px;
+        }
+        @media #{$xs}{
+            font-size: 30px;
+        }
+        @media #{$sm}{
+            font-size: 34px;
+        }
+    }
+}

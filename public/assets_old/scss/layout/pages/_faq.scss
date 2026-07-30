@@ -1,0 +1,174 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.8 faq css start
+/*----------------------------------------*/
+
+.tp-faq{
+    &-wrap {
+        margin-right: 145px;
+        @media #{$lg,$md,$xs}{
+            margin-right: 0;
+        }
+    }
+    &-thumb {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        @media #{$xxxl}{
+            right: -7%;
+        }
+        @media #{$xxl}{
+            right: -14%;
+        }
+        @media #{$xl}{
+            right: -24%;
+        }
+        @media #{$lg}{
+            right: -42%;
+        }
+        @media #{$md,$xs}{
+           position: static;
+           margin-bottom: 50px;
+        }
+    }
+    &-offer{
+        position: absolute;
+        left: 56%;
+        top: 125px;
+        height: 115px;
+        width: 115px;
+        border-radius: 50%;
+        text-align: center;
+        background-color: var(--tp-theme-1);
+        animation: zoom 7000ms infinite;
+
+        @media #{$xl,$lg}{
+            position: absolute;
+            left: 52%;
+            top: 125px;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            text-align: center;
+            background-color: var(--tp-theme-1);
+        }
+        @media #{$xs}{
+            left: 56%;
+            top: 68px;
+            height: 90px;
+            width: 90px;
+        }
+        & span {
+            color: var(--tp-common-white);
+            text-align: center;
+            font-weight: 700;
+            font-size: 18px;
+            display: inline-block;
+            transform: translateY(29px);
+            font-family: var(--tp-ff-heading);
+            @media #{$xs}{
+                transform: translateY(17px);
+            }
+            & b {
+                font-size: 36px;
+                @media #{$xl,$lg,$xs}{
+                    font-size: 27px;
+                    line-height: 0;
+                }
+            }
+        }
+        &::after{
+            position: absolute;
+            content: "";
+            bottom: 8px;
+            left: 5px;
+            height: 22px;
+            width: 22px;
+            transform: rotate(-9deg);
+            background-color: var(--tp-theme-1);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+        }
+    }
+    &-shape {
+        &-1 {
+            position: absolute;
+            top: 0;
+            right: 100px;
+            animation: moving 7s linear infinite;
+            @media #{$xxxl}{
+                right: -5%;
+            }
+            @media #{$xxl}{
+                right: -8%;
+            }
+            @media #{$xl}{
+                right: -12%;
+            }
+            @media #{$lg}{
+                right: -27%;
+            }
+        }
+        &-2 {
+            position: absolute;
+            bottom: 70px;
+            right: 15px;
+            z-index: 1;
+            animation: tptranslateY2 3s infinite alternate;
+        }
+        &-3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        &-4 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            animation: tptranslateX2 3s infinite alternate;
+            @media #{$xl}{
+                right: -9%;
+            }
+            @media #{$lg}{
+                right: -25%;
+            }
+        }
+        &-5 {
+            position: absolute;
+            top: 55px;
+            right: 565px;
+            animation: zoom 7000ms infinite;
+            @media #{$xxxl}{
+                right: 420px;
+            }
+            @media #{$xxl}{
+                right: 350px;
+            }
+            @media #{$xl}{
+                right: 250px;
+            }
+            @media #{$lg}{
+                right: 150px;
+            }
+            @media #{$md}{
+                right: 50px;
+            }
+            & img {
+                @media #{$xxxl}{
+                    max-width: 67%;
+                }
+                @media #{$xxl}{
+                    max-width: 71%;
+                }
+                @media #{$xl}{
+                    max-width: 71%;
+                }
+                @media #{$lg}{
+                    max-width: 65%;
+                }
+            }
+        }
+    }
+}

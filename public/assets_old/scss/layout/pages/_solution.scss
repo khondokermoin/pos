@@ -1,0 +1,130 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.19 solution css start
+/*----------------------------------------*/
+.tp-solution {
+    &-wrap{
+        padding: 60px 115px;
+        padding-top: 0;
+        background-color: var(--tp-common-white);
+        position: relative;
+        z-index: 2;
+        @media #{$xxl}{
+            padding: 60px 60px;
+            padding-top: 0;
+        }
+        @media #{$xl}{
+            padding: 60px 49px;
+            padding-top: 0;
+        }
+        @media #{$lg,$md}{
+            padding:60px 40px;
+            padding-top: 0;
+        }
+        @media #{$xs}{
+            padding:60px 20px;
+            padding-top: 0;
+            padding-bottom: 20px;
+        }
+    }
+    &-item {
+        @media #{$sm}{
+            text-align: center;
+        }
+        &:hover{
+            & .tp-solution-icon {
+                & span {
+                    &::after{
+                        opacity: 1;
+                        transform: scale(1);
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+    &-icon {
+        & span {
+            font-size: 68px;
+            display: inline-block;
+            color: var(--tp-common-black);
+            position: relative;
+            @media #{$lg,$md,$xs}{
+                font-size: 55px;
+            } 
+            &::after{
+                content: '';
+                top: -60px;
+                left: -60px;
+                height: 190px;
+                width: 190px;
+                position: absolute;
+                border-radius: 50%;
+                z-index: -1;
+                opacity: 0;
+                visibility: hidden;
+                transition: .5s;
+                transform: scale(0);
+                background-color: var(--tp-grey-1);
+                @media #{$xl}{
+                    height: 180px;
+                    width: 180px;
+                    left: -50px;
+                }
+                @media #{$lg,$md,$xs}{
+                    height: 120px;
+                    width: 120px;
+                    left: -32px;
+                    top: -31px;
+                } 
+                
+            }
+        }
+    }
+    &-title {
+        font-size: 22px;
+        margin-bottom: 5px;
+        transition: .3s;
+        &:hover {
+            color:var(--tp-theme-1);
+        }
+        @media #{$xxl}{
+            font-size: 20px;
+        }
+        @media #{$xl}{
+            font-size: 18px;
+        }
+        @media #{$lg,$md,$xs}{
+            font-size: 20px;
+        }
+    }
+    &-text {
+        & p {
+            @media #{$xxl}{
+                padding-right: 30px;
+                font-size: 15px;
+            }
+            @media #{$xl}{
+                font-size: 14px;
+                padding-right: 22px;
+            }
+            @media #{$lg,$md,$xs}{
+                font-size: 14px;
+            } 
+            @media #{$sm}{
+                padding: 0 120px;
+            }
+        }
+    }
+    &-link {
+        & a {
+            font-weight: 600;
+            color: var(--tp-common-black);
+            transition: .3s;
+            &:hover {
+                color: var(--tp-theme-1);
+            }
+        }
+    }
+}

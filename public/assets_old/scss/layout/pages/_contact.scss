@@ -1,0 +1,312 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.5 contact css start
+/*----------------------------------------*/
+.tp-form{
+    &-thumb-box {
+        position: absolute;
+        left: 315px;
+        bottom: 0;
+        @media #{$xxxl}{
+            left: 10%;
+        }
+        @media #{$xxl}{
+            left: 4%;
+        }
+        @media #{$xl}{
+            left: -1%;
+        }        
+        @media #{$lg}{
+            left: -10%;
+        }        
+        @media #{$md,$xs}{
+            position: static;
+            text-align: center;
+            margin-bottom: 50px;
+        }        
+    }
+    &-box {
+        margin-left: 25px;
+        @media #{$xs}{
+            margin-left: 0;
+        }
+    }
+    &-input{
+        &-box {
+            & input {
+                box-shadow: 0px 0px 60px 0px rgba(30, 22, 22, 0.06)
+            }
+        }
+    }
+    &-textarea-box {
+        & textarea {
+            height: 140px;
+            padding-bottom: 20px;
+            box-shadow: 0px 0px 60px 0px rgba(30, 22, 22, 0.06)
+        }
+    }
+    &-shape {
+        &-1 {
+            position: absolute;
+            bottom: 0;
+            right: 30px;
+            animation: tptranslateX2 2s infinite alternate;
+        }
+        &-2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            animation: tptranslateX2 4s infinite alternate;
+        }
+        &-3 {
+            position: absolute;
+            top: 100px;
+            left: -20px;
+            z-index: 1;
+            animation: moving 9s linear infinite;
+            @media #{$md,$xs}{
+               left: 70px;
+            }  
+        }
+        &-4 {
+            position: absolute;
+            top: 255px;
+            left: -27%;
+            z-index: 1;
+            animation: tptranslateX2 7s infinite alternate;
+            @media #{$md,$xs}{
+                left: 20px;
+            }  
+        }
+        &-5 {
+            position: absolute;
+            bottom: 75px;
+            left: -85px;
+            z-index: 1;
+            animation: tptranslateX2 5s infinite alternate;
+            @media #{$md,$xs}{
+                left: 10px;
+                top: 600px;
+            }  
+        }
+        &-6 {
+            position: absolute;
+            top: 105px;
+            right: 18%;
+            z-index: 1;
+            animation: tptranslateY2 4s infinite alternate;
+            @media #{$md,$xs}{
+                right: 140px;
+            }  
+        }
+    }
+}
+.tp-contact {
+    &-icon {
+        & span{
+            font-size: 35px;
+            display: inline-block;
+            margin-right: 24px;
+            color: var(--tp-common-black);
+        }
+    }
+    &-text {
+        & a {
+            font-size: 16px;
+            line-height: 26px;
+        }
+    }
+    &-box {
+        & ul {
+            & li {
+                list-style: none;
+                margin-bottom: 20px;
+                & a {
+                    background-repeat: no-repeat;
+                    background-size: 0% 1px, 0 1px;
+                    background-position: 100% 100%, 0 100%;
+                    transition: background-size 0.4s linear;
+                    background-image: linear-gradient(#727272, #727272), linear-gradient(#727272, #727272);
+                    &:hover {
+                        background-size: 0% 1px, 100% 1px;
+                    }
+                }
+            }
+        }
+    }
+}
+.tp-contact-3{
+    &-item{
+        padding: 30px 15px;
+        box-shadow: 0px 4px 60px 0px rgba(22, 23, 26, 0.06);
+        &:hover {
+            & .tp-contact-3-icon {
+                background-color: var(--tp-theme-1);
+                & span {
+                    color: var(--tp-common-white);                
+                }
+            }
+        }
+    }
+    &-icon {
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+        background-color: #f5f5f8;
+        display: inline-block;
+        position: relative;
+        text-align: center;
+        line-height: 90px;
+        transition: .3s; 
+        & span {
+            font-size: 35px;
+            transition: .3s;    
+            color: var(--tp-theme-1);        
+        }
+    }
+    &-title {
+        font-weight: 600;
+        font-size: 26px;
+        
+    }
+    &-text {
+        margin-top: 70px;
+        & a {
+            font-weight: 500;
+            line-height: 26px;
+            background-repeat: no-repeat;
+            background-size: 0% 1px, 0 1px;
+            background-position: 100% 100%, 0 100%;
+            transition: background-size 0.4s linear;
+            background-image: linear-gradient(#727272, #727272), linear-gradient(#727272, #727272);
+            &:hover {
+                background-size: 0% 1px, 100% 1px;
+            }
+        }
+    }
+}
+.tp-contact-form{
+    &-border {
+        border: 1px solid #dcdcdc;
+        padding: 100px;
+        @media #{$xl}{
+            padding: 60px 50px;
+        }
+        @media #{$lg}{
+            padding: 60px 50px;
+        }
+        @media #{$md,$xs}{
+            padding: 60px 0px;
+            border: none;
+        }
+    }
+    &-title {
+        font-weight: 700;
+        font-size: 36px;
+        margin-bottom: 35px;
+        @media #{$lg,$md}{
+            font-size: 32px;
+        }
+        @media #{$xs}{
+            font-size: 30px;
+        }
+    }
+    &-input-box {
+        & input {
+            background-color: #f5f5f8;
+        }
+        & textarea {
+            height: 165px;
+            background-color: #f5f5f8;
+        }
+    }
+    &-bg {
+        padding: 80px 70px;
+        background-color: #f2edeb;
+        @media #{$md,$xs}{
+            padding: 40px 20px;
+        }
+    }
+    &-bg-2 {
+        padding: 80px 70px;
+        background-color: #f5f5f8;
+        @media #{$md,$xs}{
+            padding: 40px 20px;
+        }
+        & .tp-contact-form-input-box {
+            & input {
+                background-color: var(--tp-common-white);
+            }
+            & textarea {
+                height: 165px;
+                background-color: var(--tp-common-white);
+            }
+        }
+    }
+}
+.tp-form-2{
+    &-box {
+        & h6 {
+            font-size: 36px;
+        }
+    }
+    &-rate {
+        @media #{$xs}{
+            margin-top: 20px;
+        }
+        @media #{$sm}{
+            margin-top: 0px;
+        }
+    }
+    &-icon {
+        & i {
+            color: var(--tp-theme-1);
+            font-size: 14px;
+            &.color {
+                color: #626262;
+            }
+        }
+    }
+    &-input-box {
+        & input {
+            box-shadow: none;
+            border: 1px solid #cecece;
+        }
+    }
+    &-textarea {
+        & textarea {
+            border: 1px solid #cecece;
+            height: 168px;
+            &:focus {
+                border-color: var(--tp-theme-1);
+            }
+        }
+    }
+    &-btn {
+        & > span {
+            @media #{$xs}{
+               display: block;
+               margin-top: 20px;
+            }
+        }
+    }
+}
+.tp-map{
+    &__item{
+        line-height: 0;
+        & iframe {
+            width: 100%;
+            height: 490px; 
+            @media #{$xl}{
+                height: 400px;
+            }
+            @media #{$lg,$md}{
+                height: 350px;
+            }
+            @media #{$xs}{
+                height: 250px;
+            }
+        }
+    }
+}

@@ -1,0 +1,245 @@
+@use '../../utils' as *;
+/*----------------------------------------*/
+/*  5.4 Sidebar css
+/*----------------------------------------*/
+
+.sidebar{
+    &__widget{
+        &-title{
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 30px;
+            color: var(--tp-common-black);
+            margin-bottom: 30px;
+            @media #{$lg,$md,$xs}{
+                font-size: 25px;
+            }
+            &::after{
+                position: absolute;
+                content: "";
+                left: 0px;
+                height: 21px;
+                width: 2px;
+                top: 50%;
+                background: var(--tp-theme-secondary);
+                @include transform(translateY(-50%));
+            }
+        }
+        &-gallery {
+            position: relative;
+            &:hover {
+                &::after{
+                    opacity: 1;
+                    visibility: visible;
+                }
+                & .sidebar__widget-gallery-icon {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+            &::after{
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                opacity: 0;
+                visibility: hidden;
+                transition: .3s;
+            }
+            & img {
+                width: 100%;
+            }
+            &-icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                z-index: 1;
+                opacity: 0;
+                visibility: visible;
+                transition: .3s;
+                & span {
+                    font-size: 16px;
+                    color: var(--tp-common-white);
+                }
+            }
+        }
+        &-gallery-wrap {
+            margin-right: 30px;
+            @media #{$md,$xs}{
+                margin-right: 0;
+            }
+        }
+        &-content {
+            & ul {
+                & li {
+                    list-style-type: none;
+                    &:not(:last-child){
+                        padding-bottom: 5px;
+                    }
+                    & a {
+                        font-size: 16px;
+                        transition: .3s;
+                        &:hover {
+                            color: var(--tp-theme-1);
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &__about{
+        padding: 37px 0 38px 0;
+    }
+    &__thumb{
+        & img{
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+    }
+    &__content{
+        &-title{
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            color: var(--tp-common-black);
+            margin-bottom: 6px;
+        }
+        &-designation{
+            font-weight: 400;
+            font-size: 14px;
+            color: #727A7D;
+            display: block;
+            margin-bottom: 13px;
+        }
+        & p{
+            font-size: 16px;
+            color: #838383;
+            margin-bottom: 27px;
+        }
+        &-social{
+            & a{
+                height: 37px;
+                width: 42px;
+                line-height: 37px;
+                text-align: center;
+                display: inline-block;
+                border: 1px solid #E8E8E8;
+                margin-right: 12px;
+                & i{
+                    transition: .3s;
+                }
+                &:hover{
+                    border: 1px solid var(--tp-theme-1);
+                    background-color: var(--tp-theme-1);
+                    & i{
+                        color: var(--tp-common-white);
+                    }
+                }
+            }
+        }
+    }
+    &__search{
+        position: relative;
+        & input{
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            background: var(--tp-common-white);
+            padding: 0 30px;
+            text-transform: capitalize;
+            border: 1px solid #dfdfdf;
+            outline: none;
+            padding-right: 50px;
+            &:focus{
+                border: 1px solid var(--tp-theme-1);
+            }
+        }
+        & button{
+            position: absolute;
+            top: 0;
+            right: 27px;
+            height: 100%;
+            line-height: 48px;
+            color: var(--tp-common-black);
+        }
+
+    }
+    &__banner{
+        &::after{
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba($color: #000, $alpha: .5);
+        }
+        &-content{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            @include transform(translate(-50%, -50%));
+            z-index: 1;
+            background: var(--tp-common-white);
+            & h4{
+                padding: 15px 20px;
+                font-size: 24px;
+                color: var(--tp-common-black);
+                text-transform: uppercase;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+.tagcloud{
+    @media #{$xs}{
+        margin-bottom: 30px;
+    }
+    & a{
+        font-weight: 400;
+        font-size: 16px;
+        color: var(--tp-common-black) ;
+        text-transform: capitalize;
+        padding: 2px 15px;
+        margin-right: 5px;
+        background-color: #f5f5f8;
+        border: 1px solid #F6F3EE;
+        margin-bottom: 14px;
+        display: inline-block;
+        @media #{$lg}{
+            padding: 1px 9px;
+            font-size: 14px;
+        }
+        @media #{$xs}{
+            padding: 1px 10px;
+            font-size: 14px;
+        }
+        &:hover{
+            color: var(--tp-common-white);
+            background-color: var(--tp-common-black);
+        }
+    }
+}
+.author{
+    &-text {
+        & h5 {
+            font-size: 22px;
+            @media #{$lg,$md,$xs}{
+                font-size: 19px;
+            }
+        }
+    }
+    &-thumb {
+        & img {
+            @media #{$xs}{
+                width: 100%;
+            }
+        }
+    }
+}

@@ -1,0 +1,121 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  2.3 Buttons
+/*----------------------------------------*/
+.tp-btn{
+    background-color: var(--tp-theme-1);
+    color: var(--tp-common-white);
+    height: 60px;
+    line-height: 60px;
+    padding: 0 40px;
+    overflow: hidden;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    position: relative;
+    z-index: 9;
+    transition: all .3s ease-in-out;
+    @media #{$xs}{
+        font-size: 14px;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 30px;
+    }
+    &:hover{
+        background-color: var(--tp-common-white);
+        color: var(--tp-common-black);
+        &.theme-bg {
+            &:hover{
+                background-color: var(--tp-common-black);
+                color: var(--tp-common-white);
+            }
+        }
+    }
+    &.black-bg {
+        background-color: var(--tp-common-black);
+        &:hover{
+            background-color: var(--tp-theme-1);
+            color: var(--tp-common-white);
+        }
+    }
+    &.white-bg {
+        color: var(--tp-common-black);
+        background-color: var(--tp-common-white);
+        &:hover{
+            background-color: var(--tp-theme-1);
+            color: var(--tp-common-white);
+        }
+    }
+}
+.tp-btn-lg{
+    background-color: var(--tp-theme-1);
+    color: var(--tp-common-white);
+    height: 60px;
+    line-height: 60px;
+    padding: 0 53px;
+    overflow: hidden;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    position: relative;
+    z-index: 9;
+    transition: all .5s ease-in-out;
+    @media #{$xs}{
+        font-size: 14px;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 30px;
+    }
+    &.theme-bg {
+        &:hover{
+            background-color: var(--tp-common-black);
+            color: var(--tp-common-white);
+        }
+    }
+}
+.tp-btn-sm{
+    background-color: var(--tp-theme-1);
+    color: var(--tp-common-white);
+    height: 48px;
+    line-height: 48px;
+    padding: 0 40px;
+    overflow: hidden;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    text-transform: capitalize;
+    position: relative;
+    z-index: 9;
+    transition: all .3s ease-in-out;
+    &:hover{
+        background-color: var(--tp-common-black);
+        color: var(--tp-common-white);
+    }
+}
+.tp-menu-btn {
+    background-color: var(--tp-theme-1);
+    color: var(--tp-common-white);
+    width: 140px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    overflow: hidden;
+    display: inline-block;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: capitalize;
+    letter-spacing: 0.03em;
+    position: relative;
+    z-index: 9;
+    &:hover{
+        background-color: var(--tp-common-black);
+        color: var(--tp-common-white);
+    }
+  
+}

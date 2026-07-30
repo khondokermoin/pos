@@ -1,0 +1,87 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  2.15 Section Title
+/*----------------------------------------*/
+
+.tp-section-subtitle{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--tp-theme-1);
+    display: inline-block;
+    padding-bottom: 10px;
+    &.color {
+        color: #a5a5a5;
+    }
+    @media #{$xs}{
+        font-size: 14px;       
+    }
+}
+.tp-section-title{
+    font-size: 50px;
+    line-height: 1.2;
+    margin-bottom: 0;
+    @media #{$xxl}{
+        font-size: 45px;
+    }
+    @media #{$xl}{
+        font-size: 42px;
+    }
+    @media #{$lg}{
+        font-size: 35px;        
+    }
+    @media #{$md}{
+        font-size: 35px;   
+        & br {
+            display: none;
+        }     
+    }
+    @media #{$xs}{
+        font-size: 30px;   
+        & br {
+            display: none;
+        }     
+    }
+    &-2 {
+        font-size: 66px;
+        @media #{$xxxl}{
+            font-size: 62px;
+        }
+        @media #{$xxl}{
+            font-size: 58px;
+        }
+        @media #{$xl}{
+            font-size: 55px;
+        }
+        @media #{$lg}{
+            font-size: 48px;
+        }
+        @media #{$md}{
+            font-size: 44px;
+        }
+        @media #{$xs}{
+            font-size: 30px;
+        }
+        @media #{$sm}{
+            font-size: 34px;
+        }
+    }
+    &-3 {
+        font-size: 45px;
+        @media #{$xl}{
+            font-size: 42px;
+        }
+        @media #{$lg}{
+            font-size: 37px;
+        }
+        @media #{$md}{
+            font-size: 37px;
+        }
+        @media #{$xs}{
+            font-size: 28px;
+            & br {
+                display: none;
+            }
+        }
+    }
+}

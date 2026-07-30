@@ -1,0 +1,107 @@
+@use '../utils' as *;
+
+/*----------------------------------------*/
+/*  2.11 Breadcrumb
+/*----------------------------------------*/
+
+.breadcrumb{
+    &__height{
+        height: 520px;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        object-fit: cover;
+        background-position: bottom;
+        @media #{$xxl}{
+            height: 450px;
+        }
+        @media #{$xl}{
+            height: 450px;
+        }
+        @media #{$lg}{
+            height: 400px;
+        }
+        @media #{$md}{
+            height: 320px;
+        }
+        @media #{$xs}{
+            height: 280px;
+        }
+    }
+    &__overlay{
+        position: relative;
+        &::after{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: '';
+            background-color: rgb(0, 0, 0);
+            opacity: 0.6;
+        }
+    }
+    &__subtitle{
+        font-size: 16px;
+        display: block;
+        padding-bottom: 5px;
+        text-transform: uppercase;
+        color: var(--tp-common-white);  
+        @media #{$xl,$lg,$md,$xs}{
+            font-size: 14px;
+        }      
+    }
+    &__title{
+        font-weight: 700;
+        font-size: 80px;
+        text-transform: capitalize;
+        color: var(--tp-common-white); 
+        margin-bottom: 0; 
+        line-height: 1;
+        @media #{$xxl}{
+            font-size: 68px;
+        }
+        @media #{$xl}{
+            font-size: 66px;
+        }
+        @media #{$lg}{
+            font-size: 62px;
+        }
+        @media #{$md}{
+            font-size: 55px;
+        }
+        @media #{$xs}{
+            font-size: 38px;
+            margin-bottom: 20px;
+        } 
+        @media #{$sm}{
+            margin-bottom: 0;
+        }      
+    }
+    &__list{
+        display: inline-block;
+        padding: 0px 10px;
+        & span{
+            font-size: 16px;
+            text-transform: capitalize;   
+            color: var(--tp-theme-1);       
+            &.dvdr{
+                & i{
+                    font-size: 15px;
+                    transform: rotate(-12deg);
+                    display: inline-block; 
+                }
+            }
+            & a {
+                color: var(--tp-common-white);  
+            }
+        }
+    }
+    &__content {
+        @media #{$xs}{
+            flex-wrap: wrap;
+        }
+    }
+}

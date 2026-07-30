@@ -1,0 +1,56 @@
+/* Slider Full Fix CSS */
+.tp-slider-area {
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.tp-slider-wrapper {
+  width: 100% !important;
+  position: relative;
+}
+
+.swiper.tp-slider-active {
+  width: 100% !important;
+  height: 650px !important;
+  min-height: 600px !important;
+}
+
+.swiper-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.swiper-slide {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.tp-slider-height {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 650px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.tp-slider-bg {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  z-index: -1 !important;
+}
+
+.tp-slider-content {
+  position: relative;
+  z-index: 2;
+}

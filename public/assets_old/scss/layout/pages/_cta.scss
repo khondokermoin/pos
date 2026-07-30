@@ -1,0 +1,126 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.6 cta css start
+/*----------------------------------------*/
+
+.tp-cta{
+    &-bg {
+        position: relative;
+        &::after{
+            content: '';
+            bottom: 0;
+            left: 0;
+            height: 50%;
+            width: 100%;
+            background-color: var(--tp-common-black);
+            position: absolute;
+            z-index: -1;
+            @media #{$md,$xs}{
+                height: 55%;
+            }
+        }
+    }
+    &-wrap {
+        height: 195px;
+        display: flex;
+        align-items: center;
+        padding-left: 80px;
+        padding-right: 60px;
+        justify-content:space-between;
+        @media #{$md,$xs}{
+            height:300px;
+        }
+        @media #{$lg}{
+            padding: 0 20px;
+        }
+        @media #{$md,$xs}{
+            padding: 0 35px;
+        }
+        @media #{$xs}{
+            padding: 0 15px;
+        }
+        &-box {
+            margin-bottom: -135px;
+            position: relative;
+            z-index: 8;
+        }
+    }
+    &-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--tp-common-white);
+        @media #{$md,$xs}{
+            margin-bottom: 40px;
+        }
+        @media #{$xs}{
+            margin-bottom: 40px;
+            font-size: 25px;
+        }
+    }
+    &-right-box{
+        margin-left: 5px;
+        @media #{$md,$xs}{
+            margin-left: 0;
+        }
+        & input {
+            height: 80px;
+            line-height: 80px;
+            padding: 0 30px;
+            font-size: 16px;
+            padding-right: 260px;
+            color: var(--tp-common-white);
+            background-color: #000000;
+            border: none;
+            @media #{$xs}{
+                height: 60px;
+                line-height: 60px;
+                padding: 0 12px;
+                padding-right: 12px;
+                font-size: 14px;
+                padding-right: 155px;
+            }
+            @media #{$sm}{
+                height: 70px;
+                line-height: 70px;
+                padding: 0 12px;
+                padding-right: 12px;
+                font-size: 14px;
+                padding-right: 220px;
+            }
+            @include placeholder{
+                color: #a5a5a5;
+            }
+        }
+    }
+    &-button{
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);       
+        @media #{$xs}{
+            right: 5px;
+            top: 49%;
+        }
+        @media #{$sm}{
+            right: 10px;
+            top: 50%;
+        }
+        & .tp-btn {
+            @media #{$xs}{
+                font-size: 13px;
+                padding: 0 11px;
+            }
+            @media #{$sm}{
+                font-size: 15px;
+                padding: 0 22px;
+            }
+        }
+    }
+    &-shape {
+        position: absolute;
+        top:0;
+        left: 51%;
+        transform: translateX(-50%);
+    }
+}
