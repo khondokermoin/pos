@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->foreignId('plan_id')->constrained()->onDelete('cascade');
             
-            $table->enum('status', ['active', 'cancelled', 'expired', 'trial', 'pending'])->default('pending');
+            $table->enum('status', ['active', 'cancelled', 'expired', 'trial', 'pending', 'suspended'])->default('pending');
             
             // Billing Cycle (মাসিক নাকি বার্ষিক)
             $table->enum('billing_cycle', ['monthly', 'yearly', 'lifetime'])->default('monthly');

@@ -74,24 +74,29 @@ class CompanyController extends Controller
         }
 
         $themeSettings = array_filter([
-            'primary_color' => $request->input('primary_color', '#2563eb'),
+            'primary_color'   => $request->input('primary_color', '#3B82F6'),
+            'secondary_color' => $request->input('secondary_color', '#1E40AF'),
+            'accent_color'    => $request->input('accent_color', '#F59E0B'),
         ], fn($value) => filled($value));
 
         $socialLinks = array_filter([
-            'facebook' => $request->input('social_facebook'),
+            'facebook'  => $request->input('social_facebook'),
             'instagram' => $request->input('social_instagram'),
-            'twitter' => $request->input('social_twitter'),
-            'youtube' => $request->input('social_youtube'),
+            'twitter'   => $request->input('social_twitter'),
+            'youtube'   => $request->input('social_youtube'),
         ], fn($value) => filled($value));
 
         $contactInfo = array_filter([
-            'phone' => $request->input('contact_phone'),
-            'email' => $request->input('contact_email'),
+            'phone'   => $request->input('contact_phone'),
+            'email'   => $request->input('contact_email'),
             'address' => $request->input('contact_address'),
         ], fn($value) => filled($value));
 
+        // Use manually set trial_ends_at if provided, otherwise auto-calculate from plan
         $trialEndsAt = null;
-        if (($validated['status'] ?? null) === 'trial') {
+        if ($request->filled('trial_ends_at')) {
+            $trialEndsAt = $request->input('trial_ends_at');
+        } elseif (($validated['company_status'] ?? null) === 'trial') {
             $plan = Plan::find($request->input('plan_id'));
             $trialDays = $plan ? ($plan->trial_days ?? 14) : 14;
             $trialEndsAt = now()->addDays($trialDays);
@@ -120,7 +125,7 @@ class CompanyController extends Controller
                 'currency' => $request->input('currency', 'BDT'),
                 'timezone' => $request->input('timezone', 'Asia/Dhaka'),
                 'settings' => $request->input('settings', []),
-                'status' => $validated['status'],
+                'status' => $validated['company_status'],
                 'trial_ends_at' => $trialEndsAt,
                 'plan_id' => $request->input('plan_id'),
                 'business_type_id' => $request->input('business_type_id'),
@@ -153,12 +158,24 @@ class CompanyController extends Controller
                 }
             }
 
-            // Assign Company Admin role if user exists and has the method
-            if ($user && method_exists($user, 'assignRole')) {
-                $user->assignRole('Company Admin');
+            // Link the user as the company owner and assign role
+            if ($user) {
+                // Set user_id on the company record so owner() relationship works
+                $company->update(['user_id' => $user->id]);
+
+                if (method_exists($user, 'assignRole')) {
+                    $user->assignRole('Company Admin');
+                }
             }
 
             DB::commit();
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message'  => 'Company and admin user created successfully!',
+                    'redirect' => route('superadmin.companies.index'),
+                ]);
+            }
 
             return redirect()->route('superadmin.companies.index')
                 ->with('success', 'Company and admin user created successfully!');
@@ -169,6 +186,13 @@ class CompanyController extends Controller
                 if (! empty($path) && Storage::disk('public')->exists($path)) {
                     Storage::disk('public')->delete($path);
                 }
+            }
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Something went wrong while creating the company. Please try again.',
+                    'error'   => config('app.debug') ? $e->getMessage() : null,
+                ], 500);
             }
 
             return back()->withInput()->with('error', 'Something went wrong while creating the company. Please try again.');
@@ -260,7 +284,7 @@ class CompanyController extends Controller
             ? $request->trial_ends_at
             : $company->trial_ends_at;
 
-        if (($validated['status'] ?? null) === 'trial' && empty($trialEndsAt)) {
+        if (($validated['company_status'] ?? null) === 'trial' && empty($trialEndsAt)) {
             $plan = Plan::find($validated['plan_id'] ?? $company->plan_id);
             $trialDays = $plan ? ($plan->trial_days ?? 14) : 14;
             $trialEndsAt = now()->addDays($trialDays);
@@ -296,7 +320,7 @@ class CompanyController extends Controller
             'contact_info' => $contactInfo,
             'currency' => $validated['currency'] ?? 'BDT',
             'timezone' => $validated['timezone'] ?? 'Asia/Dhaka',
-            'status' => $validated['status'],
+            'status' => $validated['company_status'],
             'plan_id' => $validated['plan_id'],
             'user_id' => $newUserId,
             'business_type_id' => $validated['business_type_id'],

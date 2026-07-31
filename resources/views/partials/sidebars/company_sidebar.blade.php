@@ -37,38 +37,57 @@
                 </a>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- SALES & POS                                                   --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Sales & POS</li>
 
-            <!-- Sales / Invoices (Company Level Overview) -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.sales.index') }}"
-                    class="side-nav-link {{ request()->routeIs('company.sales.index') || request()->routeIs('company.sales.show') ? 'active' : '' }}">
+            @php
+                $isSalesGroupActive =
+                    request()->routeIs('company.sales.*') ||
+                    request()->routeIs('company.quotations.*') ||
+                    request()->routeIs('company.sales-returns.*');
+            @endphp
+            <li class="side-nav-item {{ $isSalesGroupActive ? 'menu-open' : '' }}">
+                <a data-bs-toggle="collapse" href="#sidebarSales"
+                    aria-expanded="{{ $isSalesGroupActive ? 'true' : 'false' }}"
+                    class="side-nav-link {{ $isSalesGroupActive ? 'active' : '' }}">
                     <span class="menu-icon"><i class="ti ti-receipt"></i></span>
-                    <span class="menu-text"> All Sales </span>
+                    <span class="menu-text"> Sales </span>
+                    <span class="menu-arrow"></span>
                 </a>
+                <div class="collapse {{ $isSalesGroupActive ? 'show' : '' }}" id="sidebarSales">
+                    <ul class="sub-menu sub-menu-tree">
+                        <!-- All Sales / Invoices -->
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.sales.index') }}"
+                                class="side-nav-link {{ request()->routeIs('company.sales.*') ? 'active' : '' }}">
+                                <span class="menu-text">All Sales</span>
+                            </a>
+                        </li>
+                        <!-- Quotations -->
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.quotations.index') }}"
+                                class="side-nav-link {{ request()->routeIs('company.quotations.*') ? 'active' : '' }}">
+                                <span class="menu-text">Quotations</span>
+                            </a>
+                        </li>
+                        <!-- Sales Returns -->
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.sales-returns.index') }}"
+                                class="side-nav-link {{ request()->routeIs('company.sales-returns.*') ? 'active' : '' }}">
+                                <span class="menu-text">Sales Returns</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
-            <!-- Quotations -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.quotations.index') }}"
-                    class="side-nav-link {{ request()->routeIs('company.quotations.*') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-file-description"></i></span>
-                    <span class="menu-text"> Quotations </span>
-                </a>
-            </li>
-
-            <!-- Sales Returns -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.sales-returns.index') }}"
-                    class="side-nav-link {{ request()->routeIs('company.sales-returns.*') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-receipt-refund"></i></span>
-                    <span class="menu-text"> Sales Returns </span>
-                </a>
-            </li>
-
+            {{-- ============================================================ --}}
+            {{-- INVENTORY MANAGEMENT                                          --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Inventory Management</li>
 
-            <!-- Products & Categories -->
             @php
                 $isInventoryActive =
                     request()->routeIs('company.products.*') ||
@@ -85,10 +104,10 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isInventoryActive ? 'show' : '' }}" id="sidebarProducts">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.products.index') }}"
-                                class="side-nav-link {{ request()->routeIs('company.products.index') ? 'active' : '' }}">
+                                class="side-nav-link {{ request()->routeIs('company.products.index') || request()->routeIs('company.products.show') || request()->routeIs('company.products.edit') ? 'active' : '' }}">
                                 <span class="menu-text">All Products</span>
                             </a>
                         </li>
@@ -127,9 +146,11 @@
                 </div>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- PURCHASING                                                    --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Purchasing</li>
 
-            <!-- Purchases & Suppliers -->
             @php
                 $isPurchasingActive =
                     request()->routeIs('company.purchases.*') ||
@@ -145,10 +166,10 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isPurchasingActive ? 'show' : '' }}" id="sidebarPurchasing">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.purchases.index') }}"
-                                class="side-nav-link {{ request()->routeIs('company.purchases.index') || request()->routeIs('company.purchases.show') ? 'active' : '' }}">
+                                class="side-nav-link {{ request()->routeIs('company.purchases.index') || request()->routeIs('company.purchases.show') || request()->routeIs('company.purchases.edit') ? 'active' : '' }}">
                                 <span class="menu-text">All Purchases</span>
                             </a>
                         </li>
@@ -174,6 +195,9 @@
                 </div>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- CRM & FINANCE                                                 --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">CRM & Finance</li>
 
             <!-- Customers -->
@@ -194,9 +218,9 @@
                 </a>
             </li>
 
-            <!-- ============================================================ -->
-            <!-- ACCOUNTING & FINANCE                                         -->
-            <!-- ============================================================ -->
+            {{-- ============================================================ --}}
+            {{-- ACCOUNTING & FINANCE                                          --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Accounting & Finance</li>
 
             <!-- Cash Book -->
@@ -212,7 +236,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isCashBookActive ? 'show' : '' }}" id="sidebarCashBook">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.cashbook.accounts') }}"
                                 class="side-nav-link {{ request()->routeIs('company.cashbook.accounts') ? 'active' : '' }}">
@@ -254,7 +278,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isLoanActive ? 'show' : '' }}" id="sidebarLoans">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.loans.authorities') }}"
                                 class="side-nav-link {{ request()->routeIs('company.loans.authorities') ? 'active' : '' }}">
@@ -290,7 +314,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isAssetActive ? 'show' : '' }}" id="sidebarAssets">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.assets.types') }}"
                                 class="side-nav-link {{ request()->routeIs('company.assets.types') ? 'active' : '' }}">
@@ -307,9 +331,9 @@
                 </div>
             </li>
 
-            <!-- ============================================================ -->
-            <!-- HR & PAYROLL                                                  -->
-            <!-- ============================================================ -->
+            {{-- ============================================================ --}}
+            {{-- HR & PAYROLL                                                  --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">HR & Payroll</li>
 
             <!-- Payroll -->
@@ -321,7 +345,7 @@
                 </a>
             </li>
 
-            <!-- Employees (collapsible) -->
+            <!-- Employees & Departments (collapsible) -->
             @php
                 $isHrActive = request()->routeIs('company.employees.*') || request()->routeIs('company.departments.*');
             @endphp
@@ -334,7 +358,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isHrActive ? 'show' : '' }}" id="sidebarEmployees">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.departments.index') }}"
                                 class="side-nav-link {{ request()->routeIs('company.departments.*') ? 'active' : '' }}">
@@ -343,7 +367,7 @@
                         </li>
                         <li class="side-nav-item">
                             <a href="{{ route('company.employees.index') }}"
-                                class="side-nav-link {{ request()->routeIs('company.employees.index') || request()->routeIs('company.employees.create') || request()->routeIs('company.employees.edit') ? 'active' : '' }}">
+                                class="side-nav-link {{ request()->routeIs('company.employees.index') || request()->routeIs('company.employees.create') || request()->routeIs('company.employees.edit') || request()->routeIs('company.employees.show') ? 'active' : '' }}">
                                 <span class="menu-text">Employee List</span>
                             </a>
                         </li>
@@ -357,6 +381,9 @@
                 </div>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- BRANCH & OPERATIONS                                           --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Branch & Operations</li>
 
             <!-- Branches -->
@@ -377,69 +404,73 @@
                 </a>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- REPORTS                                                       --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Reports</li>
 
-            <!-- Company Reports -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.sales') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.sales') ? 'active' : '' }}">
+            @php
+                $isReportsActive = request()->routeIs('company.reports.*');
+            @endphp
+            <li class="side-nav-item {{ $isReportsActive ? 'menu-open' : '' }}">
+                <a data-bs-toggle="collapse" href="#sidebarReports"
+                    aria-expanded="{{ $isReportsActive ? 'true' : 'false' }}"
+                    class="side-nav-link {{ $isReportsActive ? 'active' : '' }}">
                     <span class="menu-icon"><i class="ti ti-chart-bar"></i></span>
-                    <span class="menu-text"> Sales Report </span>
+                    <span class="menu-text"> Reports </span>
+                    <span class="menu-arrow"></span>
                 </a>
-            </li>
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.stock') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.stock') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-chart-pie"></i></span>
-                    <span class="menu-text"> Stock Report </span>
-                </a>
-            </li>
-
-            <!-- Balance Sheet -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.balance-sheet') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.balance-sheet') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-scale"></i></span>
-                    <span class="menu-text"> Balance Sheet </span>
-                </a>
-            </li>
-
-            <!-- Profit / Loss -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.profit-loss') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.profit-loss') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-trending-up"></i></span>
-                    <span class="menu-text"> Profit / Loss </span>
-                </a>
-            </li>
-
-            <!-- Expense Report -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.expenses') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.expenses') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-report-money"></i></span>
-                    <span class="menu-text"> Expense Report </span>
-                </a>
-            </li>
-
-            <!-- Supplier Payable -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.supplier-payable') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.supplier-payable') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-arrow-bar-down"></i></span>
-                    <span class="menu-text"> Supplier Payable </span>
-                </a>
-            </li>
-
-            <!-- Client Receivable -->
-            <li class="side-nav-item">
-                <a href="{{ route('company.reports.client-receivable') }}"
-                    class="side-nav-link {{ request()->routeIs('company.reports.client-receivable') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-arrow-bar-up"></i></span>
-                    <span class="menu-text"> Client Receivable </span>
-                </a>
+                <div class="collapse {{ $isReportsActive ? 'show' : '' }}" id="sidebarReports">
+                    <ul class="sub-menu sub-menu-tree">
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.sales') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.sales') ? 'active' : '' }}">
+                                <span class="menu-text">Sales Report</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.stock') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.stock') ? 'active' : '' }}">
+                                <span class="menu-text">Stock Report</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.balance-sheet') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.balance-sheet') ? 'active' : '' }}">
+                                <span class="menu-text">Balance Sheet</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.profit-loss') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.profit-loss') ? 'active' : '' }}">
+                                <span class="menu-text">Profit / Loss</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.expenses') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.expenses') ? 'active' : '' }}">
+                                <span class="menu-text">Expense Report</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.supplier-payable') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.supplier-payable') ? 'active' : '' }}">
+                                <span class="menu-text">Supplier Payable</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('company.reports.client-receivable') }}"
+                                class="side-nav-link {{ request()->routeIs('company.reports.client-receivable') ? 'active' : '' }}">
+                                <span class="menu-text">Client Receivable</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- SETTINGS & ACCOUNT                                            --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Settings & Account</li>
 
             <!-- Settings & Subscription -->
@@ -447,8 +478,7 @@
                 $isSettingsActive =
                     request()->routeIs('company.settings.*') ||
                     request()->routeIs('company.subscription.*') ||
-                    request()->routeIs('company.announcements.*') ||
-                    request()->routeIs('company.settings.attributes.*');
+                    request()->routeIs('company.announcements.*');
             @endphp
             <li class="side-nav-item {{ $isSettingsActive ? 'menu-open' : '' }}">
                 <a data-bs-toggle="collapse" href="#sidebarSettings"
@@ -459,7 +489,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isSettingsActive ? 'show' : '' }}" id="sidebarSettings">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('company.settings.profile') }}"
                                 class="side-nav-link {{ request()->routeIs('company.settings.profile') ? 'active' : '' }}">
@@ -476,7 +506,7 @@
                             <li class="side-nav-item">
                                 <a href="{{ route('company.settings.attributes.index') }}"
                                     class="side-nav-link {{ request()->routeIs('company.settings.attributes.*') ? 'active' : '' }}">
-                                    <span class="menu-text">Variant & Attribute Settings</span>
+                                    <span class="menu-text">Variant & Attributes</span>
                                 </a>
                             </li>
                         @endcan
@@ -509,6 +539,19 @@
                     <span class="menu-icon"><i class="ti ti-user-circle"></i></span>
                     <span class="menu-text"> My Profile </span>
                 </a>
+            </li>
+
+            <!-- Logout -->
+            <li class="side-nav-item">
+                <a href="{{ route('logout') }}" class="side-nav-link"
+                    onclick="event.preventDefault(); document.getElementById('company-logout-form').submit();">
+                    <span class="menu-icon"><i class="ti ti-logout"></i></span>
+                    <span class="menu-text"> Logout </span>
+                </a>
+                <form id="company-logout-form" action="{{ route('logout') }}" method="POST"
+                    style="display: none;">
+                    @csrf
+                </form>
             </li>
 
         </ul>

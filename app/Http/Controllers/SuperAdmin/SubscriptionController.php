@@ -90,6 +90,7 @@ class SubscriptionController extends Controller
             'status' => 'cancelled',
             'cancelled_at' => now(),
         ]);
+        $subscription->company?->update(['status' => 'inactive']);
         return back()->with('success', 'Subscription cancelled successfully.');
     }
 
@@ -97,6 +98,7 @@ class SubscriptionController extends Controller
     {
         $subscription = Subscription::findOrFail($id);
         $subscription->update(['status' => 'suspended']);
+        $subscription->company?->update(['status' => 'suspended']);
         return back()->with('success', 'Subscription suspended successfully.');
     }
 
@@ -107,6 +109,7 @@ class SubscriptionController extends Controller
             'status' => 'active',
             'cancelled_at' => null,
         ]);
+        $subscription->company?->update(['status' => 'active']);
         return back()->with('success', 'Subscription reactivated successfully.');
     }
 

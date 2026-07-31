@@ -96,4 +96,52 @@ class SubscriptionGatewayTest extends TestCase
         ]);
         $this->assertTrue($response->isRedirect());
     }
+
+    public function test_suspending_a_subscription_marks_the_company_as_suspended(): void
+    {
+        $user = User::create([
+            'name' => 'Test Owner',
+            'email' => 'owner2@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $company = Company::create([
+            'name' => 'Suspension Test Company',
+            'slug' => 'suspension-test-company',
+            'email' => 'suspension@example.com',
+            'user_id' => $user->id,
+            'status' => 'active',
+        ]);
+
+        $plan = Plan::create([
+            'name' => 'Pro Plan',
+            'slug' => 'pro-plan-2',
+            'price' => 1500.00,
+            'trial_days' => 0,
+            'user_limit' => 10,
+            'branch_limit' => 3,
+            'features' => ['Inventory'],
+            'status' => 'active',
+            'billing_cycle' => 'monthly',
+        ]);
+
+        $subscription = Subscription::create([
+            'company_id' => $company->id,
+            'plan_id' => $plan->id,
+            'status' => 'active',
+            'billing_cycle' => 'monthly',
+            'started_at' => now()->subDays(10),
+            'ends_at' => now()->addDays(20),
+            'invoice_number' => 'INV-SUSPEND-1',
+        ]);
+
+        $response = (new \App\Http\Controllers\SuperAdmin\SubscriptionController())->suspend($subscription->id);
+
+        $subscription->refresh();
+        $company->refresh();
+
+        $this->assertSame('suspended', $subscription->status);
+        $this->assertSame('suspended', $company->status);
+        $this->assertTrue($response->isRedirect());
+    }
 }

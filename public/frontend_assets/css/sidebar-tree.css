@@ -1,0 +1,204 @@
+/* =============================================================================
+   SIDEBAR TREE-VIEW INDICATOR STYLES
+   Professional accordion sub-menu with vertical connector lines
+   Applied to: .sub-menu.sub-menu-tree
+   ============================================================================= */
+
+/* --------------------------------------------------------------------------
+   1. SUB-MENU CONTAINER — the <ul> that holds child links
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree {
+    position: relative;
+    padding-left: 0 !important;
+    margin: 0;
+    list-style: none;
+}
+
+/* The continuous vertical guide line running down the left side of the group */
+.sub-menu.sub-menu-tree::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    bottom: 8px;
+    left: 28px; /* aligns with the icon column */
+    width: 1.5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    pointer-events: none;
+    transition: background 0.2s ease;
+}
+
+/* When the parent accordion is open/active, brighten the guide line */
+.side-nav-item.menu-open > .collapse > .sub-menu.sub-menu-tree::before,
+.side-nav-item.active > .collapse > .sub-menu.sub-menu-tree::before {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   2. EACH CHILD <li> — position context for the horizontal connector
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item {
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+/* Horizontal connector: a short L-shaped line from the vertical guide
+   to the text of each child item */
+.sub-menu.sub-menu-tree > .side-nav-item::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 28px; /* starts at the vertical line */
+    width: 14px; /* length of the horizontal arm */
+    height: 1.5px;
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: background 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   3. CHILD LINK — the <a> inside each <li>
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px 6px 50px !important; /* left-pad pushes text past the lines */
+    border-radius: 6px;
+    margin: 1px 8px;
+    position: relative;
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+    text-decoration: none;
+}
+
+/* Small circular dot — the "node" on the tree connector */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link::before {
+    content: "";
+    position: absolute;
+    left: 38px; /* sits at the end of the horizontal arm */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. HOVER STATE
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link:hover {
+    background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link:hover .menu-text {
+    color: #ffffff !important;
+}
+
+/* Brighten the dot on hover */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link:hover::before {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.55);
+    transform: translateY(-50%) scale(1.25);
+}
+
+/* Brighten the horizontal connector on hover */
+.sub-menu.sub-menu-tree > .side-nav-item:hover::before {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   5. ACTIVE STATE — highlighted item
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link.active {
+    background: rgba(var(--ct-primary-rgb, 59, 130, 246), 0.18) !important;
+}
+
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link.active .menu-text {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Active dot — filled with brand colour */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link.active::before {
+    background: #4f8ef7;
+    border-color: #4f8ef7;
+    box-shadow: 0 0 0 3px rgba(79, 142, 247, 0.25);
+    transform: translateY(-50%) scale(1.15);
+}
+
+/* Active horizontal connector */
+.sub-menu.sub-menu-tree > .side-nav-item:has(> .side-nav-link.active)::before {
+    background: rgba(79, 142, 247, 0.55);
+}
+
+/* Active vertical guide line — brighten the whole group when any child is active */
+.side-nav-item.menu-open
+    > .collapse
+    > .sub-menu.sub-menu-tree:has(.side-nav-link.active)::before {
+    background: rgba(79, 142, 247, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   6. LAST CHILD — trim the vertical line so it doesn't overshoot
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item:last-child::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 28px;
+    width: 1.5px;
+    height: 50%; /* covers the lower half of the last item */
+    background: var(--ct-sidenav-bg, #313a46); /* matches sidebar background */
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   7. BUTTON-STYLE CHILD (e.g. "Clear Cache" form button)
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link.w-100 {
+    padding: 6px 16px 6px 50px !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. BADGE INSIDE SUB-MENU ITEMS — keep them right-aligned
+   -------------------------------------------------------------------------- */
+.sub-menu.sub-menu-tree > .side-nav-item > .side-nav-link .badge {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. COLLAPSED STATE — hide the guide line when accordion is closed
+      (smooth fade via opacity so it doesn't flash on open)
+   -------------------------------------------------------------------------- */
+.collapse:not(.show) > .sub-menu.sub-menu-tree::before {
+    opacity: 0;
+}
+.collapse.show > .sub-menu.sub-menu-tree::before {
+    opacity: 1;
+    transition: opacity 0.25s ease 0.05s;
+}
+
+/* --------------------------------------------------------------------------
+   10. DARK-MODE COMPATIBILITY (data-bs-theme="dark" or html[data-theme="dark"])
+   -------------------------------------------------------------------------- */
+[data-bs-theme="dark"]
+    .sub-menu.sub-menu-tree
+    > .side-nav-item
+    > .side-nav-link.active,
+html[data-theme="dark"]
+    .sub-menu.sub-menu-tree
+    > .side-nav-item
+    > .side-nav-link.active {
+    background: rgba(79, 142, 247, 0.22) !important;
+}

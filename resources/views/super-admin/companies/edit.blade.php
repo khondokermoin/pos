@@ -183,9 +183,12 @@
 
                                 <div class="border rounded p-3 bg-light">
                                     <label for="admin_password" class="form-label">Admin Password</label>
-                                    <input type="password" class="form-control @error('admin_password') is-invalid @enderror"
-                                        id="admin_password" name="admin_password" placeholder="Leave blank to keep current password">
-                                    <small class="text-muted">Only enter a new password if you want to change the assigned admin's password.</small>
+                                    <input type="password"
+                                        class="form-control @error('admin_password') is-invalid @enderror"
+                                        id="admin_password" name="admin_password"
+                                        placeholder="Leave blank to keep current password">
+                                    <small class="text-muted">Only enter a new password if you want to change the assigned
+                                        admin's password.</small>
                                     @error('admin_password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -265,22 +268,22 @@
                             </div>
 
                             <div class="mb-3 col-md-6">
-                                <label for="status" class="form-label">Status <span
+                                <label for="company_status" class="form-label">Status <span
                                         class="text-danger">*</span></label>
-                                <select class="form-select @error('status') is-invalid @enderror" id="status"
-                                    name="status" required>
+                                <select class="form-select @error('company_status') is-invalid @enderror" id="company_status"
+                                    name="company_status" required>
                                     <option value="trial"
-                                        {{ old('status', $company->status) == 'trial' ? 'selected' : '' }}>Trial</option>
+                                        {{ old('company_status', $company->status) == 'trial' ? 'selected' : '' }}>Trial</option>
                                     <option value="active"
-                                        {{ old('status', $company->status) == 'active' ? 'selected' : '' }}>Active</option>
+                                        {{ old('company_status', $company->status) == 'active' ? 'selected' : '' }}>Active</option>
                                     <option value="inactive"
-                                        {{ old('status', $company->status) == 'inactive' ? 'selected' : '' }}>Inactive
+                                        {{ old('company_status', $company->status) == 'inactive' ? 'selected' : '' }}>Inactive
                                     </option>
                                     <option value="suspended"
-                                        {{ old('status', $company->status) == 'suspended' ? 'selected' : '' }}>Suspended
+                                        {{ old('company_status', $company->status) == 'suspended' ? 'selected' : '' }}>Suspended
                                     </option>
                                 </select>
-                                @error('status')
+                                @error('company_status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -873,11 +876,11 @@
                     if (currentFaviconUrl) {
                         preview.html(
                             `<img src="${currentFaviconUrl}" alt="Favicon" width="32" height="32" style="object-fit:contain;"><span class="text-muted small ms-2">Current favicon</span>`
-                            );
+                        );
                     } else {
                         preview.html(
                             `<i class="ti ti-browser text-muted" style="font-size:1.5rem;"></i><span class="text-muted small ms-2">No favicon set</span>`
-                            );
+                        );
                     }
                     return;
                 }
@@ -898,7 +901,7 @@
                 reader.onload = function(ev) {
                     preview.html(
                         `<img src="${ev.target.result}" alt="Favicon Preview" width="32" height="32" style="object-fit:contain;"><span class="text-muted small ms-2">New favicon (preview)</span>`
-                        );
+                    );
                 };
                 reader.readAsDataURL(file);
             });
@@ -1025,7 +1028,8 @@
                     },
                     success: function(response) {
                         if (window.showSmartToast) {
-                            window.showSmartToast('success', response.message || 'Company updated successfully!', 'Success');
+                            window.showSmartToast('success', response.message ||
+                                'Company updated successfully!', 'Success');
                         }
                         const redirectUrl = response.redirect ||
                             '{{ route('superadmin.companies.index') }}';
@@ -1073,7 +1077,9 @@
                             }
                         } else {
                             if (window.showSmartToast) {
-                                window.showSmartToast('error', 'An unexpected error occurred. Please try again.', 'Error');
+                                window.showSmartToast('error',
+                                    'An unexpected error occurred. Please try again.',
+                                    'Error');
                             }
                             console.error(xhr.responseText);
                         }

@@ -266,19 +266,166 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3 col-12">
-                                <label for="primary_color" class="form-label">Primary Brand Color</label>
-                                <div class="d-flex align-items-center gap-3">
-                                    <input type="color"
-                                        class="form-control form-control-color @error('primary_color') is-invalid @enderror"
-                                        id="primary_color" name="primary_color"
-                                        value="{{ old('primary_color', '#2563eb') }}">
-                                    <span id="primary-color-badge" class="badge px-3 py-2 text-white"
+                            <div class="mb-3 col-md-4">
+                                <label for="primary_color" class="form-label">
+                                    Primary Brand Color
+                                    <span id="primary-color-badge" class="badge px-3 py-2 text-white ms-1"
                                         style="background-color: {{ old('primary_color', '#2563eb') }};">
                                         {{ old('primary_color', '#2563eb') }}
                                     </span>
-                                </div>
+                                </label>
+                                <input type="color"
+                                    class="form-control form-control-color @error('primary_color') is-invalid @enderror"
+                                    id="primary_color" name="primary_color"
+                                    value="{{ old('primary_color', '#2563eb') }}">
                                 @error('primary_color')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-md-4">
+                                <label for="secondary_color" class="form-label">
+                                    Secondary Color
+                                    <span id="secondary-color-badge" class="badge px-3 py-2 text-white ms-1"
+                                        style="background-color: {{ old('secondary_color', '#1e40af') }};">
+                                        {{ old('secondary_color', '#1e40af') }}
+                                    </span>
+                                </label>
+                                <input type="color"
+                                    class="form-control form-control-color @error('secondary_color') is-invalid @enderror"
+                                    id="secondary_color" name="secondary_color"
+                                    value="{{ old('secondary_color', '#1e40af') }}">
+                                @error('secondary_color')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-md-4">
+                                <label for="accent_color" class="form-label">
+                                    Accent Color
+                                    <span id="accent-color-badge" class="badge px-3 py-2 text-white ms-1"
+                                        style="background-color: {{ old('accent_color', '#f59e0b') }};">
+                                        {{ old('accent_color', '#f59e0b') }}
+                                    </span>
+                                </label>
+                                <input type="color"
+                                    class="form-control form-control-color @error('accent_color') is-invalid @enderror"
+                                    id="accent_color" name="accent_color"
+                                    value="{{ old('accent_color', '#f59e0b') }}">
+                                @error('accent_color')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Live Theme Preview</label>
+                                <div id="theme-preview" class="p-3 rounded border d-flex align-items-center gap-3"
+                                    style="background: #f8f9fa;">
+                                    <div id="preview-header" class="px-3 py-2 rounded text-white small fw-bold"
+                                        style="background-color: {{ old('primary_color', '#2563eb') }};">
+                                        Header / Button
+                                    </div>
+                                    <div id="preview-sidebar" class="px-3 py-2 rounded text-white small"
+                                        style="background-color: {{ old('secondary_color', '#1e40af') }};">
+                                        Sidebar
+                                    </div>
+                                    <div id="preview-accent" class="px-3 py-2 rounded text-white small"
+                                        style="background-color: {{ old('accent_color', '#f59e0b') }};">
+                                        Badge / Alert
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ==========================================
+                    4. Social Links & Contact Info (React Footer)
+                ========================================== --}}
+                <div class="mt-3 card">
+                    <div class="card-body">
+                        <h4 class="mb-1 header-title">
+                            <i class="ti ti-share me-2 text-primary"></i>Social Links & Contact Info
+                        </h4>
+                        <p class="mb-3 text-muted small">These appear in the React frontend footer on the customer's
+                            domain.</p>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="social_facebook" class="form-label"><i
+                                        class="ti ti-brand-facebook me-1 text-primary"></i>Facebook Page URL</label>
+                                <input type="url" class="form-control @error('social_facebook') is-invalid @enderror"
+                                    id="social_facebook" name="social_facebook"
+                                    value="{{ old('social_facebook') }}"
+                                    placeholder="https://facebook.com/yourpage">
+                                @error('social_facebook')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="social_instagram" class="form-label"><i
+                                        class="ti ti-brand-instagram me-1 text-danger"></i>Instagram URL</label>
+                                <input type="url" class="form-control @error('social_instagram') is-invalid @enderror"
+                                    id="social_instagram" name="social_instagram"
+                                    value="{{ old('social_instagram') }}"
+                                    placeholder="https://instagram.com/yourpage">
+                                @error('social_instagram')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="social_twitter" class="form-label"><i
+                                        class="ti ti-brand-twitter me-1 text-info"></i>Twitter / X URL</label>
+                                <input type="url" class="form-control @error('social_twitter') is-invalid @enderror"
+                                    id="social_twitter" name="social_twitter"
+                                    value="{{ old('social_twitter') }}"
+                                    placeholder="https://twitter.com/yourpage">
+                                @error('social_twitter')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="social_youtube" class="form-label"><i
+                                        class="ti ti-brand-youtube me-1 text-danger"></i>YouTube Channel URL</label>
+                                <input type="url" class="form-control @error('social_youtube') is-invalid @enderror"
+                                    id="social_youtube" name="social_youtube"
+                                    value="{{ old('social_youtube') }}"
+                                    placeholder="https://youtube.com/yourchannel">
+                                @error('social_youtube')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12">
+                                <hr class="my-2">
+                            </div>
+
+                            <div class="mb-3 col-md-4">
+                                <label for="contact_phone" class="form-label"><i class="ti ti-phone me-1"></i>Support
+                                    Phone (Footer)</label>
+                                <input type="text" class="form-control @error('contact_phone') is-invalid @enderror"
+                                    id="contact_phone" name="contact_phone" value="{{ old('contact_phone') }}"
+                                    placeholder="01XXXXXXXXX">
+                                @error('contact_phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label for="contact_email" class="form-label"><i class="ti ti-mail me-1"></i>Support
+                                    Email (Footer)</label>
+                                <input type="email" class="form-control @error('contact_email') is-invalid @enderror"
+                                    id="contact_email" name="contact_email" value="{{ old('contact_email') }}"
+                                    placeholder="support@company.com">
+                                @error('contact_email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label for="contact_address" class="form-label"><i class="ti ti-map-pin me-1"></i>Display
+                                    Address (Footer)</label>
+                                <input type="text" class="form-control @error('contact_address') is-invalid @enderror"
+                                    id="contact_address" name="contact_address" value="{{ old('contact_address') }}"
+                                    placeholder="Dhaka, Bangladesh">
+                                @error('contact_address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -287,7 +434,7 @@
                 </div>
 
                 {{-- ==========================================
-                    3. SaaS & POS Settings
+                    5. SaaS & POS Settings
                 ========================================== --}}
                 <div class="mt-3 card">
                     <div class="card-body">
@@ -322,19 +469,31 @@
                             </div>
 
                             <div class="mb-3 col-md-6">
-                                <label for="status" class="form-label">Status <span
+                                <label for="company_status" class="form-label">Status <span
                                         class="text-danger">*</span></label>
-                                <select class="form-select @error('status') is-invalid @enderror" id="status"
-                                    name="status" required>
-                                    <option value="trial" {{ old('status') == 'trial' ? 'selected' : '' }}>Trial</option>
-                                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active
+                                <select class="form-select @error('company_status') is-invalid @enderror" id="company_status"
+                                    name="company_status" required>
+                                    <option value="trial" {{ old('company_status') == 'trial' ? 'selected' : '' }}>Trial</option>
+                                    <option value="active" {{ old('company_status') == 'active' ? 'selected' : '' }}>Active
                                     </option>
-                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive
+                                    <option value="inactive" {{ old('company_status') == 'inactive' ? 'selected' : '' }}>Inactive
                                     </option>
-                                    <option value="suspended" {{ old('status') == 'suspended' ? 'selected' : '' }}>
+                                    <option value="suspended" {{ old('company_status') == 'suspended' ? 'selected' : '' }}>
                                         Suspended</option>
                                 </select>
-                                @error('status')
+                                @error('company_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label for="trial_ends_at" class="form-label">Trial Ends At</label>
+                                <input type="datetime-local"
+                                    class="form-control @error('trial_ends_at') is-invalid @enderror" id="trial_ends_at"
+                                    name="trial_ends_at"
+                                    value="{{ old('trial_ends_at') }}">
+                                <small class="text-muted">Set or extend the trial expiration date when needed.</small>
+                                @error('trial_ends_at')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -810,7 +969,7 @@
                 if (!file) {
                     preview.html(
                         '<i class="ti ti-browser text-muted" style="font-size: 1.6rem;"></i><span class="ms-2 text-muted small">No favicon selected</span>'
-                        );
+                    );
                     return;
                 }
 
@@ -818,15 +977,27 @@
                 reader.onload = function(ev) {
                     preview.html(
                         `<img src="${ev.target.result}" alt="Favicon Preview" width="32" height="32" style="object-fit: contain;"> <span class="ms-2 text-muted small">New favicon</span>`
-                        );
+                    );
                 };
                 reader.readAsDataURL(file);
             });
 
-            $('#primary_color').on('input change', function() {
-                const color = $(this).val();
-                $('#primary-color-badge').css('background-color', color).text(color);
-            });
+            function syncThemePreview() {
+                const primary = $('#primary_color').val() || '#2563eb';
+                const secondary = $('#secondary_color').val() || '#1e40af';
+                const accent = $('#accent_color').val() || '#f59e0b';
+
+                $('#primary-color-badge').css('background-color', primary).text(primary);
+                $('#secondary-color-badge').css('background-color', secondary).text(secondary);
+                $('#accent-color-badge').css('background-color', accent).text(accent);
+
+                $('#preview-header').css('background-color', primary);
+                $('#preview-sidebar').css('background-color', secondary);
+                $('#preview-accent').css('background-color', accent);
+            }
+
+            $('#primary_color, #secondary_color, #accent_color').on('input change', syncThemePreview);
+            syncThemePreview();
 
             // ==========================================
             // 5. Plan Details Display (✅ V1 Clean Logic, avoided V2 duplication)
@@ -918,7 +1089,8 @@
                     success: function(response) {
                         clearFormDraft();
                         if (window.showSmartToast) {
-                            window.showSmartToast('success', response.message || 'Company saved successfully!', 'Success');
+                            window.showSmartToast('success', response.message ||
+                                'Company saved successfully!', 'Success');
                         }
                         setTimeout(() => {
                             window.location.href = response.redirect ||
@@ -963,7 +1135,9 @@
                             }
                         } else {
                             if (window.showSmartToast) {
-                                window.showSmartToast('error', 'An unexpected error occurred. Please try again.', 'Error');
+                                window.showSmartToast('error',
+                                    'An unexpected error occurred. Please try again.',
+                                    'Error');
                             }
                         }
                     },

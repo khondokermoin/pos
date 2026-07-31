@@ -56,11 +56,12 @@ class UpdateCompanyRequest extends FormRequest
             // SaaS Settings
             'currency'         => 'nullable|string|max:10',
             'timezone'         => 'nullable|string|max:50',
-            'status'           => 'required|in:active,inactive,suspended,trial',
-            'plan_id'          => 'required|exists:plans,id',
-            'user_id'          => 'required|exists:users,id',
-            'business_type_id' => 'required|exists:business_types,id',
+            'company_status'   => 'required|in:active,inactive,suspended,trial',
+            'plan_id'          => 'nullable|exists:plans,id',
+            'user_id'          => 'nullable|exists:users,id',
+            'business_type_id' => 'nullable|exists:business_types,id',
             'trial_ends_at'    => 'nullable|date',
+            'admin_password'   => 'nullable|string|min:8',
             'settings'         => 'nullable|array',
         ];
     }

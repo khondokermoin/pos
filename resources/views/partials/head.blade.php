@@ -42,68 +42,120 @@
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend_assets/css/icons.min.css') }}">
 
+<!-- Sidebar Tree-View Indicator Styles -->
+<link rel="stylesheet" href="{{ asset('frontend_assets/css/sidebar-tree.css') }}">
+
 
 <style>
-    /* Alpine x-cloak: Alpine initialize হওয়ার আগে element লুকিয়ে রাখে */
+    /* ─────────────────────────────────────────────────────────────────────────
+       Alpine.js: x-cloak — Alpine initialize হওয়ার আগে element লুকিয়ে রাখে
+    ───────────────────────────────────────────────────────────────────────── */
     [x-cloak] {
         display: none !important;
     }
 
-    /* Fix: default sidenav-size এ .page-content এর সঠিক margin-left নিশ্চিত করা */
-    html[data-sidenav-size=default]:not([data-layout=topnav]) .page-content,
-    html[data-sidenav-size=default]:not([data-layout=topnav]) .app-topbar {
-        margin-left: var(--ct-sidenav-width) !important;
+    /* ─────────────────────────────────────────────────────────────────────────
+       Sidebar layout margin-left fix — সব sidenav-size state-এর জন্য প্রযোজ্য।
+       শুধু "default" নয়, condensed / compact / small / wide সব state-এ
+       .page-content ও .app-topbar সঠিকভাবে সরে যাবে।
+    ───────────────────────────────────────────────────────────────────────── */
+    html:not([data-layout=topnav]):not([data-sidenav-size=full]) .page-content,
+    html:not([data-layout=topnav]):not([data-sidenav-size=full]) .app-topbar {
+        margin-left: var(--ct-sidenav-width);
+        transition: margin-left 0.2s ease;
     }
 
-    /* সাইডবার মেনুর লেখার সাইজ বড় করার জন্য */
+    /* condensed / icon-only sidebar — narrower margin */
+    html[data-sidenav-size=condensed]:not([data-layout=topnav]) .page-content,
+    html[data-sidenav-size=condensed]:not([data-layout=topnav]) .app-topbar {
+        margin-left: var(--ct-sidenav-condensed-width, 70px);
+    }
+
+    /* compact sidebar */
+    html[data-sidenav-size=compact]:not([data-layout=topnav]) .page-content,
+    html[data-sidenav-size=compact]:not([data-layout=topnav]) .app-topbar {
+        margin-left: var(--ct-sidenav-compact-width, 160px);
+    }
+
+    /* small / slim sidebar */
+    html[data-sidenav-size=small]:not([data-layout=topnav]) .page-content,
+    html[data-sidenav-size=small]:not([data-layout=topnav]) .app-topbar {
+        margin-left: var(--ct-sidenav-small-width, 200px);
+    }
+
+    /* ─────────────────────────────────────────────────────────────────────────
+       Sidebar menu text & icon styling
+    ───────────────────────────────────────────────────────────────────────── */
+
+    /* মেনু লেখার সাইজ ও overflow নিয়ন্ত্রণ */
     .side-nav-link .menu-text {
-        font-size: 12.5px !important;
-        white-space: nowrap !important;
-        line-height: 1.5 !important;
+        font-size: 12.5px;
+        white-space: nowrap;
+        line-height: 1.5;
         display: inline-block;
         vertical-align: middle;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    /* সাইডবারের সেকশন টাইটেল স্পষ্ট করার জন্য */
+    /* সেকশন টাইটেল */
     .side-nav-title {
-        color: #aab8c5 !important;
-        font-size: 11px !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.8px !important;
-        text-transform: uppercase !important;
-        padding-top: 15px !important;
-        padding-bottom: 5px !important;
+        color: #aab8c5;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding-top: 15px;
+        padding-bottom: 5px;
     }
 
-    /* মেইন মেনুর টেক্সট এবং আইকনের রং উজ্জ্বল করার জন্য */
+    /* মেইন মেনু টেক্সট ও আইকন রং */
     .side-nav-link .menu-text,
     .side-nav-link .menu-icon {
-        color: #cedce4 !important;
+        color: #cedce4;
     }
 
-    /* মেনুর উপর মাউস নিলে (Hover) যেন সাদা হয়ে যায় */
+    /* Hover: সাদা */
     .side-nav-link:hover .menu-text,
     .side-nav-link:hover .menu-icon {
-        color: #ffffff !important;
+        color: #ffffff;
     }
 
-    /* সাব-মেনুর (Sub-menu) লেখাগুলো সামঞ্জস্যপূর্ণ রাখার জন্য */
+    /* সাব-মেনু */
     .sub-menu .side-nav-link .menu-text {
-        font-size: 12px !important;
-        color: #98a6ad !important;
+        font-size: 12px;
+        color: #98a6ad;
     }
 
-    /* সাব-মেনুতে হোভার ইফেক্ট */
     .sub-menu .side-nav-link:hover .menu-text {
-        color: #ffffff !important;
+        color: #ffffff;
     }
 
-    /* অ্যাকটিভ মেনুর কালার হাইলাইট করার জন্য */
+    /* Active মেনু */
     .side-nav-item.active>.side-nav-link .menu-text,
     .side-nav-item.active>.side-nav-link .menu-icon {
-        color: #ffffff !important;
+        color: #ffffff;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────────────
+       .select-visible — একটি utility class।
+       যেসব select theme-এর CSS-এ hidden/broken হয়ে যায়,
+       শুধু সেগুলোতে এই class যোগ করলেই ঠিক হবে।
+       Global select.form-select override করা হচ্ছে না।
+    ───────────────────────────────────────────────────────────────────────── */
+    .select-visible {
+        -webkit-appearance: auto !important;
+        -moz-appearance: auto !important;
+        appearance: auto !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        min-height: 38px !important;
+        width: 100% !important;
+    }
+
+    .select-visible:focus {
+        outline: 0;
     }
 </style>
 

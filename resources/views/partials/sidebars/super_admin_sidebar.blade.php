@@ -40,7 +40,9 @@
             <li class="side-nav-title mt-2">SaaS Management</li>
 
             <!-- Companies / Tenants -->
-            @php $isCompaniesActive = request()->routeIs('superadmin.companies.*'); @endphp
+            @php
+                $isCompaniesActive = request()->routeIs('superadmin.companies.*');
+            @endphp
             <li class="side-nav-item {{ $isCompaniesActive ? 'menu-open' : '' }}">
                 <a data-bs-toggle="collapse" href="#sidebarCompanies"
                     aria-expanded="{{ $isCompaniesActive ? 'true' : 'false' }}"
@@ -50,7 +52,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isCompaniesActive ? 'show' : '' }}" id="sidebarCompanies">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.companies.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.companies.index') ? 'active' : '' }}">
@@ -83,7 +85,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isPlansActive ? 'show' : '' }}" id="sidebarPlans">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.plans.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.plans.*') ? 'active' : '' }}">
@@ -121,7 +123,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isUsersActive ? 'show' : '' }}" id="sidebarUsers">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.users.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.users.*') ? 'active' : '' }}">
@@ -139,7 +141,9 @@
             </li>
 
             <!-- Global Settings -->
-            @php $isSettingsActive = request()->routeIs('superadmin.settings.*'); @endphp
+            @php
+                $isSettingsActive = request()->routeIs('superadmin.settings.*');
+            @endphp
             <li class="side-nav-item {{ $isSettingsActive ? 'menu-open' : '' }}">
                 <a data-bs-toggle="collapse" href="#sidebarSettings"
                     aria-expanded="{{ $isSettingsActive ? 'true' : 'false' }}"
@@ -149,7 +153,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isSettingsActive ? 'show' : '' }}" id="sidebarSettings">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.settings.general') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.settings.general') ? 'active' : '' }}">
@@ -173,7 +177,9 @@
             </li>
 
             <!-- System & Security -->
-            @php $isSystemActive = request()->routeIs('superadmin.system.*'); @endphp
+            @php
+                $isSystemActive = request()->routeIs('superadmin.system.*');
+            @endphp
             <li class="side-nav-item {{ $isSystemActive ? 'menu-open' : '' }}">
                 <a data-bs-toggle="collapse" href="#sidebarSystem"
                     aria-expanded="{{ $isSystemActive ? 'true' : 'false' }}"
@@ -183,7 +189,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isSystemActive ? 'show' : '' }}" id="sidebarSystem">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.system.logs') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.system.logs') ? 'active' : '' }}">
@@ -242,7 +248,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isBusinessTypesActive ? 'show' : '' }}" id="sidebarBusinessTypes">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.business-types.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.business-types.*') ? 'active' : '' }}">
@@ -276,7 +282,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isGlobalItemsActive ? 'show' : '' }}" id="sidebarGlobalItems">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.global-categories.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.global-categories.*') ? 'active' : '' }}">
@@ -324,7 +330,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isPrintSettingsActive ? 'show' : '' }}" id="sidebarPrintSettings">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.invoice-templates.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.invoice-templates.*') ? 'active' : '' }}">
@@ -348,7 +354,9 @@
             </li>
 
             <!-- Add-ons / Feature Toggles -->
-            @php $isAddonsActive = request()->routeIs('superadmin.addons.*'); @endphp
+            @php
+                $isAddonsActive = request()->routeIs('superadmin.addons.*');
+            @endphp
             <li class="side-nav-item {{ $isAddonsActive ? 'menu-open' : '' }}">
                 <a data-bs-toggle="collapse" href="#sidebarAddons"
                     aria-expanded="{{ $isAddonsActive ? 'true' : 'false' }}"
@@ -358,7 +366,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isAddonsActive ? 'show' : '' }}" id="sidebarAddons">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.addons.index') }}"
                                 class="side-nav-link {{ request()->routeIs('superadmin.addons.index') ? 'active' : '' }}">
@@ -390,7 +398,7 @@
                 <a href="{{ route('superadmin.tenants.index') }}"
                     class="side-nav-link {{ request()->routeIs('superadmin.tenants.*') ? 'active' : '' }}">
                     <span class="menu-icon"><i class="ti ti-login"></i></span>
-                    <span class="menu-text"> Login As Tenant (Impersonate) </span>
+                    <span class="menu-text"> Login As Tenant </span>
                 </a>
             </li>
 
@@ -414,7 +422,9 @@
             <!-- Global Reports -->
             <li class="side-nav-title mt-2">Global Reports</li>
 
-            @php $isReportsActive = request()->routeIs('superadmin.reports.*'); @endphp
+            @php
+                $isReportsActive = request()->routeIs('superadmin.reports.*');
+            @endphp
             <li class="side-nav-item {{ $isReportsActive ? 'menu-open' : '' }}">
                 <a data-bs-toggle="collapse" href="#sidebarReports"
                     aria-expanded="{{ $isReportsActive ? 'true' : 'false' }}"
@@ -424,7 +434,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isReportsActive ? 'show' : '' }}" id="sidebarReports">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
                         <li class="side-nav-item">
                             <a href="{{ route('superadmin.reports.index', ['type' => 'revenue']) }}"
                                 class="side-nav-link {{ $isReportsActive && request('type', 'revenue') === 'revenue' ? 'active' : '' }}">

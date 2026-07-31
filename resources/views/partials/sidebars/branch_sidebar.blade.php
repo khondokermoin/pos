@@ -38,6 +38,9 @@
                 </a>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- SALES & POS                                                   --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Sales & POS</li>
 
             <!-- POS Terminal -->
@@ -52,7 +55,7 @@
             <!-- Sales History -->
             <li class="side-nav-item">
                 <a href="{{ route('branch.sales.index') }}"
-                    class="side-nav-link {{ request()->routeIs('branch.sales.index') || request()->routeIs('branch.sales.show') ? 'active' : '' }}">
+                    class="side-nav-link {{ request()->routeIs('branch.sales.*') ? 'active' : '' }}">
                     <span class="menu-icon"><i class="ti ti-receipt"></i></span>
                     <span class="menu-text"> Sales History </span>
                 </a>
@@ -76,9 +79,11 @@
                 </a>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- INVENTORY & STOCK                                             --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Inventory & Stock</li>
 
-            <!-- Inventory & Stock Management (Collapsible Menu) -->
             @php
                 $isBranchInventoryActive =
                     request()->routeIs('branch.inventory.*') || request()->routeIs('branch.purchases.*');
@@ -92,9 +97,9 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse {{ $isBranchInventoryActive ? 'show' : '' }}" id="sidebarBranchInventory">
-                    <ul class="sub-menu">
+                    <ul class="sub-menu sub-menu-tree">
 
-                        <!-- 🔥 নতুন যোগ করা হয়েছে: বাল্ক আইটেম রিসিভ ও সর্টিং -->
+                        <!-- Receive & Sort Bulk Items -->
                         <li class="side-nav-item">
                             <a href="{{ route('branch.inventory.receive-sort') }}"
                                 class="side-nav-link {{ request()->routeIs('branch.inventory.receive-sort') ? 'active' : '' }}">
@@ -112,7 +117,7 @@
                             </a>
                         </li>
 
-                        <!-- Adjust stock for damage/loss/audit -->
+                        <!-- Stock Adjustment -->
                         <li class="side-nav-item">
                             <a href="{{ route('branch.inventory.adjust') }}"
                                 class="side-nav-link {{ request()->routeIs('branch.inventory.adjust') ? 'active' : '' }}">
@@ -120,7 +125,7 @@
                             </a>
                         </li>
 
-                        <!-- Receive goods (Local purchase or Transfer from Head Office) -->
+                        <!-- New Purchase / Receive -->
                         <li class="side-nav-item">
                             <a href="{{ route('branch.purchases.create') }}"
                                 class="side-nav-link {{ request()->routeIs('branch.purchases.create') ? 'active' : '' }}">
@@ -128,7 +133,7 @@
                             </a>
                         </li>
 
-                        <!-- History of stock-in for this branch -->
+                        <!-- Purchase History -->
                         <li class="side-nav-item">
                             <a href="{{ route('branch.purchases.index') }}"
                                 class="side-nav-link {{ request()->routeIs('branch.purchases.index') ? 'active' : '' }}">
@@ -139,7 +144,7 @@
                         <!-- Barcode Printing -->
                         <li class="side-nav-item">
                             <a href="{{ route('branch.inventory.barcode') }}"
-                                class="side-nav-link {{ request()->routeIs('branch.inventory.barcode*') ? 'active' : '' }}">
+                                class="side-nav-link {{ request()->routeIs('branch.inventory.barcode') || request()->routeIs('branch.inventory.barcode.print') ? 'active' : '' }}">
                                 <span class="menu-text"> Barcode Printing </span>
                             </a>
                         </li>
@@ -148,35 +153,52 @@
                 </div>
             </li>
 
+            {{-- ============================================================ --}}
+            {{-- REPORTS                                                       --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Reports</li>
 
-            <!-- Daily Sales Report (existing) -->
-            <li class="side-nav-item">
-                <a href="{{ route('branch.reports.daily-sales') }}"
-                    class="side-nav-link {{ request()->routeIs('branch.reports.daily-sales') ? 'active' : '' }}">
+            @php
+                $isBranchReportsActive = request()->routeIs('branch.reports.*');
+            @endphp
+            <li class="side-nav-item {{ $isBranchReportsActive ? 'menu-open' : '' }}">
+                <a data-bs-toggle="collapse" href="#sidebarBranchReports"
+                    aria-expanded="{{ $isBranchReportsActive ? 'true' : 'false' }}"
+                    class="side-nav-link {{ $isBranchReportsActive ? 'active' : '' }}">
                     <span class="menu-icon"><i class="ti ti-chart-bar"></i></span>
-                    <span class="menu-text"> Daily Sales Report </span>
+                    <span class="menu-text"> Reports </span>
+                    <span class="menu-arrow"></span>
                 </a>
+                <div class="collapse {{ $isBranchReportsActive ? 'show' : '' }}" id="sidebarBranchReports">
+                    <ul class="sub-menu sub-menu-tree">
+                        <!-- Daily Sales Report -->
+                        <li class="side-nav-item">
+                            <a href="{{ route('branch.reports.daily-sales') }}"
+                                class="side-nav-link {{ request()->routeIs('branch.reports.daily-sales') ? 'active' : '' }}">
+                                <span class="menu-text"> Daily Sales </span>
+                            </a>
+                        </li>
+                        <!-- Today's Summary -->
+                        <li class="side-nav-item">
+                            <a href="{{ route('branch.reports.today') }}"
+                                class="side-nav-link {{ request()->routeIs('branch.reports.today') ? 'active' : '' }}">
+                                <span class="menu-text"> Today's Report </span>
+                            </a>
+                        </li>
+                        <!-- Inventory Report -->
+                        <li class="side-nav-item">
+                            <a href="{{ route('branch.reports.inventory') }}"
+                                class="side-nav-link {{ request()->routeIs('branch.reports.inventory') ? 'active' : '' }}">
+                                <span class="menu-text"> Inventory Report </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
-            <!-- Today's Report -->
-            <li class="side-nav-item">
-                <a href="{{ route('branch.reports.today') }}"
-                    class="side-nav-link {{ request()->routeIs('branch.reports.today') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-calendar-stats"></i></span>
-                    <span class="menu-text"> Today's Report </span>
-                </a>
-            </li>
-
-            <!-- Inventory Report -->
-            <li class="side-nav-item">
-                <a href="{{ route('branch.reports.inventory') }}"
-                    class="side-nav-link {{ request()->routeIs('branch.reports.inventory') ? 'active' : '' }}">
-                    <span class="menu-icon"><i class="ti ti-clipboard-list"></i></span>
-                    <span class="menu-text"> Inventory Report </span>
-                </a>
-            </li>
-
+            {{-- ============================================================ --}}
+            {{-- ACCOUNT                                                       --}}
+            {{-- ============================================================ --}}
             <li class="side-nav-title mt-3">Account</li>
 
             <!-- Profile -->
@@ -186,6 +208,18 @@
                     <span class="menu-icon"><i class="ti ti-user"></i></span>
                     <span class="menu-text"> My Profile </span>
                 </a>
+            </li>
+
+            <!-- Logout -->
+            <li class="side-nav-item">
+                <a href="{{ route('logout') }}" class="side-nav-link"
+                    onclick="event.preventDefault(); document.getElementById('branch-logout-form').submit();">
+                    <span class="menu-icon"><i class="ti ti-logout"></i></span>
+                    <span class="menu-text"> Logout </span>
+                </a>
+                <form id="branch-logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </li>
 
         </ul>
