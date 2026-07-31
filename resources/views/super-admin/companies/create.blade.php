@@ -191,7 +191,7 @@
                                     <input type="text" class="form-control @error('subdomain') is-invalid @enderror"
                                         id="subdomain" name="subdomain" value="{{ old('subdomain') }}"
                                         placeholder="company-name">
-                                    <span class="input-group-text">.yourdomain.com</span>
+                                    <span class="input-group-text">.westernwatchbd.com</span>
                                 </div>
                                 <small class="text-muted">Use a short slug for the tenant subdomain.</small>
                                 @error('subdomain')
@@ -232,13 +232,15 @@
 
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Logo Preview</label>
-                                <div id="logo-preview" class="p-2 border rounded" style="min-height: 100px; background: #f8f9fa;">
+                                <div id="logo-preview" class="p-2 border rounded"
+                                    style="min-height: 100px; background: #f8f9fa;">
                                     <div id="logo-preview-empty" class="text-center">
                                         <i class="ti ti-photo text-muted" style="font-size: 2rem;"></i>
                                         <p class="mb-0 text-muted small">No logo selected</p>
                                     </div>
                                     <div id="logo-preview-filled" class="d-none text-center">
-                                        <img id="logo-preview-img" src="" class="img-fluid rounded" style="max-height: 110px; object-fit: contain;" alt="Logo Preview">
+                                        <img id="logo-preview-img" src="" class="img-fluid rounded"
+                                            style="max-height: 110px; object-fit: contain;" alt="Logo Preview">
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +249,8 @@
                                 <label for="favicon" class="form-label">Favicon</label>
                                 <input type="file" class="form-control @error('favicon') is-invalid @enderror"
                                     id="favicon" name="favicon" accept="image/*">
-                                <small class="text-muted">Used for browser tabs and bookmarks. PNG/ICO/SVG up to 512KB.</small>
+                                <small class="text-muted">Used for browser tabs and bookmarks. PNG/ICO/SVG up to
+                                    512KB.</small>
                                 @error('favicon')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -255,7 +258,9 @@
 
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Favicon Preview</label>
-                                <div id="favicon-preview" class="p-2 border rounded d-flex align-items-center justify-content-center" style="min-height: 72px; background: #f8f9fa;">
+                                <div id="favicon-preview"
+                                    class="p-2 border rounded d-flex align-items-center justify-content-center"
+                                    style="min-height: 72px; background: #f8f9fa;">
                                     <i class="ti ti-browser text-muted" style="font-size: 1.6rem;"></i>
                                     <span class="ms-2 text-muted small">No favicon selected</span>
                                 </div>
@@ -268,7 +273,8 @@
                                         class="form-control form-control-color @error('primary_color') is-invalid @enderror"
                                         id="primary_color" name="primary_color"
                                         value="{{ old('primary_color', '#2563eb') }}">
-                                    <span id="primary-color-badge" class="badge px-3 py-2 text-white" style="background-color: {{ old('primary_color', '#2563eb') }};">
+                                    <span id="primary-color-badge" class="badge px-3 py-2 text-white"
+                                        style="background-color: {{ old('primary_color', '#2563eb') }};">
                                         {{ old('primary_color', '#2563eb') }}
                                     </span>
                                 </div>
@@ -802,13 +808,17 @@
                 const preview = $('#favicon-preview');
 
                 if (!file) {
-                    preview.html('<i class="ti ti-browser text-muted" style="font-size: 1.6rem;"></i><span class="ms-2 text-muted small">No favicon selected</span>');
+                    preview.html(
+                        '<i class="ti ti-browser text-muted" style="font-size: 1.6rem;"></i><span class="ms-2 text-muted small">No favicon selected</span>'
+                        );
                     return;
                 }
 
                 const reader = new FileReader();
                 reader.onload = function(ev) {
-                    preview.html(`<img src="${ev.target.result}" alt="Favicon Preview" width="32" height="32" style="object-fit: contain;"> <span class="ms-2 text-muted small">New favicon</span>`);
+                    preview.html(
+                        `<img src="${ev.target.result}" alt="Favicon Preview" width="32" height="32" style="object-fit: contain;"> <span class="ms-2 text-muted small">New favicon</span>`
+                        );
                 };
                 reader.readAsDataURL(file);
             });
