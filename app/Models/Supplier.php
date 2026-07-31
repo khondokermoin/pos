@@ -17,11 +17,9 @@ class Supplier extends Model
         'phone',
         'email',
         'address',
-        'is_active',
-    ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
+        'contact_person',
+        'notes',
+        'status',
     ];
 
     public function company()

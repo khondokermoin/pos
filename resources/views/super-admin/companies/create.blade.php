@@ -917,8 +917,9 @@
                     },
                     success: function(response) {
                         clearFormDraft();
-                        toastr.success(response.message || 'Company saved successfully!',
-                            'Success');
+                        if (window.showSmartToast) {
+                            window.showSmartToast('success', response.message || 'Company saved successfully!', 'Success');
+                        }
                         setTimeout(() => {
                             window.location.href = response.redirect ||
                                 '{{ route('superadmin.companies.index') }}';
@@ -961,8 +962,9 @@
                                 }, 500);
                             }
                         } else {
-                            toastr.error('An unexpected error occurred. Please try again.',
-                                'Error');
+                            if (window.showSmartToast) {
+                                window.showSmartToast('error', 'An unexpected error occurred. Please try again.', 'Error');
+                            }
                         }
                     },
                     complete: function() {

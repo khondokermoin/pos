@@ -162,8 +162,14 @@ Route::middleware(['auth', 'verified', 'role:Super Admin'])
         // POS & Customization
         Route::resource('/invoice-templates', InvoiceTemplateController::class)->except(['create', 'edit', 'show']);
         Route::patch('/invoice-templates/{invoiceTemplate}/set-default', [InvoiceTemplateController::class, 'setDefault'])->name('invoice-templates.set-default');
+        // ── Invoice Template Preview (must be declared BEFORE the resource to avoid route conflicts)
+        Route::get('/invoice-templates/{invoiceTemplate}/preview', [InvoiceTemplateController::class, 'preview'])->name('invoice-templates.preview');
+
         Route::resource('/barcode-settings', BarcodeSettingController::class)->except(['create', 'edit', 'show']);
         Route::patch('/barcode-settings/{barcodeSetting}/set-default', [BarcodeSettingController::class, 'setDefault'])->name('barcode-settings.set-default');
+
+        // ── Email Template Preview — declared BEFORE the resource to avoid wildcard conflicts
+        Route::get('/email-templates/{emailTemplate}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
         Route::resource('/email-templates', EmailTemplateController::class)->except(['create', 'edit', 'show']);
 
         // Company Module Access Management

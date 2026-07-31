@@ -177,13 +177,17 @@
 @push('scripts')
     <script>
         // Pass variants data from PHP to JS
-        const variantsData = @json(
-            $variants->map(fn($v) => [
+        @php
+            $variantsJson = $variants->map(function ($v) {
+                return [
                     'id' => $v->id,
                     'label' => optional($v->product)->name . ' — ' . $v->sku,
                     'stock' => optional($v->stock)->quantity ?? 0,
                     'sku' => $v->sku,
-                ]));
+                ];
+            });
+        @endphp
+        const variantsData = @json($variantsJson);
 
         let rowCount = 0;
 

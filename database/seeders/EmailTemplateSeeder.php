@@ -7,15 +7,15 @@ use Illuminate\Database\Seeder;
 
 class EmailTemplateSeeder extends Seeder
 {
-    public function run(): void
-    {
-        $templates = [
-            // ── Welcome email sent when a new tenant is provisioned ──────────
-            [
-                'name'      => 'Welcome — New Tenant',
-                'slug'      => 'welcome-tenant',
-                'subject'   => 'Welcome to {{app_name}}, {{company_name}}!',
-                'body'      => <<<'HTML'
+  public function run(): void
+  {
+    $templates = [
+      // ── Welcome email sent when a new tenant is provisioned ──────────
+      [
+        'name'      => 'Welcome — New Tenant',
+        'slug'      => 'welcome-tenant',
+        'subject'   => 'Welcome to {{app_name}}, {{company_name}}!',
+        'body'      => <<<'HTML'
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,22 +50,22 @@ class EmailTemplateSeeder extends Seeder
   </div>
   <div class="footer">
     Need help? Contact us at <a href="mailto:{{support_email}}" style="color:#4f6ef7;">{{support_email}}</a><br>
-    &copy; {{ date('Y') }} {{app_name}}. All rights reserved.
+    &copy; {{year}} {{app_name}}. All rights reserved.
   </div>
 </div>
 </body>
 </html>
 HTML,
-                'variables' => ['app_name', 'company_name', 'owner_name', 'login_url', 'support_email'],
-                'is_active' => true,
-            ],
+        'variables' => ['app_name', 'company_name', 'owner_name', 'login_url', 'support_email'],
+        'is_active' => true,
+      ],
 
-            // ── Password reset notification ──────────────────────────────────
-            [
-                'name'      => 'Password Reset',
-                'slug'      => 'password-reset',
-                'subject'   => 'Reset Your {{app_name}} Password',
-                'body'      => <<<'HTML'
+      // ── Password reset notification ──────────────────────────────────
+      [
+        'name'      => 'Password Reset',
+        'slug'      => 'password-reset',
+        'subject'   => 'Reset Your {{app_name}} Password',
+        'body'      => <<<'HTML'
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,21 +92,21 @@ HTML,
     <p>This link will expire in <strong>{{expires_in}}</strong>. If you did not request a password reset, please ignore this email.</p>
     <p>Best regards,<br><strong>The {{app_name}} Team</strong></p>
   </div>
-  <div class="footer">&copy; {{ date('Y') }} {{app_name}}. All rights reserved.</div>
+  <div class="footer">&copy; {{year}} {{app_name}}. All rights reserved.</div>
 </div>
 </body>
 </html>
 HTML,
-                'variables' => ['app_name', 'user_name', 'reset_url', 'expires_in'],
-                'is_active' => true,
-            ],
+        'variables' => ['app_name', 'user_name', 'reset_url', 'expires_in', 'year'],
+        'is_active' => true,
+      ],
 
-            // ── Subscription confirmation ────────────────────────────────────
-            [
-                'name'      => 'Subscription Confirmed',
-                'slug'      => 'subscription-confirmed',
-                'subject'   => '✅ Subscription Confirmed — {{plan_name}}',
-                'body'      => <<<'HTML'
+      // ── Subscription confirmation ────────────────────────────────────
+      [
+        'name'      => 'Subscription Confirmed',
+        'slug'      => 'subscription-confirmed',
+        'subject'   => '✅ Subscription Confirmed — {{plan_name}}',
+        'body'      => <<<'HTML'
 <!DOCTYPE html>
 <html>
 <head>
@@ -137,23 +137,23 @@ HTML,
     <p>Thank you for your continued trust in <strong>{{app_name}}</strong>.</p>
     <p>Best regards,<br><strong>The {{app_name}} Team</strong></p>
   </div>
-  <div class="footer">&copy; {{ date('Y') }} {{app_name}}. All rights reserved.</div>
+  <div class="footer">&copy; {{year}} {{app_name}}. All rights reserved.</div>
 </div>
 </body>
 </html>
 HTML,
-                'variables' => ['app_name', 'company_name', 'plan_name', 'amount', 'expires_at', 'invoice_number'],
-                'is_active' => true,
-            ],
-        ];
+        'variables' => ['app_name', 'company_name', 'plan_name', 'amount', 'expires_at', 'invoice_number', 'year'],
+        'is_active' => true,
+      ],
+    ];
 
-        foreach ($templates as $template) {
-            EmailTemplate::updateOrCreate(
-                ['slug' => $template['slug']],
-                $template
-            );
-        }
-
-        $this->command->info('✅ EmailTemplateSeeder: ' . count($templates) . ' templates seeded.');
+    foreach ($templates as $template) {
+      EmailTemplate::updateOrCreate(
+        ['slug' => $template['slug']],
+        $template
+      );
     }
+
+    $this->command->info('✅ EmailTemplateSeeder: ' . count($templates) . ' templates seeded.');
+  }
 }

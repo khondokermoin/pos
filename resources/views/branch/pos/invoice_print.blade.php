@@ -4,7 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice #{{ $sale->invoice_no }}</title>
+    <title>Invoice #{{ $sale->invoice_no ?? 'N/A' }}</title>
+
+    @php
+        /*
+         * ── Pre-compute template-driven values in PHP so they can be safely
+         *    injected into CSS without Blade echoes inside <style> blocks.
+         *    Blade echoes inside <style> crash DomPDF and are invalid CSS.
+         */
+        $isA4          = $template && $template->type === 'a4';
+        $screenMaxWidth = $isA4 ? '794px' : '380px';
+        $printWidth     = $isA4 ? '210mm' : '80mm';
+        $pageSize       = $isA4 ? 'A4'    : '80mm auto';
+        $customCss      = ($template && !empty($template->settings['custom_css']))
+                            ? $template->settings['custom_css']
+                            : '';
+    @endphp
+
     <style>
         /* ── Reset ─────────────────────────────────────────────────── */
         *,
@@ -31,7 +47,7 @@
         .receipt {
             background: #fff;
             width: 100%;
-            max-width: {{ $template && $template->type === 'a4' ? '794px' : '380px' }};
+            max-width: {{ $screenMaxWidth }};
             border-radius: 12px;
             box-shadow: 0 4px 24px rgba(0, 0, 0, .12);
             overflow: hidden;
@@ -270,7 +286,7 @@
             display: flex;
             gap: 10px;
             width: 100%;
-            max-width: {{ $template && $template->type === 'a4' ? '794px' : '380px' }};
+            max-width: {{ $screenMaxWidth }};
         }
 
         .btn-action {
@@ -326,8 +342,8 @@
             }
 
             .receipt {
-                max-width: {{ $template && $template->type === 'a4' ? '210mm' : '80mm' }};
-                width: {{ $template && $template->type === 'a4' ? '210mm' : '80mm' }};
+                max-width: {{ $printWidth }};
+                width: {{ $printWidth }};
                 border-radius: 0;
                 box-shadow: none;
                 margin: 0;
@@ -351,16 +367,14 @@
 
             @page {
                 margin: 4mm;
-                size: {{ $template && $template->type === 'a4' ? 'A4' : '80mm auto' }};
+                size: {{ $pageSize }};
             }
         }
     </style>
 
-    {{-- Inject any extra CSS from template settings --}}
-    @if ($template && !empty($template->settings['custom_css']))
-        <style>
-            {{ $template->settings['custom_css'] }}
-        </style>
+    {{-- Inject any extra CSS from template settings (already extracted to $customCss above) --}}
+    @if ($customCss)
+        <style>{{ $customCss }}</style>
     @endif
 </head>
 
@@ -372,76 +386,82 @@
         {{-- If template has custom HTML content, render it with variable substitution --}}
         @if ($template && !empty($template->html_content))
             @php
-                $company = $sale->branch->company ?? auth()->user()->company;
-                $branch = $sale->branch ?? auth()->user()->branch;
+                /*
+                 * Null-safe resolution of all related models.
+                 * $sale is always loaded with: items.variant, customer, user, branch.company
+                 * (see PosController::printInvoice)
+                 */
+                $company  = optional($sale->branch)->company ?? optional(auth()->user())->company;
+                $branch   = $sale->branch ?? optional(auth()->user())->branch;
                 $customer = $sale->customer;
 
-                // Build items HTML for injection
+                // Build items HTML for injection into custom template
                 $itemsHtml = '';
                 foreach ($sale->items as $item) {
                     $itemsHtml .=
                         '<tr>' .
-                        '<td>' .
-                        e($item->product_name) .
-                        '</td>' .
-                        '<td style="text-align:right">' .
-                        $item->quantity .
-                        '</td>' .
-                        '<td style="text-align:right">৳' .
-                        number_format($item->unit_price, 2) .
-                        '</td>' .
-                        '<td style="text-align:right">৳' .
-                        number_format($item->subtotal, 2) .
-                        '</td>' .
+                        '<td>' . e($item->product_name ?? '') . '</td>' .
+                        '<td style="text-align:right">' . (int) $item->quantity . '</td>' .
+                        '<td style="text-align:right">&#2547;' . number_format((float) $item->unit_price, 2) . '</td>' .
+                        '<td style="text-align:right">&#2547;' . number_format((float) $item->subtotal, 2) . '</td>' .
                         '</tr>';
                 }
 
-                $taxAmount = $sale->total_amount - $sale->subtotal + $sale->discount;
+                // Tax = total - subtotal + discount  (derived, not stored separately)
+                $taxAmount = max(0, (float) $sale->total_amount - (float) $sale->subtotal + (float) $sale->discount);
 
                 $vars = [
-                    'company_name' => e($company->name ?? ''),
-                    'branch_name' => e($branch->name ?? ''),
-                    'branch_phone' => e($branch->phone ?? ''),
-                    'branch_address' => e($branch->address ?? ''),
-                    'invoice_no' => e($sale->invoice_no),
-                    'sale_date' => $sale->created_at->format('d M Y, h:i A'),
-                    'cashier_name' => e($sale->user->name ?? 'Staff'),
-                    'customer_name' => e($customer->name ?? 'Walk-in Customer'),
-                    'items_table' => $itemsHtml,
-                    'subtotal' => '৳' . number_format($sale->subtotal, 2),
-                    'discount' => '৳' . number_format($sale->discount, 2),
-                    'tax_amount' => '৳' . number_format($taxAmount, 2),
-                    'total_amount' => '৳' . number_format($sale->total_amount, 2),
-                    'received_amount' => '৳' . number_format($sale->received_amount, 2),
-                    'change_amount' => '৳' . number_format(max(0, $sale->received_amount - $sale->total_amount), 2),
-                    'payment_method' => ucfirst(str_replace('_', ' ', $sale->payment_method)),
+                    'company_name'    => e(optional($company)->name ?? 'Company'),
+                    'company_logo'    => (optional($company)->logo)
+                                            ? '<img src="' . asset('storage/' . $company->logo) . '" alt="Logo" style="max-height:50px;">'
+                                            : e(optional($company)->name ?? 'Company'),
+                    'company_address' => e(optional($company)->address ?? ''),
+                    'company_phone'   => e(optional($company)->phone ?? ''),
+                    'company_vat'     => e(optional($company)->vat_no ?? optional($company)->tax_no ?? ''),
+                    'branch_name'     => e(optional($branch)->name ?? ''),
+                    'branch_phone'    => e(optional($branch)->phone ?? ''),
+                    'branch_address'  => e(optional($branch)->address ?? ''),
+                    'invoice_no'      => e($sale->invoice_no ?? ''),
+                    'sale_date'       => $sale->created_at ? $sale->created_at->format('d M Y, h:i A') : '',
+                    'cashier_name'    => e(optional($sale->user)->name ?? 'Staff'),
+                    'customer_name'   => e(optional($customer)->name ?? 'Walk-in Customer'),
+                    'customer_phone'  => e(optional($customer)->phone ?? ''),
+                    'items_table'     => $itemsHtml,
+                    'subtotal'        => '&#2547;' . number_format((float) $sale->subtotal, 2),
+                    'discount'        => '&#2547;' . number_format((float) $sale->discount, 2),
+                    'tax_amount'      => '&#2547;' . number_format($taxAmount, 2),
+                    'total_amount'    => '&#2547;' . number_format((float) $sale->total_amount, 2),
+                    'received_amount' => '&#2547;' . number_format((float) $sale->received_amount, 2),
+                    'change_amount'   => '&#2547;' . number_format(max(0, (float) $sale->received_amount - (float) $sale->total_amount), 2),
+                    'payment_method'  => ucfirst(str_replace('_', ' ', $sale->payment_method ?? '')),
                 ];
 
                 $html = $template->html_content;
-                $ob = '{';
-                $cb = '}';
                 foreach ($vars as $key => $value) {
-                    // Replace {{ key }} and {{ key }} placeholder styles
-                    $html = str_replace($ob . $ob . $key . $cb . $cb, $value, $html);
-                    $html = str_replace($ob . $ob . ' ' . $key . ' ' . $cb . $cb, $value, $html);
+                    // Support both {{key}} and {{ key }} placeholder styles
+                    $html = str_replace('{{' . $key . '}}',       $value, $html);
+                    $html = str_replace('{{ ' . $key . ' }}',     $value, $html);
+                    // Also support single-brace {key} style used by some templates
+                    $html = str_replace('{' . $key . '}',         $value, $html);
                 }
             @endphp
             <div class="custom-template-body">{!! $html !!}</div>
+
         @else
             {{-- ── DEFAULT BUILT-IN RECEIPT LAYOUT ──────────────────── --}}
 
             {{-- Header --}}
             <div class="receipt-header">
                 <div class="company-name">
-                    {{ $sale->branch->company->name ?? (auth()->user()->company->name ?? 'Company Name') }}
+                    {{ optional(optional($sale->branch)->company)->name ?? optional(optional(auth()->user())->company)->name ?? 'Company Name' }}
                 </div>
                 <div class="branch-name">
-                    {{ $sale->branch->name ?? (auth()->user()->branch->name ?? 'Branch') }}
+                    {{ optional($sale->branch)->name ?? optional(optional(auth()->user())->branch)->name ?? 'Branch' }}
                 </div>
-                @if ($sale->branch->phone ?? null)
+                @if (optional($sale->branch)->phone)
                     <div class="contact">📞 {{ $sale->branch->phone }}</div>
                 @endif
-                @if ($sale->branch->address ?? null)
+                @if (optional($sale->branch)->address)
                     <div class="contact">{{ $sale->branch->address }}</div>
                 @endif
             </div>
@@ -450,19 +470,19 @@
             <div class="receipt-meta">
                 <div class="meta-item">
                     <span class="label">Invoice No</span>
-                    <span class="value">{{ $sale->invoice_no }}</span>
+                    <span class="value">{{ $sale->invoice_no ?? 'N/A' }}</span>
                 </div>
                 <div class="meta-item">
-                    <span class="label">Date & Time</span>
-                    <span class="value">{{ $sale->created_at->format('d M Y, h:i A') }}</span>
+                    <span class="label">Date &amp; Time</span>
+                    <span class="value">{{ $sale->created_at ? $sale->created_at->format('d M Y, h:i A') : 'N/A' }}</span>
                 </div>
                 <div class="meta-item">
                     <span class="label">Cashier</span>
-                    <span class="value">{{ $sale->user->name ?? 'Staff' }}</span>
+                    <span class="value">{{ optional($sale->user)->name ?? 'Staff' }}</span>
                 </div>
                 <div class="meta-item">
                     <span class="label">Customer</span>
-                    <span class="value">{{ $sale->customer->name ?? 'Walk-in Customer' }}</span>
+                    <span class="value">{{ optional($sale->customer)->name ?? 'Walk-in Customer' }}</span>
                 </div>
                 @if ($template && !empty($template->settings['show_template_name']))
                     <div class="meta-item full" style="font-size:9px;color:#d1d5db;text-align:right;">
@@ -483,14 +503,14 @@
                 @foreach ($sale->items as $item)
                     <div class="item-row">
                         <div>
-                            <div class="item-name">{{ $item->product_name }}</div>
-                            @if ($item->variant?->sku)
+                            <div class="item-name">{{ $item->product_name ?? 'Product' }}</div>
+                            @if (optional($item->variant)->sku)
                                 <div class="item-sku">{{ $item->variant->sku }}</div>
                             @endif
                         </div>
-                        <div class="item-qty">{{ $item->quantity }}</div>
-                        <div class="item-price">৳{{ number_format($item->unit_price, 2) }}</div>
-                        <div class="item-total">৳{{ number_format($item->subtotal, 2) }}</div>
+                        <div class="item-qty">{{ (int) $item->quantity }}</div>
+                        <div class="item-price">৳{{ number_format((float) $item->unit_price, 2) }}</div>
+                        <div class="item-total">৳{{ number_format((float) $item->subtotal, 2) }}</div>
                     </div>
                 @endforeach
             </div>
@@ -499,10 +519,12 @@
             <div class="receipt-totals">
                 <div class="total-line">
                     <span>Subtotal ({{ $sale->items->count() }} item{{ $sale->items->count() > 1 ? 's' : '' }})</span>
-                    <span class="amount">৳{{ number_format($sale->subtotal, 2) }}</span>
+                    <span class="amount">৳{{ number_format((float) $sale->subtotal, 2) }}</span>
                 </div>
 
-                @php $taxAmount = $sale->total_amount - $sale->subtotal + $sale->discount; @endphp
+                @php
+                    $taxAmount = max(0, (float) $sale->total_amount - (float) $sale->subtotal + (float) $sale->discount);
+                @endphp
                 @if ($taxAmount > 0)
                     <div class="total-line tax">
                         <span>Tax / VAT</span>
@@ -510,24 +532,24 @@
                     </div>
                 @endif
 
-                @if ($sale->discount > 0)
+                @if ((float) $sale->discount > 0)
                     <div class="total-line discount">
                         <span>Discount</span>
-                        <span class="amount">-৳{{ number_format($sale->discount, 2) }}</span>
+                        <span class="amount">-৳{{ number_format((float) $sale->discount, 2) }}</span>
                     </div>
                 @endif
 
                 <div class="total-line grand">
                     <span>TOTAL</span>
-                    <span class="amount">৳{{ number_format($sale->total_amount, 2) }}</span>
+                    <span class="amount">৳{{ number_format((float) $sale->total_amount, 2) }}</span>
                 </div>
 
                 <div class="total-line paid">
-                    <span>Paid ({{ ucfirst(str_replace('_', ' ', $sale->payment_method)) }})</span>
-                    <span class="amount">৳{{ number_format($sale->received_amount, 2) }}</span>
+                    <span>Paid ({{ ucfirst(str_replace('_', ' ', $sale->payment_method ?? 'cash')) }})</span>
+                    <span class="amount">৳{{ number_format((float) $sale->received_amount, 2) }}</span>
                 </div>
 
-                @php $change = $sale->received_amount - $sale->total_amount; @endphp
+                @php $change = (float) $sale->received_amount - (float) $sale->total_amount; @endphp
                 @if ($change > 0)
                     <div class="total-line change">
                         <span>Change Returned</span>
@@ -537,7 +559,7 @@
 
                 <div style="text-align:center; margin-top: 10px;">
                     <span class="payment-badge">
-                        ✓ {{ strtoupper(str_replace('_', ' ', $sale->payment_method)) }} PAID
+                        ✓ {{ strtoupper(str_replace('_', ' ', $sale->payment_method ?? 'CASH')) }} PAID
                     </span>
                 </div>
             </div>
@@ -551,7 +573,7 @@
                     <div class="tagline">Goods once sold will not be taken back.</div>
                 @endif
                 @if (!($template && isset($template->settings['hide_invoice_barcode']) && $template->settings['hide_invoice_barcode']))
-                    <div class="barcode-area">{{ $sale->invoice_no }}</div>
+                    <div class="barcode-area">{{ $sale->invoice_no ?? '' }}</div>
                 @endif
             </div>
 
@@ -573,8 +595,11 @@
     </div>
 
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => window.print(), 400);
+        // Auto-print after a short delay to allow CSS to render
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                window.print();
+            }, 400);
         });
     </script>
 

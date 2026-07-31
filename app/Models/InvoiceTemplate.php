@@ -30,16 +30,23 @@ class InvoiceTemplate extends Model
     {
         parent::boot();
 
+        // Auto-generate slug on create only if not already set by the controller.
+        // The controller always sets a timestamped slug, so this is a safety fallback.
         static::creating(function (self $model) {
             if (empty($model->slug)) {
-                $model->slug = Str::slug($model->name);
+                $model->slug = Str::slug($model->name) . '-' . time();
             }
         });
 
-        // Only one default at a time
-        static::saving(function (self $model) {
+        // Enforce single-default constraint.
+        // IMPORTANT: Use DB::table() instead of Eloquent to avoid triggering
+        // this same observer recursively, which would cause an infinite loop.
+        static::saved(function (self $model) {
             if ($model->is_default) {
-                static::where('id', '!=', $model->id)->update(['is_default' => false]);
+                // Directly update via query builder — bypasses model events
+                static::where('id', '!=', $model->id)
+                    ->where('is_default', true)
+                    ->update(['is_default' => false]);
             }
         });
     }

@@ -47,9 +47,11 @@
                             <div class="mb-3">
                                 <label class="form-label">Type <span class="text-danger">*</span></label>
                                 <select name="type" class="form-select @error('type') is-invalid @enderror" required>
-                                    <option value="pos" {{ old('type') == 'pos' ? 'selected' : '' }}>POS / Thermal</option>
+                                    <option value="pos" {{ old('type') == 'pos' ? 'selected' : '' }}>POS / Thermal
+                                    </option>
                                     <option value="a4" {{ old('type') == 'a4' ? 'selected' : '' }}>A4 Paper</option>
-                                    <option value="thermal" {{ old('type') == 'thermal' ? 'selected' : '' }}>Thermal 80mm</option>
+                                    <option value="thermal" {{ old('type') == 'thermal' ? 'selected' : '' }}>Thermal 80mm
+                                    </option>
                                 </select>
                                 @error('type')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -58,10 +60,11 @@
                             <div class="mb-3">
                                 <label class="form-label">HTML Content</label>
                                 <textarea name="html_content" class="form-control" rows="8"
-                                    placeholder="Enter HTML template content with {{ variables }}...">{{ old('html_content') }}</textarea>
-                                <div class="form-text">Available variables: <code>{{ company_name }}</code>,
-                                    <code>{{ invoice_no }}</code>, <code>{{ date }}</code>,
-                                    <code>{{ items }}</code>, <code>{{ total }}</code></div>
+                                    placeholder="Enter HTML template content with @{{ variables }}...">{{ old('html_content') }}</textarea>
+                                <div class="form-text">Available variables: <code>@{{ company_name }}</code>,
+                                    <code>@{{ invoice_no }}</code>, <code>@{{ date }}</code>,
+                                    <code>@{{ items }}</code>, <code>@{{ total }}</code>
+                                </div>
                             </div>
                             <div class="mb-3 d-flex gap-3">
                                 <div class="form-check form-switch">
@@ -132,8 +135,13 @@
                                             </td>
                                             <td>{{ $template->created_at->format('d M Y') }}</td>
                                             <td class="text-end">
+                                                <a href="{{ route('superadmin.invoice-templates.preview', $template) }}"
+                                                    class="btn btn-sm btn-info me-1" title="Preview Template">
+                                                    <i class="ti ti-eye"></i>
+                                                </a>
                                                 <button type="button" class="btn btn-sm btn-warning me-1"
-                                                    data-bs-toggle="modal" data-bs-target="#editModal{{ $template->id }}">
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editModal{{ $template->id }}">
                                                     <i class="ti ti-edit"></i>
                                                 </button>
                                                 <form method="POST"
@@ -165,10 +173,12 @@
                                                             <div class="mb-3"><label class="form-label">Type</label>
                                                                 <select name="type" class="form-select">
                                                                     <option value="pos"
-                                                                        {{ $template->type == 'pos' ? 'selected' : '' }}>POS /
+                                                                        {{ $template->type == 'pos' ? 'selected' : '' }}>
+                                                                        POS /
                                                                         Thermal</option>
                                                                     <option value="a4"
-                                                                        {{ $template->type == 'a4' ? 'selected' : '' }}>A4 Paper
+                                                                        {{ $template->type == 'a4' ? 'selected' : '' }}>A4
+                                                                        Paper
                                                                     </option>
                                                                     <option value="thermal"
                                                                         {{ $template->type == 'thermal' ? 'selected' : '' }}>

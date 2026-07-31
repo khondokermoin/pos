@@ -30,6 +30,9 @@
 <!-- Theme Configuration -->
 <script src="{{ asset('frontend_assets/js/config.js') }}"></script>
 
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 <!-- Vendor CSS -->
 <link rel="stylesheet" href="{{ asset('frontend_assets/css/vendor.min.css') }}">
 
@@ -39,17 +42,28 @@
 <!-- Icons -->
 <link rel="stylesheet" href="{{ asset('frontend_assets/css/icons.min.css') }}">
 
-<!-- Toastr Notifications -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-     crossorigin="anonymous" referrerpolicy="no-referrer">
+
 <style>
-    /* সাইডবার মেনুর লেখার সাইজ বড় করার জন্য এবং লম্বা লেখা ভেঙে পরের লাইনে দেওয়ার জন্য */
+    /* Alpine x-cloak: Alpine initialize হওয়ার আগে element লুকিয়ে রাখে */
+    [x-cloak] {
+        display: none !important;
+    }
+
+    /* Fix: default sidenav-size এ .page-content এর সঠিক margin-left নিশ্চিত করা */
+    html[data-sidenav-size=default]:not([data-layout=topnav]) .page-content,
+    html[data-sidenav-size=default]:not([data-layout=topnav]) .app-topbar {
+        margin-left: var(--ct-sidenav-width) !important;
+    }
+
+    /* সাইডবার মেনুর লেখার সাইজ বড় করার জন্য */
     .side-nav-link .menu-text {
         font-size: 12.5px !important;
-        white-space: normal !important;
+        white-space: nowrap !important;
         line-height: 1.5 !important;
         display: inline-block;
         vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     /* সাইডবারের সেকশন টাইটেল স্পষ্ট করার জন্য */

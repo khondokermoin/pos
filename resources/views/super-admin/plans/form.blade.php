@@ -36,14 +36,20 @@
                                     <label for="status" class="form-label">Status <span
                                             class="text-danger">*</span></label>
                                     <select class="form-select @error('status') is-invalid @enderror" id="status"
-                                        name="status" required>
+                                        name="status" required data-choices data-choices-search-false>
                                         <option value="active"
                                             {{ old('status', $plan->status ?? 'active') == 'active' ? 'selected' : '' }}>
                                             Active</option>
                                         <option value="inactive"
-                                            {{ old('status', $plan->status ?? '') == 'inactive' ? 'selected' : '' }}>
+                                            {{ old('status', $plan->status ?? 'active') == 'inactive' ? 'selected' : '' }}>
                                             Inactive</option>
+                                        <option value="draft"
+                                            {{ old('status', $plan->status ?? 'active') == 'draft' ? 'selected' : '' }}>
+                                            Draft</option>
                                     </select>
+                                    @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -64,13 +70,16 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="billing_cycle" class="form-label">Billing Cycle</label>
-                                    <select class="form-select" name="billing_cycle">
+                                    <select class="form-select" name="billing_cycle" data-choices data-choices-search-false>
                                         <option value="monthly"
                                             {{ old('billing_cycle', $plan->billing_cycle ?? 'monthly') == 'monthly' ? 'selected' : '' }}>
                                             Monthly</option>
                                         <option value="yearly"
                                             {{ old('billing_cycle', $plan->billing_cycle ?? '') == 'yearly' ? 'selected' : '' }}>
                                             Yearly</option>
+                                        <option value="lifetime"
+                                            {{ old('billing_cycle', $plan->billing_cycle ?? '') == 'lifetime' ? 'selected' : '' }}>
+                                            Lifetime</option>
                                     </select>
                                 </div>
                             </div>

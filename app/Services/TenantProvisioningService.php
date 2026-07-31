@@ -63,6 +63,7 @@ class TenantProvisioningService
                     'login_url'      => config('app.url') . '/login',
                     'support_email'  => config('mail.from.address', 'support@example.com'),
                     'app_name'       => config('app.name', 'Cloud POS'),
+                    'year'           => date('Y'),
                 ],
                 $company->owner_name ?? $company->name
             );

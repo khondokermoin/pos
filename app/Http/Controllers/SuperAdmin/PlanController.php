@@ -29,8 +29,8 @@ class PlanController extends Controller
             'trial_days' => 'required|integer|min:0',
             'user_limit' => 'required|integer|min:1',
             'branch_limit' => 'required|integer|min:1',
-            'billing_cycle' => 'required|in:monthly,yearly',
-            'status' => 'required|in:active,inactive',
+            'billing_cycle' => 'required|in:monthly,yearly,lifetime',
+            'status' => 'required|in:active,inactive,draft',
             'features' => 'nullable|string',
         ]);
 
@@ -49,7 +49,7 @@ class PlanController extends Controller
             'branch_limit' => $request->branch_limit,
             'billing_cycle' => $request->billing_cycle,
             'status' => $request->status,
-            'features' => json_encode($featuresArray), // JSON হিসেবে সেভ হবে
+            'features' => $featuresArray, // BUG FIX: Pass raw array; Eloquent's 'array' cast handles JSON encoding automatically
         ]);
 
         return redirect()->route('superadmin.plans.index')->with('success', 'Plan created successfully.');
@@ -77,8 +77,8 @@ class PlanController extends Controller
             'trial_days' => 'required|integer|min:0',
             'user_limit' => 'required|integer|min:1',
             'branch_limit' => 'required|integer|min:1',
-            'billing_cycle' => 'required|in:monthly,yearly',
-            'status' => 'required|in:active,inactive',
+            'billing_cycle' => 'required|in:monthly,yearly,lifetime',
+            'status' => 'required|in:active,inactive,draft',
             'features' => 'nullable|string',
         ]);
 
@@ -96,7 +96,7 @@ class PlanController extends Controller
             'branch_limit' => $request->branch_limit,
             'billing_cycle' => $request->billing_cycle,
             'status' => $request->status,
-            'features' => json_encode($featuresArray),
+            'features' => $featuresArray, // BUG FIX: Pass raw array; Eloquent's 'array' cast handles JSON encoding automatically
         ]);
 
         return redirect()->route('superadmin.plans.index')->with('success', 'Plan updated successfully.');

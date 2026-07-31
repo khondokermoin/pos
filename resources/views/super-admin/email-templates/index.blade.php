@@ -180,11 +180,37 @@
                                                                 @endforeach
                                                             </div>
                                                         @endif
-                                                        <div class="border rounded p-3">
-                                                            {!! $template->body !!}
+                                                        @php
+                                                            $previewSampleData = ['year' => date('Y')];
+                                                            foreach ($template->variables ?? [] as $var) {
+                                                                if ($var === 'year') {
+                                                                    continue;
+                                                                }
+                                                                $previewSampleData[$var] = '[' . strtoupper(str_replace('_', ' ', $var)) . ']';
+                                                            }
+                                                            $previewRenderedBody = $template->render($previewSampleData);
+                                                        @endphp
+                                                        <div class="mb-2">
+                                                            <small class="text-muted">
+                                                                <i class="ti ti-info-circle me-1"></i>
+                                                                The preview is rendered in an isolated iframe so email CSS
+                                                                cannot leak into the admin layout.
+                                                            </small>
+                                                        </div>
+                                                        <div class="border rounded bg-white" style="overflow:hidden;">
+                                                            <iframe
+                                                                srcdoc="{{ $previewRenderedBody }}"
+                                                                sandbox="allow-same-origin"
+                                                                title="Email preview for {{ $template->name }}"
+                                                                style="width:100%; min-height:360px; border:none; display:block;"
+                                                            ></iframe>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
+                                                        <a href="{{ route('superadmin.email-templates.preview', $template) }}"
+                                                            class="btn btn-info btn-sm" target="_blank">
+                                                            <i class="ti ti-external-link me-1"></i>Full Preview
+                                                        </a>
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">Close</button>
                                                     </div>

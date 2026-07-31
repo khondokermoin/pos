@@ -406,7 +406,7 @@
     {{-- ═══════════════════════════════════════════════════════════
      TOAST CONTAINER
      ═══════════════════════════════════════════════════════════ --}}
-    <div id="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+    <div data-smart-toast-container aria-live="polite" aria-atomic="true" class="pointer-events-none fixed bottom-5 right-5 z-50 flex max-w-sm flex-col gap-3"></div>
 
 
     {{-- ═══════════════════════════════════════════════════════════
@@ -498,21 +498,15 @@
 
         // ── TOAST ───────────────────────────────────────────────────
         function toast(msg, type = 'success', ms = 3500) {
-            const icons = {
-                success: 'ti-circle-check',
-                error: 'ti-alert-circle',
-                warning: 'ti-alert-triangle',
-                info: 'ti-info-circle'
-            };
-            const el = document.createElement('div');
-            el.className = `toast-item ${type}`;
-            el.setAttribute('role', 'alert');
-            el.innerHTML = `<i class="ti ${icons[type] || icons.success}" aria-hidden="true"></i><span>${esc(msg)}</span>`;
-            document.getElementById('toast-container').appendChild(el);
-            setTimeout(() => {
-                el.style.cssText = 'opacity:0;transform:translateX(20px);transition:all .3s';
-                setTimeout(() => el.remove(), 300);
-            }, ms);
+            if (window.showSmartToast) {
+                const titleMap = {
+                    success: 'Success',
+                    error: 'Error',
+                    warning: 'Warning',
+                    info: 'Information'
+                };
+                window.showSmartToast(type, msg, titleMap[type] || 'Notification');
+            }
         }
 
         // ── PRODUCT GRID ────────────────────────────────────────────

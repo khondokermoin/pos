@@ -20,10 +20,10 @@ class EmailTemplateService
     /**
      * Send an email using a stored template identified by slug.
      *
-     * @param  string       $slug       The template slug (e.g. 'welcome-tenant')
-     * @param  string       $toEmail    Recipient email address
-     * @param  array        $data       Key-value pairs for {{variable}} substitution
-     * @param  string|null  $toName     Optional recipient display name
+     * @param  string       $slug         The template slug (e.g. 'welcome-tenant')
+     * @param  string       $toEmail      Recipient email address
+     * @param  array        $data         Key-value pairs for {{variable}} substitution
+     * @param  string|null  $toName       Optional recipient display name
      * @param  array        $attachments  Optional array of file paths to attach
      * @return bool  true on success, false on failure
      */
@@ -101,10 +101,15 @@ class EmailTemplateService
     /**
      * Preview a template with sample data (returns rendered HTML string).
      * Used by the Super Admin preview endpoint.
+     *
+     * NOTE: Unlike send()/queue(), this intentionally bypasses the is_active
+     * check so that inactive templates can still be previewed in the admin UI.
      */
     public function preview(string $slug, array $sampleData = []): ?string
     {
-        $template = EmailTemplate::findBySlug($slug);
+        // Use a direct query instead of findBySlug() so inactive templates
+        // can also be previewed (findBySlug requires is_active = true).
+        $template = EmailTemplate::where('slug', $slug)->first();
 
         if (! $template) {
             return null;

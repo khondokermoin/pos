@@ -17,13 +17,6 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
@@ -50,11 +43,15 @@
                                         <span class="badge bg-warning-subtle text-warning">{{ $plan->branch_limit }} Branches</span>
                                     </td>
                                     <td>
-                                        @if($plan->status == 'active')
-                                            <span class="badge bg-success">Active</span>
-                                        @else
-                                            <span class="badge bg-danger">Inactive</span>
-                                        @endif
+                                        @php
+                                            $planBadge = match($plan->status ?? 'inactive') {
+                                                'active' => ['bg-success', 'Active'],
+                                                'inactive' => ['bg-danger', 'Inactive'],
+                                                'draft' => ['bg-secondary', 'Draft'],
+                                                default => ['bg-light text-dark', 'Unknown'],
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $planBadge[0] }}">{{ $planBadge[1] }}</span>
                                     </td>
                                     <td class="text-end">
                                         <a href="{{ route('superadmin.plans.show', $plan->id) }}" class="btn btn-sm btn-info text-white" title="View"><i class="ti ti-eye"></i></a>

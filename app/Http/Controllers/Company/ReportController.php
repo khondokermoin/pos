@@ -98,8 +98,13 @@ class ReportController extends Controller
         $netProfit   = $grossProfit - $totalExpenses;
 
         return view('company.reports.profit-loss', compact(
-            'totalRevenue', 'totalPurchases', 'totalExpenses',
-            'grossProfit', 'netProfit', 'from', 'to'
+            'totalRevenue',
+            'totalPurchases',
+            'totalExpenses',
+            'grossProfit',
+            'netProfit',
+            'from',
+            'to'
         ));
     }
 
@@ -142,7 +147,7 @@ class ReportController extends Controller
 
         $suppliers = Supplier::where('company_id', $companyId)
             ->withSum(['purchases as total_purchased' => fn($q) => $q->where('company_id', $companyId)], 'total_amount')
-            ->withSum(['purchases as total_paid' => fn($q) => $q->where('company_id', $companyId)], 'paid_amount')
+            ->withSum(['purchases as total_paid' => fn($q) => $q->where('company_id', $companyId)->where('status', 'completed')], 'total_amount')
             ->get()
             ->map(function ($supplier) {
                 $supplier->balance_due = ($supplier->total_purchased ?? 0) - ($supplier->total_paid ?? 0);
@@ -163,7 +168,7 @@ class ReportController extends Controller
 
         $customers = Customer::where('company_id', $companyId)
             ->withSum(['sales as total_billed' => fn($q) => $q->where('company_id', $companyId)], 'total_amount')
-            ->withSum(['sales as total_received' => fn($q) => $q->where('company_id', $companyId)], 'paid_amount')
+            ->withSum(['sales as total_received' => fn($q) => $q->where('company_id', $companyId)], 'received_amount')
             ->get()
             ->map(function ($customer) {
                 $customer->balance_due = ($customer->total_billed ?? 0) - ($customer->total_received ?? 0);

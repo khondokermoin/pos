@@ -44,6 +44,9 @@
     <!-- Theme Settings -->
     @include('partials.theme_settings')
 
+    {{-- Flash Toast Notifications --}}
+    @include('partials.alerts')
+
     {{-- JS Files --}}
     @include('partials.scripts')
     @stack('scripts')

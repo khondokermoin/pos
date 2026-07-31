@@ -246,10 +246,13 @@
     <script>
         // Pass variants data from PHP to JS for current stock display
         const variantsData = @json(
-            $variants->map(fn($v) => [
+            $variants->map(function ($v) {
+                return [
                     'id' => $v->id,
                     'stock' => optional($v->stock)->quantity ?? 0,
-                ]));
+                ];
+            })
+        );
 
         function updateCurrentStock() {
             const select = document.getElementById('variantSelect');

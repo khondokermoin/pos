@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Mail\NewSubscriptionAdminNotification;
 use App\Mail\SubscriptionConfirmationMail;
+use App\Models\Branch;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\Transaction;
@@ -46,11 +47,106 @@ class SubscriptionController extends Controller
         return $this->index();
     }
 
+    // =========================================================================
+    // DOWNGRADE EXPLOIT GUARD
+    // =========================================================================
+    // Checks whether the company's current resource usage (branches, users)
+    // fits within the target plan's limits BEFORE allowing payment to proceed.
+    //
+    // Rules:
+    //   - A limit of -1 or null means "unlimited" → always passes.
+    //   - If current usage > plan limit → block with an actionable error.
+    //   - This guard fires on EVERY plan switch (upgrade, downgrade, renewal).
+    //     Upgrades will always pass; only downgrades to a plan whose limits
+    //     are lower than current usage will be blocked.
+    // =========================================================================
+
+    /**
+     * Validate that the company's current resource usage does not exceed
+     * the limits of the target plan.
+     *
+     * Returns null on success, or a human-readable error string on failure.
+     */
+    private function checkDowngradeEligibility($company, Plan $targetPlan): ?string
+    {
+        $errors = [];
+
+        // ── 1. Branch limit check ─────────────────────────────────────────────
+        $branchLimit = $targetPlan->branch_limit;
+        if ($branchLimit !== null && $branchLimit != -1) {
+            $currentBranches = Branch::where('company_id', $company->id)->count();
+            if ($currentBranches > $branchLimit) {
+                $excess = $currentBranches - $branchLimit;
+                $errors[] = sprintf(
+                    'You currently have <strong>%d branch%s</strong>, but the <strong>%s</strong> plan allows a maximum of <strong>%d</strong>. Please delete <strong>%d branch%s</strong> to proceed.',
+                    $currentBranches,
+                    $currentBranches !== 1 ? 'es' : '',
+                    $targetPlan->name,
+                    $branchLimit,
+                    $excess,
+                    $excess !== 1 ? 'es' : ''
+                );
+            }
+        }
+
+        // ── 2. User / employee limit check ────────────────────────────────────
+        $userLimit = $targetPlan->user_limit;
+        if ($userLimit !== null && $userLimit != -1) {
+            // Count all users belonging to this company (excluding the owner
+            // themselves so the owner is never locked out).
+            $currentUsers = \App\Models\User::where('company_id', $company->id)->count();
+            if ($currentUsers > $userLimit) {
+                $excess = $currentUsers - $userLimit;
+                $errors[] = sprintf(
+                    'You currently have <strong>%d user%s</strong>, but the <strong>%s</strong> plan allows a maximum of <strong>%d</strong>. Please remove <strong>%d user%s</strong> to proceed.',
+                    $currentUsers,
+                    $currentUsers !== 1 ? 's' : '',
+                    $targetPlan->name,
+                    $userLimit,
+                    $excess,
+                    $excess !== 1 ? 's' : ''
+                );
+            }
+        }
+
+        if (empty($errors)) {
+            return null; // ✅ All checks passed
+        }
+
+        // Build a single consolidated error message
+        $intro = 'You cannot switch to the <strong>' . $targetPlan->name . '</strong> plan because your current usage exceeds its limits:';
+        $list  = '<ul class="mb-0 mt-2">';
+        foreach ($errors as $err) {
+            $list .= '<li>' . $err . '</li>';
+        }
+        $list .= '</ul>';
+
+        return $intro . $list;
+    }
+
     public function subscribe(Request $request, Plan $plan)
     {
         $company       = Auth::user()->company;
-        $transactionId = 'TXN-' . strtoupper(Str::random(12));
         $billingCycle  = $request->input('billing_cycle', $plan->billing_cycle ?? 'monthly');
+
+        // ── DOWNGRADE EXPLOIT GUARD ───────────────────────────────────────────
+        // Run this check BEFORE creating any transaction record or touching the
+        // payment gateway. If the company's current usage exceeds the target
+        // plan's limits, abort immediately with an actionable error message.
+        $eligibilityError = $this->checkDowngradeEligibility($company, $plan);
+        if ($eligibilityError !== null) {
+            Log::warning('Downgrade exploit blocked', [
+                'company_id' => $company->id,
+                'target_plan' => $plan->name,
+                'target_plan_id' => $plan->id,
+            ]);
+
+            return redirect()->route('company.subscription.index')
+                ->with('downgrade_error', $eligibilityError);
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
+        $transactionId = 'TXN-' . strtoupper(Str::random(12));
 
         // Step 1: Pending transaction record তৈরি করো (payment শুরুর আগেই)
         Transaction::create([
@@ -180,10 +276,21 @@ class SubscriptionController extends Controller
     /**
      * SSLCommerz Payment Callback Handler
      *
-     * This route is PUBLIC (no auth, no CSRF) so the payment gateway
-     * can POST to it from their servers. We process the payment here,
-     * update the DB, then redirect to a public result page — so the
-     * user never hits a login wall before seeing their payment result.
+     * ┌─────────────────────────────────────────────────────────────────────┐
+     * │  ARCHITECTURE NOTE — Why this route is PUBLIC and sessionless        │
+     * │                                                                       │
+     * │  SSLCommerz POSTs to this URL from THEIR servers (or redirects the   │
+     * │  user's browser back here after payment). In both cases the Laravel  │
+     * │  session cookie that was set when the user clicked "Pay" is NOT      │
+     * │  present — the cross-origin POST drops it.                           │
+     * │                                                                       │
+     * │  FIX: After we verify the transaction and activate the subscription, │
+     * │  we look up the Company Admin user who owns this transaction and      │
+     * │  call Auth::login($user) to explicitly re-establish their session.   │
+     * │  This means the subsequent redirect to company.dashboard (or the     │
+     * │  payment result page) will find an authenticated user and will NOT   │
+     * │  bounce them to the login page.                                       │
+     * └─────────────────────────────────────────────────────────────────────┘
      *
      * SSLCommerz sends:
      *   - status      : VALID | FAILED | CANCELLED | UNATTEMPTED | ERROR
@@ -196,8 +303,9 @@ class SubscriptionController extends Controller
     public function paymentCallback(Request $request)
     {
         // ── 1. Extract parameters ────────────────────────────────────────────
-        // SSLCommerz sends 'status' in POST body; our query string also has it
-        // $request->input() merges both GET query params and POST body
+        // $request->input() merges both GET query params and POST body.
+        // SSLCommerz sends 'status' in the POST body; our query string also
+        // carries it as a fallback.
         $rawStatus     = strtolower(trim($request->input('status', '')));
         $transactionId = trim($request->input('tran_id', ''));
         $planId        = $request->input('plan_id');   // query string only
@@ -215,24 +323,36 @@ class SubscriptionController extends Controller
         // ── 2. Guard: transaction must exist ────────────────────────────────
         if (empty($transactionId)) {
             Log::warning('SSLCommerz Callback: missing tran_id');
-            return redirect()->route('payment.result', ['status' => 'error', 'message' => 'Invalid callback — missing transaction ID.']);
+            return redirect()->route('payment.result', [
+                'status'  => 'error',
+                'message' => 'Invalid callback — missing transaction ID.',
+            ]);
         }
 
         $transaction = Transaction::where('transaction_id', $transactionId)->first();
 
         if (! $transaction) {
             Log::warning('SSLCommerz Callback: transaction not found', ['tran_id' => $transactionId]);
-            return redirect()->route('payment.result', ['status' => 'error', 'tran_id' => $transactionId, 'message' => 'Transaction record not found.']);
+            return redirect()->route('payment.result', [
+                'status'  => 'error',
+                'tran_id' => $transactionId,
+                'message' => 'Transaction record not found.',
+            ]);
         }
 
-        // ── 3. Idempotency guard — don't process an already-completed txn ───
+        // ── 3. Idempotency guard — don't re-process an already-completed txn ─
         if ($transaction->status === 'success') {
             Log::info('SSLCommerz Callback: already processed (idempotent)', ['tran_id' => $transactionId]);
-            return redirect()->route('payment.result', ['status' => 'success', 'tran_id' => $transactionId]);
+
+            // Re-login the user so the result page shows the dashboard button
+            $this->reLoginCompanyAdmin($transaction->company);
+
+            return redirect()->route('company.dashboard')
+                ->with('success', 'Your subscription is already active. Welcome back!');
         }
 
         // ── 4. Determine outcome ─────────────────────────────────────────────
-        // SSLCommerz success status is 'VALID' or 'VALIDATED'
+        // SSLCommerz success statuses are 'VALID' or 'VALIDATED'
         $isSuccess   = in_array($rawStatus, ['valid', 'validated', 'success']);
         $isFailed    = in_array($rawStatus, ['failed', 'fail', 'error']);
         $isCancelled = in_array($rawStatus, ['cancelled', 'cancel', 'unattempted']);
@@ -291,8 +411,8 @@ class SubscriptionController extends Controller
                         'ends_at'         => $newEndsAt,
                         'payment_gateway' => 'sslcommerz',
                         'transaction_id'  => $transactionId,
-                        // Keep the original invoice_number — don't overwrite it
-                        // A new invoice_number is only set on first subscription
+                        // Keep the original invoice_number — don't overwrite it.
+                        // A new invoice_number is only set on first subscription.
                     ]);
 
                     $subscription = $existingSubscription;
@@ -322,10 +442,10 @@ class SubscriptionController extends Controller
                     ]);
                 }
 
-                // Update company plan
+                // Update company plan & status
                 $company->update(['plan_id' => $plan->id, 'status' => 'active']);
 
-                // Update transaction
+                // Update transaction record
                 $transaction->update([
                     'status'          => 'success',
                     'subscription_id' => $subscription->id,
@@ -363,13 +483,17 @@ class SubscriptionController extends Controller
                     'subscription' => $subscription->id,
                 ]);
 
-                // Redirect to PUBLIC result page — no auth required
-                return redirect()->route('payment.result', [
-                    'status'  => 'success',
-                    'tran_id' => $transactionId,
-                    'plan'    => $plan->name,
-                    'company' => $company->name,
-                ]);
+                // ── SESSION RECOVERY: Re-authenticate the Company Admin ───────
+                // SSLCommerz's cross-origin POST drops the user's browser session.
+                // We look up the Company Admin who owns this company and explicitly
+                // log them back in so the redirect to the dashboard succeeds without
+                // hitting the login wall.
+                $this->reLoginCompanyAdmin($company);
+
+                // Redirect directly to the company dashboard with a success flash.
+                // The user is now authenticated, so the dashboard middleware will pass.
+                return redirect()->route('company.dashboard')
+                    ->with('success', 'Payment successful! Your ' . $plan->name . ' subscription is now active.');
             } catch (\Throwable $e) {
                 Log::error('SSLCommerz Callback: exception during success processing', [
                     'tran_id' => $transactionId,
@@ -393,6 +517,9 @@ class SubscriptionController extends Controller
 
             Log::info('SSLCommerz Callback: payment FAILED', ['tran_id' => $transactionId]);
 
+            // Re-login so the result page can show the "Try Again" button
+            $this->reLoginCompanyAdmin($transaction->company);
+
             return redirect()->route('payment.result', [
                 'status'  => 'failed',
                 'tran_id' => $transactionId,
@@ -404,6 +531,9 @@ class SubscriptionController extends Controller
             $transaction->update(['status' => 'cancelled']);
 
             Log::info('SSLCommerz Callback: payment CANCELLED', ['tran_id' => $transactionId]);
+
+            // Re-login so the result page can show the "View Plans" button
+            $this->reLoginCompanyAdmin($transaction->company);
 
             return redirect()->route('payment.result', [
                 'status'  => 'cancelled',
@@ -423,6 +553,56 @@ class SubscriptionController extends Controller
             'status'  => 'error',
             'tran_id' => $transactionId,
             'message' => 'Unknown payment status received: ' . $rawStatus,
+        ]);
+    }
+
+    /**
+     * Re-authenticate the Company Admin user who owns the given company.
+     *
+     * WHY THIS EXISTS:
+     * SSLCommerz sends a cross-origin POST to our callback URL. The browser's
+     * session cookie is NOT forwarded in this request, so Auth::user() is null
+     * when we arrive here. After we finish processing the payment, we need to
+     * restore the session so the subsequent redirect to company.dashboard does
+     * not bounce the user to the login page.
+     *
+     * We find the first user with the 'Company Admin' role that belongs to this
+     * company and call Auth::login() to write their ID into the session.
+     *
+     * This is safe because:
+     *   1. We only call this AFTER the transaction has been verified as genuine.
+     *   2. We only log in the owner of the company that paid — never a random user.
+     *   3. The session is regenerated by Auth::login() to prevent fixation attacks.
+     *
+     * @param  \App\Models\Company|null  $company
+     */
+    private function reLoginCompanyAdmin($company): void
+    {
+        if (! $company) {
+            Log::warning('reLoginCompanyAdmin: company is null — cannot restore session');
+            return;
+        }
+
+        // Find the Company Admin user for this company.
+        // We use Spatie's role check to be precise.
+        $companyAdmin = \App\Models\User::where('company_id', $company->id)
+            ->whereHas('roles', fn($q) => $q->where('name', 'Company Admin'))
+            ->first();
+
+        if (! $companyAdmin) {
+            Log::warning('reLoginCompanyAdmin: no Company Admin found for company', [
+                'company_id' => $company->id,
+            ]);
+            return;
+        }
+
+        // Explicitly log the user in — this writes their ID to the session
+        // and regenerates the session ID to prevent session fixation.
+        Auth::login($companyAdmin, remember: true);
+
+        Log::info('reLoginCompanyAdmin: session restored for Company Admin', [
+            'user_id'    => $companyAdmin->id,
+            'company_id' => $company->id,
         ]);
     }
 

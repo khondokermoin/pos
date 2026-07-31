@@ -273,18 +273,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. TOASTER NOTIFICATION (Safe Injection)
     // ==========================================
     @if(session('success'))
-        if (typeof toastr !== 'undefined') {
-            toastr.success(@json(session('success')), "Success");
-        } else {
-            alert("Success: {{ session('success') }}");
+        if (window.showSmartToast) {
+            window.showSmartToast('success', @json(session('success')), 'Success');
         }
     @endif
 
     @if(session('error'))
-        if (typeof toastr !== 'undefined') {
-            toastr.error(@json(session('error')), "Error");
-        } else {
-            alert("Error: {{ session('error') }}");
+        if (window.showSmartToast) {
+            window.showSmartToast('error', @json(session('error')), 'Error');
         }
     @endif
 
@@ -306,10 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (enabledGateways.length === 0) {
             e.preventDefault(); // Stop form submission
             
-            if (typeof toastr !== 'undefined') {
-                toastr.warning('Please enable at least one payment gateway', 'Validation');
-            } else {
-                alert('Validation: Please enable at least one payment gateway');
+            if (window.showSmartToast) {
+                window.showSmartToast('warning', 'Please enable at least one payment gateway', 'Validation');
             }
         }
     });

@@ -25,11 +25,19 @@ class InvoiceTemplateController extends Controller
             'is_active'    => 'boolean',
         ]);
 
-        $validated['slug']       = Str::slug($validated['name']) . '-' . time();
-        $validated['is_default'] = $request->boolean('is_default');
-        $validated['is_active']  = $request->boolean('is_active', true);
+        // Build a unique slug manually here so the boot observer doesn't
+        // generate a duplicate when the record is created.
+        // We append a timestamp to guarantee uniqueness even for same-name templates.
+        $slug = Str::slug($validated['name']) . '-' . time();
 
-        InvoiceTemplate::create($validated);
+        InvoiceTemplate::create([
+            'name'         => $validated['name'],
+            'slug'         => $slug,
+            'type'         => $validated['type'],
+            'html_content' => $validated['html_content'] ?? null,
+            'is_default'   => $request->boolean('is_default'),
+            'is_active'    => $request->boolean('is_active', true),
+        ]);
 
         return redirect()->route('superadmin.invoice-templates.index')
             ->with('success', 'Invoice template created successfully.');

@@ -73,4 +73,27 @@ class SubscriptionGatewayTest extends TestCase
         $this->assertSame('sslcommerz', $subscription->payment_gateway);
         $this->assertTrue($response instanceof \Symfony\Component\HttpFoundation\RedirectResponse);
     }
+
+    public function test_super_admin_can_store_inactive_lifetime_plan(): void
+    {
+        $request = Request::create('/super-admin/plans', 'POST', [
+            'name' => 'Lifetime Legacy Plan',
+            'price' => 2999.00,
+            'trial_days' => 7,
+            'user_limit' => 20,
+            'branch_limit' => 8,
+            'billing_cycle' => 'lifetime',
+            'status' => 'inactive',
+            'features' => "Unlimited access\nPriority support",
+        ]);
+
+        $response = (new \App\Http\Controllers\SuperAdmin\PlanController())->store($request);
+
+        $this->assertDatabaseHas('plans', [
+            'name' => 'Lifetime Legacy Plan',
+            'status' => 'inactive',
+            'billing_cycle' => 'lifetime',
+        ]);
+        $this->assertTrue($response->isRedirect());
+    }
 }

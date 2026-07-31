@@ -1024,8 +1024,9 @@
                         'Accept': 'application/json'
                     },
                     success: function(response) {
-                        toastr.success(response.message || 'Company updated successfully!',
-                            'Success');
+                        if (window.showSmartToast) {
+                            window.showSmartToast('success', response.message || 'Company updated successfully!', 'Success');
+                        }
                         const redirectUrl = response.redirect ||
                             '{{ route('superadmin.companies.index') }}';
                         setTimeout(function() {
@@ -1071,8 +1072,9 @@
                                 }, 500);
                             }
                         } else {
-                            toastr.error('An unexpected error occurred. Please try again.',
-                                'Error');
+                            if (window.showSmartToast) {
+                                window.showSmartToast('error', 'An unexpected error occurred. Please try again.', 'Error');
+                            }
                             console.error(xhr.responseText);
                         }
                     },

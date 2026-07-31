@@ -12,10 +12,24 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Exclude payment gateway callbacks from CSRF verification
-        // SSLCommerz POSTs to these URLs from their servers (no CSRF token)
+        // ─────────────────────────────────────────────────────────────────────
+        // CSRF EXCEPTIONS — SSLCommerz Payment Gateway Callbacks
+        //
+        // SSLCommerz POSTs to these URLs directly from their payment servers.
+        // These are cross-origin server-to-server (or browser redirect) POSTs
+        // that never carry a Laravel CSRF token. They MUST be excluded or every
+        // payment callback will return a 419 "Page Expired" error.
+        //
+        // Routes excluded:
+        //   • company/subscription/payment/callback  — main success/fail/cancel POST
+        //   • payment/result                         — GET result page (safe, no state change)
+        //   • company/subscription/subscribe/*       — plan checkout POST (user-initiated
+        //                                              but may be called from a redirect)
+        // ─────────────────────────────────────────────────────────────────────
         $middleware->validateCsrfTokens(except: [
             'company/subscription/payment/callback',
+            'payment/result',
+            'company/subscription/subscribe/*',
         ]);
 
         $middleware->web(append: [
