@@ -508,31 +508,6 @@ class SubscriptionController extends Controller
                     'subscription_id' => $subscription->id,
                 ]);
 
-                // Generate PDF invoice
-                $pdf = Pdf::loadView('pdf.subscription-invoice', [
-                    'company'      => $company,
-                    'subscription' => $subscription,
-                    'plan'         => $plan,
-                    'transaction'  => $transaction,
-                ]);
-
-                $invoiceFileName = 'invoices/' . $subscription->invoice_number . '.pdf';
-                Storage::disk('local')->put($invoiceFileName, $pdf->output());
-
-                // Queue confirmation emails
-                if ($company->email) {
-                    Mail::to($company->email)->queue(
-                        new SubscriptionConfirmationMail($company, $subscription, $plan, $transaction, $invoiceFileName)
-                    );
-                }
-
-                $superAdminEmail = env('SUPER_ADMIN_EMAIL');
-                if ($superAdminEmail) {
-                    Mail::to($superAdminEmail)->queue(
-                        new NewSubscriptionAdminNotification($company, $subscription, $plan, $transaction)
-                    );
-                }
-
                 Log::info('SSLCommerz Callback: payment SUCCESS', [
                     'tran_id'      => $transactionId,
                     'company'      => $company->name,
@@ -547,6 +522,50 @@ class SubscriptionController extends Controller
                 // hitting the login wall.
                 $this->reLoginCompanyAdmin($company);
 
+                // ── PDF Invoice & Email — non-critical, must NOT abort the flow ─
+                // These operations run AFTER the subscription is already activated
+                // and the transaction is marked success. Any failure here (PDF lib
+                // error, mail server down, storage permission issue) must be caught
+                // silently so the user still lands on the success dashboard.
+                $invoiceFileName = null;
+                try {
+                    $pdf = Pdf::loadView('pdf.subscription-invoice', [
+                        'company'      => $company,
+                        'subscription' => $subscription,
+                        'plan'         => $plan,
+                        'transaction'  => $transaction,
+                    ]);
+
+                    $invoiceFileName = 'invoices/' . $subscription->invoice_number . '.pdf';
+                    Storage::disk('local')->put($invoiceFileName, $pdf->output());
+                } catch (\Throwable $pdfEx) {
+                    Log::warning('SSLCommerz Callback: PDF generation failed (non-critical)', [
+                        'tran_id' => $transactionId,
+                        'error'   => $pdfEx->getMessage(),
+                    ]);
+                    $invoiceFileName = null;
+                }
+
+                try {
+                    if ($company->email && $invoiceFileName) {
+                        Mail::to($company->email)->queue(
+                            new SubscriptionConfirmationMail($company, $subscription, $plan, $transaction, $invoiceFileName)
+                        );
+                    }
+
+                    $superAdminEmail = env('SUPER_ADMIN_EMAIL');
+                    if ($superAdminEmail) {
+                        Mail::to($superAdminEmail)->queue(
+                            new NewSubscriptionAdminNotification($company, $subscription, $plan, $transaction)
+                        );
+                    }
+                } catch (\Throwable $mailEx) {
+                    Log::warning('SSLCommerz Callback: email sending failed (non-critical)', [
+                        'tran_id' => $transactionId,
+                        'error'   => $mailEx->getMessage(),
+                    ]);
+                }
+
                 // Redirect directly to the company dashboard with a success flash.
                 // The user is now authenticated, so the dashboard middleware will pass.
                 return redirect()->route('company.dashboard')
@@ -558,7 +577,12 @@ class SubscriptionController extends Controller
                     'trace'   => $e->getTraceAsString(),
                 ]);
 
-                $transaction->update(['status' => 'failed']);
+                // Only mark as failed if the transaction was NOT already marked success
+                // (i.e. the exception happened before the DB update above).
+                $transaction->refresh();
+                if ($transaction->status !== 'success') {
+                    $transaction->update(['status' => 'failed']);
+                }
 
                 return redirect()->route('payment.result', [
                     'status'  => 'error',
@@ -682,8 +706,19 @@ class SubscriptionController extends Controller
             : null;
 
         // If we have a transaction, trust the DB status over query param
+        // EXCEPTION: if the URL says 'error' but DB says 'success', the subscription
+        // WAS activated — show success. If DB says 'failed' but SSLCommerz confirmed
+        // payment, we show the error message from the URL so support can investigate.
         if ($transaction) {
-            $status      = $transaction->status;
+            // Always trust DB 'success' — it means subscription is active
+            if ($transaction->status === 'success') {
+                $status = 'success';
+            } elseif ($status !== 'error') {
+                // For non-error URL statuses, trust the DB
+                $status = $transaction->status;
+            }
+            // If URL says 'error' and DB says 'failed'/'pending', keep URL 'error'
+            // so the message param is shown to the user.
             $companyName = $companyName ?? $transaction->company?->name;
             $planName    = $planName    ?? $transaction->subscription?->plan?->name;
         }
