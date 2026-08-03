@@ -1,0 +1,97 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cloudpos_app:prod
+    container_name: cloudpos-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    env_file:
+      - .env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: ${APP_URL:-https://pos.westernwatchbd.com}
+      DB_CONNECTION: ${DB_CONNECTION:-mysql}
+      DB_HOST: ${DB_HOST:-your-production-db-host}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-u951246149_pos}
+      DB_USERNAME: ${DB_USERNAME:-u951246149_pos}
+      DB_PASSWORD: ${DB_PASSWORD:-(S47i61t56o08L)}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+    volumes:
+      - app_storage:/var/www/html/storage
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  web:
+    image: nginx:1.27-alpine
+    container_name: cloudpos-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: cloudpos-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cloudpos_app:prod
+    container_name: cloudpos-queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    env_file:
+      - .env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: ${APP_URL:-https://pos.westernwatchbd.com}
+      DB_CONNECTION: ${DB_CONNECTION:-mysql}
+      DB_HOST: ${DB_HOST:-your-production-db-host}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_DATABASE: ${DB_DATABASE:-u951246149_pos}
+      DB_USERNAME: ${DB_USERNAME:-u951246149_pos}
+      DB_PASSWORD: ${DB_PASSWORD:-(S47i61t56o08L)}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+    command: ["php", "artisan", "queue:work", "--tries=3", "--timeout=90"]
+    depends_on:
+      - redis
+    volumes:
+      - app_storage:/var/www/html/storage
+    networks:
+      - app-network
+
+volumes:
+  app_storage:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
