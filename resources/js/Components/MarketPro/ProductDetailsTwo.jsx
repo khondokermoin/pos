@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import { getCountdown } from "../../Helpers/Countdown";
+import { getCountdown } from '../../Helpers/Countdown';
 
 const ProductDetailsTwo = () => {
     const [timeLeft, setTimeLeft] = useState(getCountdown());
@@ -14,11 +14,11 @@ const ProductDetailsTwo = () => {
         return () => clearInterval(interval);
     }, []);
     const productImages = [
-        "assets/images/thumbs/product-details-two-thumb1.png",
-        "assets/images/thumbs/product-details-two-thumb2.png",
-        "assets/images/thumbs/product-details-two-thumb3.png",
-        "assets/images/thumbs/product-details-two-thumb1.png",
-        "assets/images/thumbs/product-details-two-thumb2.png",
+        "/assets/images/thumbs/product-details-two-thumb1.png",
+        "/assets/images/thumbs/product-details-two-thumb2.png",
+        "/assets/images/thumbs/product-details-two-thumb3.png",
+        "/assets/images/thumbs/product-details-two-thumb1.png",
+        "/assets/images/thumbs/product-details-two-thumb2.png",
     ];
 
 

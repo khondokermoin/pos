@@ -1,28 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "animate.css";
 import { Link } from "react-router-dom";
 const BannerThree = () => {
-    useEffect(() => {
-        const { WOW } = require("wowjs");
-        const wow = new WOW({
-            live: false,
-        });
-        wow.init();
-    }, []);
-
-    let itItWow = () => {
-        const { WOW } = require("wowjs");
-        const wow = new WOW({
-            live: false,
-        });
-        wow.init();
-    };
     const NextArrow = ({ onClick }) => (
         <button
             onClick={() => {
                 onClick();
-                itItWow();
             }}
             type="button"
             id="banner-three-next"
@@ -36,7 +20,6 @@ const BannerThree = () => {
         <button
             onClick={() => {
                 onClick();
-                itItWow();
             }}
             type="button"
             id="banner-three-prev"

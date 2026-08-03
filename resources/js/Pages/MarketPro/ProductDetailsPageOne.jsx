@@ -7,7 +7,7 @@ import ShippingOne from "../../Components/MarketPro/ShippingOne";
 import NewsletterOne from "../../Components/MarketPro/NewsletterOne";
 import FooterOne from "../../Components/MarketPro/FooterOne";
 import BottomFooter from "../../Components/MarketPro/BottomFooter";
-import BreadcrumbTwo from "../../Components/MarketPro/BreadcrumbTwo";
+import BreadcrumbTwo from './../../Components/MarketPro/BreadcrumbTwo';
 import ScrollToTop from "react-scroll-to-top";
 import ColorInit from "../../Helpers/ColorInit";
 

@@ -128,7 +128,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -821,7 +821,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>
@@ -871,7 +871,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -1563,7 +1563,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>
@@ -1613,7 +1613,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -2305,7 +2305,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>
@@ -2355,7 +2355,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -3047,7 +3047,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>
@@ -3097,7 +3097,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -3789,7 +3789,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>
@@ -3839,7 +3839,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -4531,7 +4531,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>
@@ -4581,7 +4581,7 @@ const NewArrivalThree = () => {
                       className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                       style={{
                         backgroundImage:
-                          "url(assets/images/thumbs/new-arrival-promo-img1.png)",
+                          "url(/assets/images/thumbs/new-arrival-promo-img1.png)",
                       }}
                     >
                       <div className='py-32 pe-32 text-end'>
@@ -5273,7 +5273,7 @@ const NewArrivalThree = () => {
                         className='bg-img w-100 h-100 min-h-485 rounded-24 overflow-hidden'
                         style={{
                           backgroundImage:
-                            "url(assets/images/thumbs/new-arrival-promo-img2.png)",
+                            "url(/assets/images/thumbs/new-arrival-promo-img2.png)",
                         }}
                       >
                         <div className='py-32 pe-32 text-end'>

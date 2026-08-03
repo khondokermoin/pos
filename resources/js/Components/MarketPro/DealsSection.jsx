@@ -17,7 +17,7 @@ const DealsSection = () => {
       <div className='container container-lg'>
         <div
           className='bg-neutral-600 rounded-48 bg-img'
-          style={{ backgroundImage: "url(assets/images/bg/pattern-two.png)" }}
+          style={{ backgroundImage: "url(/assets/images/bg/pattern-two.png)" }}
         >
           <div className='row gy-4 align-items-center'>
             <div className='col-xl-6 d-md-block d-none'>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import query from "jquery";
+import "select2";
+import "select2/dist/css/select2.min.css";
 import { Link, NavLink } from "react-router-dom";
 
 const HeaderThree = () => {
@@ -14,10 +16,13 @@ const HeaderThree = () => {
       return () => (window.onscroll = null);
     };
     const selectElement = query(".js-example-basic-single");
-    selectElement.select2();
+
+    if (typeof selectElement.select2 === "function") {
+      selectElement.select2();
+    }
 
     return () => {
-      if (selectElement.data("select2")) {
+      if (typeof selectElement.select2 === "function" && selectElement.data("select2")) {
         selectElement.select2("destroy");
       }
     };

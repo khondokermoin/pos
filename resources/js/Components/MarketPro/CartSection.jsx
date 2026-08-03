@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import QuantityControl from "../../Helpers/QuantityControl"
+import QuantityControl from '../../Helpers/QuantityControl'
 
 const CartSection = () => {
     return (

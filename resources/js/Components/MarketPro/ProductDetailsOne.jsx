@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import { getCountdown } from "../../Helpers/Countdown";
+import { getCountdown } from '../../Helpers/Countdown';
 
 const ProductDetailsOne = () => {
     const [timeLeft, setTimeLeft] = useState(getCountdown());
@@ -14,10 +14,10 @@ const ProductDetailsOne = () => {
         return () => clearInterval(interval);
     }, []);
     const productImages = [
-        "assets/images/thumbs/product-details-thumb1.png",
-        "assets/images/thumbs/product-details-thumb2.png",
-        "assets/images/thumbs/product-details-thumb3.png",
-        "assets/images/thumbs/product-details-thumb2.png",
+        "/assets/images/thumbs/product-details-thumb1.png",
+        "/assets/images/thumbs/product-details-thumb2.png",
+        "/assets/images/thumbs/product-details-thumb3.png",
+        "/assets/images/thumbs/product-details-thumb2.png",
     ];
 
     // increment & decrement

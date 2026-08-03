@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
-import { getCountdown } from "../../Helpers/Countdown";
+import { getCountdown } from '../../Helpers/Countdown';
 
 
 const SampleNextArrow = memo(function SampleNextArrow(props) {

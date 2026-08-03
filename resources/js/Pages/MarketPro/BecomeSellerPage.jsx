@@ -1,6 +1,5 @@
 import React from "react";
 import ColorInit from "../../Helpers/ColorInit";
-import ScrollToTop from "react-scroll-to-top";
 import Preloader from "../../Helpers/Preloader";
 import HeaderTwo from "../../Components/MarketPro/HeaderTwo";
 import Breadcrumb from "../../Components/MarketPro/Breadcrumb";
