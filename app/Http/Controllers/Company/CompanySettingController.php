@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CompanySettingController extends Controller
 {
@@ -37,7 +38,12 @@ class CompanySettingController extends Controller
         $data = $request->only(['name', 'email', 'phone', 'address', 'city', 'country']);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('logos', 'public');
+            // ✅ Delete old logo if it exists
+            if ($company->logo && Storage::disk('public')->exists($company->logo)) {
+                Storage::disk('public')->delete($company->logo);
+            }
+            // ✅ Store in consistent path: companies/logos/ (same as SuperAdmin CompanyController)
+            $data['logo'] = $request->file('logo')->store('companies/logos', 'public');
         }
 
         $company->update($data);

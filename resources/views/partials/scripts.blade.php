@@ -74,7 +74,7 @@
             container.setAttribute('aria-live', 'polite');
             container.setAttribute('aria-atomic', 'true');
             container.style.cssText =
-                'position:fixed;bottom:20px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;max-width:360px;pointer-events:none;';
+                'position:fixed;top:20px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;max-width:360px;pointer-events:none;';
             document.body.appendChild(container);
             return container;
         }

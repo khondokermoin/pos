@@ -48,7 +48,8 @@
             <div class="card text-center">
                 <div class="card-body">
                     <img src="{{ $logoUrl ?? $avatarFallback }}" class="rounded-circle img-thumbnail mb-3" width="128"
-                        height="128" style="object-fit: cover;" alt="{{ $company->name }}">
+                        height="128" style="object-fit: cover;" alt="{{ $company->name }}"
+                        onerror="this.onerror=null; this.src='{{ $avatarFallback }}';">
                     <h4 class="mb-1">{{ $company->name }}</h4>
                     <p class="text-muted mb-2">{{ $company->email }}</p>
 
@@ -76,10 +77,13 @@
                              the companies index page - and only shows if there's actually an
                              owner/admin to log in as. --}}
                         @if ($company->owner ?? $company->user_id)
-                            <a href="{{ route('superadmin.companies.impersonate', $company->id) }}"
-                                class="btn btn-success btn-sm">
-                                <i class="ti ti-login me-1"></i> Login as Tenant
-                            </a>
+                            <form action="{{ route('superadmin.companies.impersonate', $company->id) }}" method="POST"
+                                class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="ti ti-login me-1"></i> Login as Tenant
+                                </button>
+                            </form>
                         @endif
                     </div>
 
@@ -97,7 +101,8 @@
                             <div class="col-12 mb-2">
                                 <p class="text-muted mb-1 fs-13"><i class="ti ti-palette me-1"></i> Primary Color:</p>
                                 <div class="fw-semibold d-flex align-items-center gap-2">
-                                    <span class="border rounded" style="width: 18px; height: 18px; background-color: {{ $company->theme_settings['primary_color'] }};"></span>
+                                    <span class="border rounded"
+                                        style="width: 18px; height: 18px; background-color: {{ $company->theme_settings['primary_color'] }};"></span>
                                     <span>{{ $company->theme_settings['primary_color'] }}</span>
                                 </div>
                             </div>

@@ -14,7 +14,8 @@ class UpdateCompanyRequest extends FormRequest
 
     public function rules(): array
     {
-        $companyId = $this->route('company');
+        $company = $this->route('company');
+        $companyId = $company instanceof \App\Models\Company ? $company->getKey() : $company;
 
         return [
             // Basic Info

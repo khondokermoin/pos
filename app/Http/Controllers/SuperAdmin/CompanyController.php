@@ -21,19 +21,31 @@ class CompanyController extends Controller
     /**
      * Display a listing of the companies.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // ✅ 'owner' রিলেশনশিপ ব্যবহার করা হয়েছে (আপনার মডেল অনুযায়ী)
-        $companies = Company::with(['plan', 'owner', 'businessType'])
-            ->withCount(['users', 'branches'])
-            ->latest()
-            ->get();
+        $query = Company::with(['plan', 'owner', 'businessType'])
+            ->withCount(['users', 'branches']);
+
+        // ✅ Search filtering
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%")
+                    ->orWhere('subdomain', 'like', "%{$search}%")
+                    ->orWhere('contact_person', 'like', "%{$search}%");
+            });
+        }
+
+        $companies = $query->latest()->get();
 
         $stats = [
-            'total'     => $companies->count(),
-            'active'    => $companies->where('status', 'active')->count(),
-            'trial'     => $companies->where('status', 'trial')->count(),
-            'suspended' => $companies->where('status', 'suspended')->count(),
+            'total'     => Company::count(),
+            'active'    => Company::where('status', 'active')->count(),
+            'trial'     => Company::where('status', 'trial')->count(),
+            'suspended' => Company::where('status', 'suspended')->count(),
         ];
 
         return view('super-admin.companies.index', compact('companies', 'stats'));
@@ -358,7 +370,10 @@ class CompanyController extends Controller
      */
     public function impersonate(Company $company)
     {
-        if (! Auth::check() || ! Auth::user()->hasRole('Super Admin')) {
+        /** @var \App\Models\User $currentUser */
+        $currentUser = Auth::user();
+
+        if (! Auth::check() || ! $currentUser->hasRole('Super Admin')) {
             abort(403);
         }
 
@@ -424,20 +439,10 @@ class CompanyController extends Controller
 
     protected function tenantDashboardUrl(Company $company): string
     {
-        $scheme = parse_url(config('app.url'), PHP_URL_SCHEME) ?: 'http';
-        $hostname = $company->custom_domain ?: null;
-
-        if (! $hostname && ! empty($company->subdomain)) {
-            $defaultDomain = config('app.domain', parse_url(config('app.url'), PHP_URL_HOST) ?: request()->getHost());
-            $hostname = $company->subdomain . '.' . $defaultDomain;
-        }
-
-        if (! $hostname) {
-            return route('company.dashboard');
-        }
-
-        $host = preg_replace('#^https?://#', '', trim($hostname));
-        return $scheme . '://' . trim($host, '/') . '/company/dashboard';
+        // Single-domain SaaS: সব company একই domain এ চলে।
+        // Subdomain বা custom_domain এ redirect করলে login page এ চলে যায়।
+        // তাই সরাসরি same-domain company dashboard এ redirect করা হচ্ছে।
+        return route('company.dashboard');
     }
 
     /**

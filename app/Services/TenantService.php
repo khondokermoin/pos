@@ -23,6 +23,7 @@ class TenantService
     /**
      * Resolve the tenant from the incoming host string.
      * Uses cache to avoid repeated DB lookups on every request.
+     * Falls back gracefully if cache or DB is unavailable.
      */
     public function resolveFromHost(string $host): ?Company
     {
@@ -31,46 +32,77 @@ class TenantService
         // Cache key based on host - avoids DB hit on every request
         $cacheKey = 'tenant_by_host_' . md5($host);
 
-        $companyId = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($host) {
-            $subdomain = $this->extractSubdomain($host);
+        $companyId = null;
 
-            try {
-                $company = Company::query()
-                    ->where('status', 'active')
-                    ->where(function ($query) use ($host, $subdomain) {
-                        $query->where('custom_domain', $host)
-                            ->orWhere('subdomain', $subdomain);
-                    })
-                    ->select('id')
-                    ->first();
-
-                return $company?->id;
-            } catch (Throwable $e) {
-                report($e);
-
-                return null;
-            }
-        });
+        // Step 1: Try to get company ID from cache, fall back to direct DB query
+        try {
+            $companyId = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($host) {
+                return $this->lookupCompanyId($host);
+            });
+        } catch (Throwable $e) {
+            // Cache store unavailable (e.g. DB cache table missing) — fall back to direct lookup
+            report($e);
+            $companyId = $this->lookupCompanyId($host);
+        }
 
         if (! $companyId) {
             return null;
         }
 
-        // Load full company with fresh data (not cached to allow real-time updates)
-        $this->tenant = Cache::remember('tenant_data_' . $companyId, now()->addMinutes(30), function () use ($companyId) {
-            try {
-                return Company::query()
-                    ->where('id', $companyId)
-                    ->where('status', 'active')
-                    ->first();
-            } catch (Throwable $e) {
-                report($e);
-
-                return null;
-            }
-        });
+        // Step 2: Load full company data, with cache fallback
+        try {
+            $this->tenant = Cache::remember('tenant_data_' . $companyId, now()->addMinutes(30), function () use ($companyId) {
+                return $this->lookupCompanyById($companyId);
+            });
+        } catch (Throwable $e) {
+            // Cache store unavailable — fall back to direct lookup
+            report($e);
+            $this->tenant = $this->lookupCompanyById($companyId);
+        }
 
         return $this->tenant;
+    }
+
+    /**
+     * Direct DB lookup for company ID by host/subdomain.
+     * Returns null on any DB error so the app continues normally.
+     */
+    protected function lookupCompanyId(string $host): ?int
+    {
+        try {
+            $subdomain = $this->extractSubdomain($host);
+
+            $company = Company::query()
+                ->where('status', 'active')
+                ->where(function ($query) use ($host, $subdomain) {
+                    $query->where('custom_domain', $host)
+                        ->orWhere('subdomain', $subdomain);
+                })
+                ->select('id')
+                ->first();
+
+            return $company?->id;
+        } catch (Throwable $e) {
+            report($e);
+            return null;
+        }
+    }
+
+    /**
+     * Direct DB lookup for full company data by ID.
+     * Returns null on any DB error so the app continues normally.
+     */
+    protected function lookupCompanyById(int $companyId): ?Company
+    {
+        try {
+            return Company::query()
+                ->where('id', $companyId)
+                ->where('status', 'active')
+                ->first();
+        } catch (Throwable $e) {
+            report($e);
+            return null;
+        }
     }
 
     /**
@@ -110,11 +142,11 @@ class TenantService
             'subdomain'     => $this->tenant->subdomain,
             'custom_domain' => $this->tenant->custom_domain,
             'logo_url'      => $this->tenant->logo
-                                ? asset('storage/' . $this->tenant->logo)
-                                : null,
+                ? asset('storage/' . $this->tenant->logo)
+                : null,
             'favicon_url'   => $this->tenant->favicon
-                                ? asset('storage/' . $this->tenant->favicon)
-                                : null,
+                ? asset('storage/' . $this->tenant->favicon)
+                : null,
             'currency'      => $this->tenant->currency ?? 'BDT',
             'timezone'      => $this->tenant->timezone ?? 'Asia/Dhaka',
             'theme'         => [
@@ -144,15 +176,19 @@ class TenantService
      */
     public function clearCache(Company $company): void
     {
-        if ($company->custom_domain) {
-            Cache::forget('tenant_by_host_' . md5($company->custom_domain));
+        try {
+            if ($company->custom_domain) {
+                Cache::forget('tenant_by_host_' . md5($company->custom_domain));
+            }
+            if ($company->subdomain) {
+                // Clear subdomain-based cache entries
+                $appDomain = config('app.domain', 'localhost');
+                Cache::forget('tenant_by_host_' . md5($company->subdomain . '.' . $appDomain));
+            }
+            Cache::forget('tenant_data_' . $company->id);
+        } catch (Throwable $e) {
+            report($e);
         }
-        if ($company->subdomain) {
-            // Clear subdomain-based cache entries
-            $appDomain = config('app.domain', 'localhost');
-            Cache::forget('tenant_by_host_' . md5($company->subdomain . '.' . $appDomain));
-        }
-        Cache::forget('tenant_data_' . $company->id);
     }
 
     /**

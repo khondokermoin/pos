@@ -19,15 +19,21 @@ class IdentifyTenantByDomain
             return $next($request);
         }
 
-        // Resolve tenant from host using TenantService (with cache)
-        $company = $this->tenantService->resolveFromHost($host);
+        try {
+            // Resolve tenant from host using TenantService (with cache)
+            $company = $this->tenantService->resolveFromHost($host);
 
-        if ($company) {
-            // Bind tenant to IoC container - accessible anywhere via app('tenant')
-            app()->instance('tenant', $company);
+            if ($company) {
+                // Bind tenant to IoC container - accessible anywhere via app('tenant')
+                app()->instance('tenant', $company);
 
-            // Also bind TenantService so it's accessible with resolved tenant
-            app()->instance(TenantService::class, $this->tenantService);
+                // Also bind TenantService so it's accessible with resolved tenant
+                app()->instance(TenantService::class, $this->tenantService);
+            }
+        } catch (\Throwable $e) {
+            // If tenant resolution fails (e.g. DB connection issue), log and continue
+            // Super-admin and other routes should still work normally
+            report($e);
         }
 
         return $next($request);

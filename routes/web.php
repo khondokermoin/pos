@@ -435,5 +435,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+// ==========================================
+// 6. Storage File Serve (Hostinger Symlink Fallback)
+// ==========================================
+// Hostinger shared hosting এ public/storage symlink কাজ না করলে
+// এই route টি সরাসরি PHP দিয়ে storage file serve করে।
+// URL: /storage/{path} → storage/app/public/{path}
+Route::get('/storage/{path}', function (string $path) {
+    $fullPath = storage_path('app/public/' . $path);
+
+    if (! file_exists($fullPath)) {
+        abort(404);
+    }
+
+    $mimeType = mime_content_type($fullPath) ?: 'application/octet-stream';
+
+    return response()->file($fullPath, [
+        'Content-Type'  => $mimeType,
+        'Cache-Control' => 'public, max-age=86400',
+    ]);
+})->where('path', '.*')->name('storage.serve');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/frontend.php';

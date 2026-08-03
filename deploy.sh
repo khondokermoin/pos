@@ -53,8 +53,15 @@ echo ""
 
 # ── Step 6: Storage Link ──────────────────────────────────
 echo "▶ [6/7] Creating storage symlink..."
-php artisan storage:link
-echo "✅ Storage linked."
+# পুরনো symlink বা directory থাকলে আগে মুছে দাও
+if [ -L "public/storage" ] || [ -d "public/storage" ]; then
+    echo "   ⚠️  Old symlink/directory found. Removing..."
+    rm -rf public/storage
+fi
+# Hostinger এ exec() disabled তাই relative symlink সরাসরি তৈরি করা হচ্ছে
+# (php artisan storage:link absolute path ব্যবহার করে, Hostinger এ কাজ করে না)
+cd public && ln -s ../storage/app/public storage && cd ..
+echo "✅ Storage symlink created (relative path)."
 echo ""
 
 # ── Step 7: Optimize & Cache ──────────────────────────────

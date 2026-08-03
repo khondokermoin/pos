@@ -2,6 +2,25 @@
 
 @section('title', 'Company Profile')
 
+@php
+    // ✅ Consistent logo URL resolution (same logic as SuperAdmin views)
+    $companyLogoUrl = null;
+    if (!empty($company->logo)) {
+        $rawLogo = trim($company->logo);
+        if (\Illuminate\Support\Str::startsWith($rawLogo, ['http://', 'https://'])) {
+            $companyLogoUrl = $rawLogo;
+        } elseif (\Illuminate\Support\Str::startsWith($rawLogo, 'storage/')) {
+            $companyLogoUrl = asset($rawLogo);
+        } elseif (\Illuminate\Support\Str::startsWith($rawLogo, 'public/')) {
+            $companyLogoUrl = asset('storage/' . substr($rawLogo, 7));
+        } else {
+            $companyLogoUrl = asset('storage/' . ltrim($rawLogo, '/'));
+        }
+    }
+    $companyAvatarFallback =
+        'https://ui-avatars.com/api/?name=' . urlencode($company->name) . '&background=random&color=fff&size=100';
+@endphp
+
 @section('content')
     {{-- Page Header --}}
     <div class="row mb-3 align-items-center">
@@ -31,9 +50,10 @@
                 <div class="card-body text-center">
                     <div class="mx-auto mb-3 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center overflow-hidden"
                         style="width:100px;height:100px;">
-                        @if ($company->logo)
-                            <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->name }}"
-                                style="width:100px;height:100px;object-fit:cover;">
+                        @if ($companyLogoUrl)
+                            <img src="{{ $companyLogoUrl }}" alt="{{ $company->name }}"
+                                style="width:100px;height:100px;object-fit:cover;"
+                                onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'text-primary fw-bold\' style=\'font-size:2.5rem;\'>{{ strtoupper(substr($company->name, 0, 1)) }}</span>';">
                         @else
                             <span class="text-primary fw-bold" style="font-size:2.5rem;">
                                 {{ strtoupper(substr($company->name, 0, 1)) }}
@@ -137,10 +157,10 @@
                                 @error('logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                @if ($company->logo)
+                                @if ($companyLogoUrl)
                                     <div class="mt-2 d-flex align-items-center gap-2">
-                                        <img src="{{ asset('storage/' . $company->logo) }}" alt="Current Logo"
-                                            class="rounded" style="height:40px;">
+                                        <img src="{{ $companyLogoUrl }}" alt="Current Logo" class="rounded"
+                                            style="height:40px;" onerror="this.onerror=null; this.style.display='none';">
                                         <small class="text-muted">Current logo — upload a new one to replace it.</small>
                                     </div>
                                 @else

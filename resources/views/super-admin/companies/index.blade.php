@@ -9,8 +9,8 @@
 
     <style>
         /* ========================================
-                   1. SEARCH BOX STYLING (v1 Theme Adapted)
-                   ======================================== */
+                       1. SEARCH BOX STYLING (v1 Theme Adapted)
+                       ======================================== */
         .company-search-wrapper {
             position: relative;
             max-width: 300px;
@@ -66,8 +66,8 @@
         }
 
         /* ========================================
-                   2. SEARCH RESULT COUNTER
-                   ======================================== */
+                       2. SEARCH RESULT COUNTER
+                       ======================================== */
         .search-counter {
             font-size: 0.8rem;
             color: var(--bs-secondary-color);
@@ -80,8 +80,8 @@
         }
 
         /* ========================================
-                   3. DATATABLES CUSTOM STYLING
-                   ======================================== */
+                       3. DATATABLES CUSTOM STYLING
+                       ======================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info,
@@ -127,8 +127,8 @@
         }
 
         /* ========================================
-                   4. STATS CARDS STYLING
-                   ======================================== */
+                       4. STATS CARDS STYLING
+                       ======================================== */
         .stats-card {
             border: 0;
             border-radius: 0.75rem;
@@ -154,8 +154,8 @@
         }
 
         /* ========================================
-                   5. TRIAL COUNTDOWN STYLING
-                   ======================================== */
+                       5. TRIAL COUNTDOWN STYLING
+                       ======================================== */
         .trial-countdown {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
@@ -179,8 +179,8 @@
         }
 
         /* ========================================
-                   6. USAGE BAR STYLING
-                   ======================================== */
+                       6. USAGE BAR STYLING
+                       ======================================== */
         .usage-info {
             font-size: 0.75rem;
             margin-bottom: 0.25rem;
@@ -195,8 +195,8 @@
         }
 
         /* ========================================
-                   7. ACTION BUTTONS
-                   ======================================== */
+                       7. ACTION BUTTONS
+                       ======================================== */
         .action-btn-group .btn {
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
@@ -352,51 +352,40 @@
                                     @endif
                                 </td>
 
-                                <!-- ✅ BULLETPROOF Company Info & Logo -->
+                                <!-- Company Info & Logo -->
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @php
-                                            $logoUrl = null;
-                                            if (!empty($company->logo)) {
-                                                $rawPath = trim($company->logo);
-                                                // 1. If it's already a full URL
-    if (
-        \Illuminate\Support\Str::startsWith($rawPath, [
-            'http://',
-            'https://',
-        ])
-    ) {
-        $logoUrl = $rawPath;
-    }
-    // 2. If it already has 'storage/' prefix
-    elseif (\Illuminate\Support\Str::startsWith($rawPath, 'storage/')) {
-        $logoUrl = asset($rawPath);
-    }
-    // 3. If it mistakenly has 'public/' prefix
-    elseif (\Illuminate\Support\Str::startsWith($rawPath, 'public/')) {
-        $cleanPath = substr($rawPath, 7);
-        $logoUrl = asset('storage/' . $cleanPath);
-    }
-    // 4. Standard relative path (e.g., 'companies/logos/image.jpg')
-    else {
-        $logoUrl = asset('storage/' . ltrim($rawPath, '/'));
+                                            $rawLogo = $company->logo ?? '';
+                                            $avatarUrl =
+                                                'https://ui-avatars.com/api/?name=' .
+                                                urlencode($company->name) .
+                                                '&background=random&color=fff';
+                                            if (!empty($rawLogo)) {
+                                                if (
+                                                    \Illuminate\Support\Str::startsWith($rawLogo, [
+                                                        'http://',
+                                                        'https://',
+                                                    ])
+                                                ) {
+                                                    $logoSrc = $rawLogo;
+                                                } elseif (\Illuminate\Support\Str::startsWith($rawLogo, 'storage/')) {
+                                                    $logoSrc = asset($rawLogo);
+                                                } elseif (\Illuminate\Support\Str::startsWith($rawLogo, 'public/')) {
+                                                    $logoSrc = asset('storage/' . substr($rawLogo, 7));
+                                                } else {
+                                                    $logoSrc = asset('storage/' . ltrim($rawLogo, '/'));
                                                 }
+                                            } else {
+                                                $logoSrc = $avatarUrl;
                                             }
                                         @endphp
-
-                                        @if ($logoUrl)
-                                            <img src="{{ $logoUrl }}" class="me-2 rounded-circle flex-shrink-0"
-                                                width="40" height="40" alt="{{ $company->name }}"
-                                                onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($company->name) }}&background=random&color=fff';">
-                                        @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($company->name) }}&background=random&color=fff"
-                                                class="me-2 rounded-circle flex-shrink-0" width="40" height="40"
-                                                alt="{{ $company->name }}">
-                                        @endif
+                                        <img src="{{ $logoSrc }}" class="me-2 rounded-circle flex-shrink-0"
+                                            width="40" height="40" alt="{{ $company->name }}"
+                                            onerror="this.onerror=null; this.src='{{ $avatarUrl }}';">
 
                                         <div class="min-width-0 company-name-block">
-                                            <span
-                                                class="fw-semibold d-block company-name-text">{{ $company->name }}</span>
+                                            <span class="fw-semibold d-block company-name-text">{{ $company->name }}</span>
                                             @if ($company->subdomain)
                                                 <small class="text-muted text-nowrap">
                                                     <i class="ti ti-world"></i> {{ $company->subdomain }}.yourdomain.com

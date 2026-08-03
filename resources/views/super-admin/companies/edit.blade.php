@@ -270,17 +270,21 @@
                             <div class="mb-3 col-md-6">
                                 <label for="company_status" class="form-label">Status <span
                                         class="text-danger">*</span></label>
-                                <select class="form-select @error('company_status') is-invalid @enderror" id="company_status"
-                                    name="company_status" required>
+                                <select class="form-select @error('company_status') is-invalid @enderror"
+                                    id="company_status" name="company_status" required>
                                     <option value="trial"
-                                        {{ old('company_status', $company->status) == 'trial' ? 'selected' : '' }}>Trial</option>
+                                        {{ old('company_status', $company->status) == 'trial' ? 'selected' : '' }}>Trial
+                                    </option>
                                     <option value="active"
-                                        {{ old('company_status', $company->status) == 'active' ? 'selected' : '' }}>Active</option>
+                                        {{ old('company_status', $company->status) == 'active' ? 'selected' : '' }}>Active
+                                    </option>
                                     <option value="inactive"
-                                        {{ old('company_status', $company->status) == 'inactive' ? 'selected' : '' }}>Inactive
+                                        {{ old('company_status', $company->status) == 'inactive' ? 'selected' : '' }}>
+                                        Inactive
                                     </option>
                                     <option value="suspended"
-                                        {{ old('company_status', $company->status) == 'suspended' ? 'selected' : '' }}>Suspended
+                                        {{ old('company_status', $company->status) == 'suspended' ? 'selected' : '' }}>
+                                        Suspended
                                     </option>
                                 </select>
                                 @error('company_status')
@@ -512,8 +516,10 @@
                                 <div id="logo-preview" class="p-2 text-center border rounded"
                                     style="min-height: 100px; background: #f8f9fa;">
                                     @if ($logoUrl)
+                                        @php $avatarFallbackEdit = 'https://ui-avatars.com/api/?name=' . urlencode($company->name) . '&background=random&color=fff&size=150'; @endphp
                                         <img src="{{ $logoUrl }}" alt="Company Logo"
-                                            style="max-width: 150px; max-height: 150px;" class="img-fluid">
+                                            style="max-width: 150px; max-height: 150px;" class="img-fluid"
+                                            onerror="this.onerror=null; this.src='{{ $avatarFallbackEdit }}';">
                                     @else
                                         <i class="ti ti-photo text-muted" style="font-size: 2rem;"></i>
                                         <p class="mb-0 text-muted small">No logo selected</p>

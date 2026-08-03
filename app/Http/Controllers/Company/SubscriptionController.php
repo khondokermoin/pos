@@ -7,6 +7,7 @@ use App\Mail\NewSubscriptionAdminNotification;
 use App\Mail\SubscriptionConfirmationMail;
 use App\Models\Branch;
 use App\Models\Plan;
+use App\Models\Setting;
 use App\Models\Subscription;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -124,6 +125,32 @@ class SubscriptionController extends Controller
         return $intro . $list;
     }
 
+    private function buildSslCommerzPostData($plan, string $transactionId, string $callbackUrl, $company, string $billingCycle): array
+    {
+        return [
+            'store_id'         => Setting::get('sslcommerz_store_id', env('SSLCOMMERZ_STORE_ID', config('sslcommerz.store_id', ''))),
+            'store_passwd'     => Setting::get('sslcommerz_store_password', env('SSLCOMMERZ_STORE_PASSWORD', config('sslcommerz.store_password', ''))),
+            'total_amount'     => $plan->price,
+            'currency'         => 'BDT',
+            'tran_id'          => $transactionId,
+            'success_url'      => $callbackUrl . '?status=success&tran_id=' . $transactionId . '&plan_id=' . $plan->id,
+            'fail_url'         => $callbackUrl . '?status=failed&tran_id='  . $transactionId,
+            'cancel_url'       => $callbackUrl . '?status=cancelled&tran_id=' . $transactionId,
+            'ipn_url'          => $callbackUrl . '?tran_id=' . $transactionId,
+            'shipping_method'  => 'No',
+            'product_name'     => $plan->name . ' Subscription',
+            'product_category' => 'SaaS',
+            'product_profile'  => 'non-physical-goods',
+            'cus_name'         => $company->name,
+            'cus_email'        => $company->email,
+            'cus_add1'         => $company->address ?? 'Dhaka',
+            'cus_city'         => $company->city    ?? 'Dhaka',
+            'cus_country'      => $company->country ?? 'Bangladesh',
+            'cus_phone'        => $company->phone   ?? '01700000000',
+            'billing_cycle'    => $billingCycle,
+        ];
+    }
+
     public function subscribe(Request $request, Plan $plan)
     {
         $company       = Auth::user()->company;
@@ -160,9 +187,47 @@ class SubscriptionController extends Controller
         ]);
 
         // Step 2: SSLCommerz Hosted Checkout URL তৈরি করো
-        $isSandbox = config('sslcommerz.is_sandbox', true);
-        $storeId   = config('sslcommerz.store_id',   env('SSLCOMMERZ_STORE_ID'));
-        $storePass = config('sslcommerz.store_password', env('SSLCOMMERZ_STORE_PASSWORD'));
+        // Priority: DB settings (Super Admin → Payment Settings) → .env fallback
+
+        // Resolve store_id: DB → .env → config
+        $storeId   = Setting::get('sslcommerz_store_id',      env('SSLCOMMERZ_STORE_ID',      config('sslcommerz.store_id',      '')));
+        $storePass = Setting::get('sslcommerz_store_password', env('SSLCOMMERZ_STORE_PASSWORD', config('sslcommerz.store_password', '')));
+
+        // Resolve environment: DB → .env (SSLCOMMERZ_IS_SANDBOX=false means live)
+        // env() returns a STRING "false"/"true", so we must filter it properly.
+        $dbEnvironment = Setting::get('sslcommerz_environment'); // 'sandbox' | 'live' | null
+        if ($dbEnvironment) {
+            $isSandbox = ($dbEnvironment !== 'live');
+        } else {
+            // Fall back to .env: SSLCOMMERZ_IS_SANDBOX=false → live mode
+            $envSandbox = env('SSLCOMMERZ_IS_SANDBOX', 'true');
+            $isSandbox  = ! in_array(strtolower((string) $envSandbox), ['false', '0', 'no', 'off']);
+        }
+
+        // Guard: abort early if credentials are missing
+        if (empty($storeId) || empty($storePass)) {
+            Transaction::where('transaction_id', $transactionId)->delete();
+
+            Log::error('SSLCommerz credentials missing', [
+                'store_id_set'   => ! empty($storeId),
+                'store_pass_set' => ! empty($storePass),
+                'company_id'     => $company->id,
+            ]);
+
+            return redirect()->route('company.subscription.index')
+                ->with('error', 'Payment gateway is not configured yet. Please contact the system administrator.');
+        }
+
+        // DEBUG: Log exactly what is being sent to SSLCommerz
+        Log::info('SSLCommerz Request Debug', [
+            'store_id'      => $storeId,
+            'store_pass'    => substr($storePass, 0, 4) . '****', // partial for security
+            'is_sandbox'    => $isSandbox,
+            'db_environment' => $dbEnvironment,
+            'sslcz_url'     => $isSandbox
+                ? 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php'
+                : 'https://securepay.sslcommerz.com/gwprocess/v4/api.php',
+        ]);
 
         // Callback URL — public route, no auth required
         $callbackUrl = route('payment.callback');
@@ -171,27 +236,8 @@ class SubscriptionController extends Controller
         $failUrl     = $callbackUrl . '?status=failed&tran_id='  . $transactionId;
         $cancelUrl   = $callbackUrl . '?status=cancelled&tran_id=' . $transactionId;
 
-        $postData = [
-            'store_id'         => $storeId,
-            'store_passwd'     => $storePass,
-            'total_amount'     => $plan->price,
-            'currency'         => 'BDT',
-            'tran_id'          => $transactionId,
-            'success_url'      => $successUrl,
-            'fail_url'         => $failUrl,
-            'cancel_url'       => $cancelUrl,
-            'ipn_url'          => $callbackUrl . '?tran_id=' . $transactionId,
-            'shipping_method'  => 'No',
-            'product_name'     => $plan->name . ' Subscription',
-            'product_category' => 'SaaS',
-            'product_profile'  => 'non-physical-goods',
-            'cus_name'         => $company->name,
-            'cus_email'        => $company->email,
-            'cus_add1'         => $company->address ?? 'Dhaka',
-            'cus_city'         => $company->city    ?? 'Dhaka',
-            'cus_country'      => $company->country ?? 'Bangladesh',
-            'cus_phone'        => $company->phone   ?? '01700000000',
-        ];
+        $postData = $this->buildSslCommerzPostData($plan, $transactionId, $callbackUrl, $company, $billingCycle);
+        $formBody = http_build_query($postData, '', '&');
 
         // Step 3: SSLCommerz API কে POST করে GatewayPageURL নাও
         $sslczURL = $isSandbox
@@ -203,11 +249,19 @@ class SubscriptionController extends Controller
         curl_setopt($handle, CURLOPT_TIMEOUT, 30);
         curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($handle, CURLOPT_POST, 1);
-        curl_setopt($handle, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($handle, CURLOPT_POSTFIELDS, $formBody);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); // sandbox এর জন্য
+        curl_setopt($handle, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
         $content = curl_exec($handle);
+        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         curl_close($handle);
+
+        Log::info('SSLCommerz Response Debug', [
+            'http_code' => $httpCode,
+            'raw_body'  => substr((string) $content, 0, 2000),
+            'tran_id'   => $transactionId,
+        ]);
 
         $response = json_decode($content, true);
 
@@ -236,7 +290,10 @@ class SubscriptionController extends Controller
         $relativePath = 'invoices/' . $invoiceNumber . '.pdf';
 
         if (Storage::disk('local')->exists($relativePath)) {
-            return Storage::disk('local')->download($relativePath, 'Invoice-' . $invoiceNumber . '.pdf');
+            return response()->download(
+                Storage::disk('local')->path($relativePath),
+                'Invoice-' . $invoiceNumber . '.pdf'
+            );
         }
 
         // Fallback: legacy path (storage/app/invoices/)
