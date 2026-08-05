@@ -274,25 +274,25 @@ Logs are stored in `activity_logs` table and viewable at `/super-admin/system/lo
 - SSLCommerz IPN verification is real now, but there's still no persistent audit trail of validator API responses.
 - Asset depreciation calculation not implemented.
 - Addon Marketplace remains UI-only.
-- MarketPro React frontend still disconnected from backend.
+- MarketPro React frontend — Phase 1 complete (see below). Remaining work listed in `docs/PHASE1_IMPLEMENTATION_REPORT.md` Section 7.
 
 ---
 
 ## ⚠️ INCOMPLETE FEATURES (Stubs)
 
-| Feature                              | Status                                              |
-| ------------------------------------ | --------------------------------------------------- |
-| Sales Return stock restoration       | ✅ Already implemented (stock restored on creation) |
-| Purchase Return stock deduction      | ✅ Already implemented (stock reduced on creation)  |
-| Quotation → Sale conversion          | ✅ Implemented                                      |
-| Payroll bonus/deduction edit UI      | ✅ Implemented                                      |
-| Product image upload in form         | ✅ Implemented                                      |
-| Asset depreciation calculation       | ❌ Not implemented                                  |
-| Addon Marketplace (install/activate) | ❌ UI only                                          |
-| MarketPro React frontend             | ❌ Disconnected from backend                        |
-| Subscription auto-expiry cron job    | ✅ Already implemented (`subscriptions:check-expired`) |
-| SSLCommerz IPN hash verification     | ✅ Implemented (val_id Validation API check)        |
-| Low-stock email alerts               | ✅ Implemented (`stock:check-low`, daily)           |
+| Feature                              | Status                                                                |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| Sales Return stock restoration       | ✅ Already implemented (stock restored on creation)                   |
+| Purchase Return stock deduction      | ✅ Already implemented (stock reduced on creation)                    |
+| Quotation → Sale conversion          | ✅ Implemented                                                        |
+| Payroll bonus/deduction edit UI      | ✅ Implemented                                                        |
+| Product image upload in form         | ✅ Implemented                                                        |
+| Asset depreciation calculation       | ❌ Not implemented                                                    |
+| Addon Marketplace (install/activate) | ❌ UI only                                                            |
+| MarketPro React frontend             | ✅ Phase 1 complete — Inertia hybrid, online ordering, branch routing |
+| Subscription auto-expiry cron job    | ✅ Already implemented (`subscriptions:check-expired`)                |
+| SSLCommerz IPN hash verification     | ✅ Implemented (val_id Validation API check)                          |
+| Low-stock email alerts               | ✅ Implemented (`stock:check-low`, daily)                             |
 
 ---
 
@@ -437,34 +437,34 @@ See `docs/ENGINEER_AUDIT_REPORT.md` for the complete audit including:
 
 > ✅ = Production Ready &nbsp;|&nbsp; ⚠️ = Has open issues &nbsp;|&nbsp; ❌ = Not implemented
 
-| Module               | Status                                                    |
-| -------------------- | --------------------------------------------------------- |
-| POS Terminal         | ✅ Production Ready                                       |
-| Inventory Management | ✅ Production Ready                                       |
-| Purchase Management  | ✅ Fixed — delete now reverses stock                      |
-| Sales Management     | ✅ Production Ready                                       |
-| Sales Returns        | ✅ Fixed — stock restored + `unit_price` column corrected |
-| Purchase Returns     | ✅ Fixed — stock reduced + `unit_price` column corrected  |
-| Quotations           | ✅ Fixed — convert-to-sale implemented                     |
-| Cash Book            | ✅ Fixed — account ownership validation added             |
-| Loan Management      | ✅ Fixed — company scope check added                      |
-| Asset Management     | ⚠️ Missing: depreciation calculation                      |
-| HR / Employees       | ✅ Fixed — company scope check added to increments        |
-| Payroll              | ✅ Fixed — bonus/deduction edit UI added                   |
-| SaaS Billing         | ✅ Fixed — SSL peer verify + debug logs + env() + IPN verification |
-| Reports              | ✅ Fixed — Balance Sheet real data + P&L uses COGS        |
-| Super Admin Panel    | ✅ Mostly complete                                        |
-| Email Templates      | ✅ Production Ready                                       |
-| Activity Logs        | ✅ Production Ready                                       |
-| Addon Marketplace    | ❌ UI only — no real install/activate logic               |
-| MarketPro Frontend   | ❌ Disconnected from backend                              |
-| Test Coverage        | ⚠️ Low but growing — `PosCheckoutTest` + `TenantIsolationTest` added |
+| Module               | Status                                                                |
+| -------------------- | --------------------------------------------------------------------- |
+| POS Terminal         | ✅ Production Ready                                                   |
+| Inventory Management | ✅ Production Ready                                                   |
+| Purchase Management  | ✅ Fixed — delete now reverses stock                                  |
+| Sales Management     | ✅ Production Ready                                                   |
+| Sales Returns        | ✅ Fixed — stock restored + `unit_price` column corrected             |
+| Purchase Returns     | ✅ Fixed — stock reduced + `unit_price` column corrected              |
+| Quotations           | ✅ Fixed — convert-to-sale implemented                                |
+| Cash Book            | ✅ Fixed — account ownership validation added                         |
+| Loan Management      | ✅ Fixed — company scope check added                                  |
+| Asset Management     | ⚠️ Missing: depreciation calculation                                  |
+| HR / Employees       | ✅ Fixed — company scope check added to increments                    |
+| Payroll              | ✅ Fixed — bonus/deduction edit UI added                              |
+| SaaS Billing         | ✅ Fixed — SSL peer verify + debug logs + env() + IPN verification    |
+| Reports              | ✅ Fixed — Balance Sheet real data + P&L uses COGS                    |
+| Super Admin Panel    | ✅ Mostly complete                                                    |
+| Email Templates      | ✅ Production Ready                                                   |
+| Activity Logs        | ✅ Production Ready                                                   |
+| Addon Marketplace    | ❌ UI only — no real install/activate logic                           |
+| MarketPro Frontend   | ✅ Phase 1 complete — Inertia hybrid + location-based online ordering |
+| Test Coverage        | ⚠️ Low but growing — `PosCheckoutTest` + `TenantIsolationTest` added  |
 
 ### 🔧 Remaining Open Issues
 
-| #   | Issue                                        | Next Step                                     |
-| --- | --------------------------------------------- | --------------------------------------------- |
-| 1   | Asset depreciation calculation missing        | Implement straight-line/declining-balance calc |
-| 2   | Addon Marketplace is UI-only                  | Define install/activate lifecycle             |
-| 3   | MarketPro React frontend disconnected         | Connect to backend API or remove              |
-| 4   | Test coverage still low outside covered areas | Add more Feature tests per audit priority list |
+| #   | Issue                                                        | Next Step                                                                    |
+| --- | ------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| 1   | Asset depreciation calculation missing                       | Implement straight-line/declining-balance calc                               |
+| 2   | Addon Marketplace is UI-only                                 | Define install/activate lifecycle                                            |
+| 3   | MarketPro Phase 2 items (cart badge, branch edit form, etc.) | See `docs/PHASE1_IMPLEMENTATION_REPORT.md` Section 7 for full remaining list |
+| 4   | Test coverage still low outside covered areas                | Add more Feature tests per audit priority list                               |

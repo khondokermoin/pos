@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "@inertiajs/react";
 
 const Contact = () => {
     return (
@@ -17,7 +17,9 @@ const Contact = () => {
                                             className="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4"
                                         >
                                             Full Name{" "}
-                                            <span className="text-danger text-xl line-height-1">*</span>{" "}
+                                            <span className="text-danger text-xl line-height-1">
+                                                *
+                                            </span>{" "}
                                         </label>
                                         <input
                                             type="text"
@@ -32,7 +34,9 @@ const Contact = () => {
                                             className="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4"
                                         >
                                             Email Address{" "}
-                                            <span className="text-danger text-xl line-height-1">*</span>{" "}
+                                            <span className="text-danger text-xl line-height-1">
+                                                *
+                                            </span>{" "}
                                         </label>
                                         <input
                                             type="email"
@@ -47,7 +51,9 @@ const Contact = () => {
                                             className="flex-align gap-4 text-sm font-heading-two text-gray-900 fw-semibold mb-4"
                                         >
                                             Phone Number
-                                            <span className="text-danger text-xl line-height-1">*</span>{" "}
+                                            <span className="text-danger text-xl line-height-1">
+                                                *
+                                            </span>{" "}
                                         </label>
                                         <input
                                             type="number"
@@ -141,7 +147,9 @@ const Contact = () => {
                                 to="#"
                                 className="bg-neutral-600 hover-bg-main-600 rounded-8 p-10 px-16 flex-between flex-wrap gap-8 flex-grow-1"
                             >
-                                <span className="text-white fw-medium">Get Support On Call</span>
+                                <span className="text-white fw-medium">
+                                    Get Support On Call
+                                </span>
                                 <span className="w-36 h-36 bg-main-600 rounded-8 flex-center text-xl text-white">
                                     <i className="ph ph-headset" />
                                 </span>
@@ -150,7 +158,9 @@ const Contact = () => {
                                 to="#"
                                 className="bg-neutral-600 hover-bg-main-600 rounded-8 p-10 px-16 flex-between flex-wrap gap-8 flex-grow-1"
                             >
-                                <span className="text-white fw-medium">Get Direction</span>
+                                <span className="text-white fw-medium">
+                                    Get Direction
+                                </span>
                                 <span className="w-36 h-36 bg-main-600 rounded-8 flex-center text-xl text-white">
                                     <i className="ph ph-map-pin" />
                                 </span>
@@ -160,8 +170,7 @@ const Contact = () => {
                 </div>
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default Contact
+export default Contact;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@inertiajs/react';
 
 const PromotionalTwo = () => {
     return (
@@ -18,7 +18,7 @@ const PromotionalTwo = () => {
                                     <span className="text-heading text-sm mb-8">Latest Deal</span>
                                     <h6 className="mb-0">iPhone 15 Pro Max</h6>
                                     <Link
-                                        to="/shop"
+                                        href="/shop"
                                         className="d-inline-flex align-items-center gap-8 mt-16 text-heading text-md fw-medium border border-top-0 border-end-0 border-start-0 border-gray-900 hover-text-main-two-600 hover-border-main-two-600"
                                     >
                                         Shop Now
@@ -45,7 +45,7 @@ const PromotionalTwo = () => {
                                     <span className="text-heading text-sm mb-8">Get 60% Off</span>
                                     <h6 className="mb-0">Instax Mini 11 Camera</h6>
                                     <Link
-                                        to="/shop"
+                                        href="/shop"
                                         className="d-inline-flex align-items-center gap-8 mt-16 text-heading text-md fw-medium border border-top-0 border-end-0 border-start-0 border-gray-900 hover-text-main-two-600 hover-border-main-two-600"
                                     >
                                         Shop Now
@@ -72,7 +72,7 @@ const PromotionalTwo = () => {
                                     <span className="text-heading text-sm mb-8">Start From $250</span>
                                     <h6 className="mb-0">Airpod Headphone</h6>
                                     <Link
-                                        to="/shop"
+                                        href="/shop"
                                         className="d-inline-flex align-items-center gap-8 mt-16 text-heading text-md fw-medium border border-top-0 border-end-0 border-start-0 border-gray-900 hover-text-main-two-600 hover-border-main-two-600"
                                     >
                                         Shop Now

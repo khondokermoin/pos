@@ -1,4 +1,5 @@
 import React from "react";
+import { usePage } from "@inertiajs/react";
 import Preloader from "../../Helpers/Preloader";
 import ColorInit from "../../Helpers/ColorInit";
 import ScrollToTop from "react-scroll-to-top";
@@ -20,6 +21,9 @@ import NewsletterThree from "../../Components/MarketPro/NewsletterThree";
 import FooterThree from "../../Components/MarketPro/FooterThree";
 
 const HomePageThree = () => {
+  const { featuredProducts, newArrivals, categories, tenant } =
+    usePage().props;
+
   return (
     <>
       {/* ColorInit */}
@@ -32,7 +36,7 @@ const HomePageThree = () => {
       <Preloader />
 
       {/* HeaderThree */}
-      <HeaderThree />
+      <HeaderThree tenant={tenant} categories={categories} />
 
       {/* BannerThree */}
       <BannerThree />
@@ -47,19 +51,30 @@ const HomePageThree = () => {
       <TextSlider />
 
       {/* TrendingThree */}
-      <TrendingThree />
+      <TrendingThree
+        products={featuredProducts}
+        currency={tenant?.currency}
+        categories={categories}
+      />
 
       {/* DiscountThree */}
       <DiscountThree />
 
       {/* NewArrivalThree */}
-      <NewArrivalThree />
+      <NewArrivalThree
+        products={newArrivals}
+        currency={tenant?.currency}
+        categories={categories}
+      />
 
       {/* DealsSection */}
-      <DealsSection />
+      <DealsSection products={featuredProducts} currency={tenant?.currency} />
 
       {/* PopularProductsThree */}
-      <PopularProductsThree />
+      <PopularProductsThree
+        products={newArrivals}
+        currency={tenant?.currency}
+      />
 
       {/* BrandThree */}
       <BrandThree />
@@ -77,7 +92,7 @@ const HomePageThree = () => {
       <NewsletterThree />
 
       {/* FooterThree */}
-      <FooterThree />
+      <FooterThree tenant={tenant} />
     </>
   );
 };

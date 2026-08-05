@@ -59,15 +59,15 @@ class SalesReturnController extends Controller
 
     public function store(Request $request)
     {
+        $companyId = $this->companyId();
+
         $data = $request->validate([
-            'sale_id'              => 'required|exists:sales,id',
+            'sale_id'              => 'required|exists:sales,id,company_id,' . $companyId,
             'reason'               => 'required|string|max:500',
             'items'                => 'required|array|min:1',
             'items.*.sale_item_id' => 'required|exists:sale_items,id',
             'items.*.qty'          => 'required|integer|min:1',
         ]);
-
-        $companyId = $this->companyId();
 
         DB::transaction(function () use ($data, $companyId) {
             $lastNo   = SalesReturn::where('company_id', $companyId)->count() + 1;
@@ -86,7 +86,11 @@ class SalesReturnController extends Controller
             ]);
 
             foreach ($data['items'] as $item) {
-                $saleItem = SaleItem::findOrFail($item['sale_item_id']);
+                // Security: verify the sale_item belongs to a sale owned by this company.
+                $saleItem = SaleItem::whereHas(
+                    'sale',
+                    fn($q) => $q->where('company_id', $companyId)
+                )->findOrFail($item['sale_item_id']);
                 $subtotal = $saleItem->unit_price * $item['qty'];
                 $totalAmount += $subtotal;
 

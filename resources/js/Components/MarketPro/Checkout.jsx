@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "@inertiajs/react";
 
 const Checkout = () => {
     const [selectedPayment, setSelectedPayment] = useState("payment1");
@@ -104,7 +104,9 @@ const Checkout = () => {
                                 </div>
                                 <div className="col-12">
                                     <div className="my-40">
-                                        <h6 className="text-lg mb-24">Additional Information</h6>
+                                        <h6 className="text-lg mb-24">
+                                            Additional Information
+                                        </h6>
                                         <input
                                             type="text"
                                             className="common-input border-gray-100"
@@ -222,7 +224,9 @@ const Checkout = () => {
                                             type="radio"
                                             name="payment"
                                             id="payment1"
-                                            checked={selectedPayment === 'payment1'}
+                                            checked={
+                                                selectedPayment === "payment1"
+                                            }
                                             onChange={handlePaymentChange}
                                         />
                                         <label
@@ -232,10 +236,15 @@ const Checkout = () => {
                                             Direct Bank transfer
                                         </label>
                                     </div>
-                                    {selectedPayment === 'payment1' && (
+                                    {selectedPayment === "payment1" && (
                                         <div className="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative d-block">
                                             <p className="text-gray-800">
-                                                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                                Make your payment directly into
+                                                our bank account. Please use
+                                                your Order ID as the payment
+                                                reference. Your order will not
+                                                be shipped until the funds have
+                                                cleared in our account.
                                             </p>
                                         </div>
                                     )}
@@ -247,7 +256,9 @@ const Checkout = () => {
                                             type="radio"
                                             name="payment"
                                             id="payment2"
-                                            checked={selectedPayment === 'payment2'}
+                                            checked={
+                                                selectedPayment === "payment2"
+                                            }
                                             onChange={handlePaymentChange}
                                         />
                                         <label
@@ -257,10 +268,15 @@ const Checkout = () => {
                                             Check payments
                                         </label>
                                     </div>
-                                    {selectedPayment === 'payment2' && (
+                                    {selectedPayment === "payment2" && (
                                         <div className="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative d-block">
                                             <p className="text-gray-800">
-                                                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                                Make your payment directly into
+                                                our bank account. Please use
+                                                your Order ID as the payment
+                                                reference. Your order will not
+                                                be shipped until the funds have
+                                                cleared in our account.
                                             </p>
                                         </div>
                                     )}
@@ -272,7 +288,9 @@ const Checkout = () => {
                                             type="radio"
                                             name="payment"
                                             id="payment3"
-                                            checked={selectedPayment === 'payment3'}
+                                            checked={
+                                                selectedPayment === "payment3"
+                                            }
                                             onChange={handlePaymentChange}
                                         />
                                         <label
@@ -282,10 +300,15 @@ const Checkout = () => {
                                             Cash on delivery
                                         </label>
                                     </div>
-                                    {selectedPayment === 'payment3' && (
+                                    {selectedPayment === "payment3" && (
                                         <div className="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative d-block">
                                             <p className="text-gray-800">
-                                                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                                Make your payment directly into
+                                                our bank account. Please use
+                                                your Order ID as the payment
+                                                reference. Your order will not
+                                                be shipped until the funds have
+                                                cleared in our account.
                                             </p>
                                         </div>
                                     )}
@@ -293,10 +316,14 @@ const Checkout = () => {
                             </div>
                             <div className="mt-32 pt-32 border-top border-gray-100">
                                 <p className="text-gray-500">
-                                    Your personal data will be used to process your order, support
-                                    your experience throughout this website, and for other purposes
-                                    described in our{" "}
-                                    <Link to="#" className="text-main-600 text-decoration-underline">
+                                    Your personal data will be used to process
+                                    your order, support your experience
+                                    throughout this website, and for other
+                                    purposes described in our{" "}
+                                    <Link
+                                        to="#"
+                                        className="text-main-600 text-decoration-underline"
+                                    >
                                         {" "}
                                         privacy policy
                                     </Link>{" "}
@@ -314,8 +341,7 @@ const Checkout = () => {
                 </div>
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default Checkout
+export default Checkout;

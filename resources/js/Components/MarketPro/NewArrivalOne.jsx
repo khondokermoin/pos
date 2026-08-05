@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from "@inertiajs/react";
 import Slider from 'react-slick';
 
-const NewArrivalOne = () => {
+const NewArrivalOne = ({ products = [], currency = 'BDT' }) => {
     function SampleNextArrow(props) {
         const { className, onClick } = props;
         return (
@@ -78,6 +78,32 @@ const NewArrivalOne = () => {
 
         ],
     };
+
+    const handleAddToCart = (product, primaryVariant, price) => {
+        try {
+            const cart = JSON.parse(localStorage.getItem("cart") ?? "[]");
+            const variantId = primaryVariant?.id ?? product.id;
+            const existing = cart.findIndex((i) => i.variant_id === variantId);
+
+            if (existing >= 0) {
+                cart[existing].quantity += 1;
+            } else {
+                cart.push({
+                    variant_id: variantId,
+                    product_id: product.id,
+                    name: product.name,
+                    variant_name: primaryVariant?.name ?? null,
+                    unit_price: price ?? 0,
+                    quantity: 1,
+                    image: product.image ?? null,
+                });
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+        } catch {
+            // localStorage unavailable (private browsing, etc.) — fail silently
+        }
+    };
+
     return (
         <section className="new-arrival pb-80">
             <div className="container container-lg">
@@ -86,7 +112,7 @@ const NewArrivalOne = () => {
                         <h5 className="mb-0">New Arrivals</h5>
                         <div className="flex-align mr-point gap-16">
                             <Link
-                                to="/shop"
+                                href="/shop"
                                 className="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline"
                             >
                                 View All Deals
@@ -96,342 +122,79 @@ const NewArrivalOne = () => {
                 </div>
                 <div className="new-arrival__slider arrow-style-two">
                     <Slider {...settings}>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img20.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
+                        {products.map((product) => {
+                            const primaryVariant = product.variants?.[0];
+                            const price =
+                                product.selling_price ??
+                                primaryVariant?.selling_price;
+                            const imageUrl =
+                                product.image ??
+                                "/assets/images/thumbs/product-img20.png";
+
+                            return (
+                                <div key={product.id}>
+                                    <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                         <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
+                                            href={`/product/${product.id}`}
+                                            className="product-card__thumb flex-center"
                                         >
-                                            Add <i className="ph ph-shopping-cart" />
+                                            <img
+                                                src={imageUrl}
+                                                alt={product.name}
+                                                onError={(e) => {
+                                                    e.target.src =
+                                                        "/assets/images/thumbs/product-img20.png";
+                                                }}
+                                            />
                                         </Link>
+                                        <div className="product-card__content mt-12">
+                                            <h6 className="title text-lg fw-semibold mt-12 mb-8">
+                                                <Link
+                                                    href={`/product/${product.id}`}
+                                                    className="link text-line-2"
+                                                >
+                                                    {product.name}
+                                                </Link>
+                                            </h6>
+                                            <div className="flex-between gap-8 mt-24 flex-wrap">
+                                                <div className="product-card__price">
+                                                    {price ? (
+                                                        <span className="text-heading text-md fw-semibold ">
+                                                            {currency}{" "}
+                                                            {Number(
+                                                                price,
+                                                            ).toLocaleString()}{" "}
+                                                            <span className="text-gray-500 fw-normal">
+                                                                /Qty
+                                                            </span>{" "}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-gray-400 text-sm">
+                                                            Price on request
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleAddToCart(
+                                                            product,
+                                                            primaryVariant,
+                                                            price,
+                                                        )
+                                                    }
+                                                    disabled={!price}
+                                                    className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
+                                                >
+                                                    Add{" "}
+                                                    <i className="ph ph-shopping-cart" />
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img21.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
-                                        >
-                                            Add <i className="ph ph-shopping-cart" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img22.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
-                                        >
-                                            Add <i className="ph ph-shopping-cart" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img23.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
-                                        >
-                                            Add <i className="ph ph-shopping-cart" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img24.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
-                                        >
-                                            Add <i className="ph ph-shopping-cart" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img25.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
-                                        >
-                                            Add <i className="ph ph-shopping-cart" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
-                                <Link
-                                    to="/product-details"
-                                    className="product-card__thumb flex-center"
-                                >
-                                    <img src="/assets/images/thumbs/product-img21.png" alt="" />
-                                </Link>
-                                <div className="product-card__content mt-12">
-                                    <div className="flex-align gap-6">
-                                        <span className="text-xs fw-bold text-gray-500">4.8</span>
-                                        <span className="text-15 fw-bold text-warning-600 d-flex">
-                                            <i className="ph-fill ph-star" />
-                                        </span>
-                                        <span className="text-xs fw-bold text-gray-500">(17k)</span>
-                                    </div>
-                                    <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
-                                            C-500 Antioxidant Protect Dietary Supplement
-                                        </Link>
-                                    </h6>
-                                    <div className="flex-align gap-4">
-                                        <span className="text-main-600 text-md d-flex">
-                                            <i className="ph-fill ph-storefront" />
-                                        </span>
-                                        <span className="text-gray-500 text-xs">
-                                            By Lucky Supermarket
-                                        </span>
-                                    </div>
-                                    <div className="flex-between gap-8 mt-24 flex-wrap">
-                                        <div className="product-card__price">
-                                            <span className="text-gray-400 text-md fw-semibold text-decoration-line-through d-block">
-                                                $28.99
-                                            </span>
-                                            <span className="text-heading text-md fw-semibold ">
-                                                $14.99 <span className="text-gray-500 fw-normal">/Qty</span>{" "}
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to="/cart"
-                                            className="product-card__cart btn btn-main py-11 px-24 rounded-pill flex-align gap-8"
-                                        >
-                                            Add <i className="ph ph-shopping-cart" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            );
+                        })}
                     </Slider>
                 </div>
             </div>

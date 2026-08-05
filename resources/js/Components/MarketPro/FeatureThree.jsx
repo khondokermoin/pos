@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from '@inertiajs/react';
 import Slider from "react-slick";
 
 const FeatureThree = () => {
@@ -96,7 +96,7 @@ const FeatureThree = () => {
             <Slider {...settings}>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb bg-yellow-light max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img1.png'
                       alt=''
@@ -105,7 +105,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Men's Fashion
                     </Link>
                   </h6>
@@ -114,7 +114,7 @@ const FeatureThree = () => {
               </div>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb bg-danger-light max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img2.png'
                       alt=''
@@ -123,7 +123,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Women's Fashion
                     </Link>
                   </h6>
@@ -132,7 +132,7 @@ const FeatureThree = () => {
               </div>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb bg-purple-light max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img3.png'
                       alt=''
@@ -141,7 +141,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Kid’s Fashion
                     </Link>
                   </h6>
@@ -150,7 +150,7 @@ const FeatureThree = () => {
               </div>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb bg-danger-light max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img4.png'
                       alt=''
@@ -159,7 +159,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Fashion Glass
                     </Link>
                   </h6>
@@ -168,7 +168,7 @@ const FeatureThree = () => {
               </div>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb bg-warning-light max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img5.png'
                       alt=''
@@ -177,7 +177,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Shoes Collection
                     </Link>
                   </h6>
@@ -186,7 +186,7 @@ const FeatureThree = () => {
               </div>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb bg-success-light max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img6.png'
                       alt=''
@@ -195,7 +195,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Bag Collection
                     </Link>
                   </h6>
@@ -204,7 +204,7 @@ const FeatureThree = () => {
               </div>
               <div className='feature-item text-center'>
                 <div className='feature-item__thumb max-w-260 max-h-260 rounded-circle w-100 h-100'>
-                  <Link to='/shop' className='w-100 h-100 flex-center'>
+                  <Link href='/shop' className='w-100 h-100 flex-center'>
                     <img
                       src='/assets/images/thumbs/features-three-img3.png'
                       alt=''
@@ -213,7 +213,7 @@ const FeatureThree = () => {
                 </div>
                 <div className='feature-item__content mt-20'>
                   <h6 className='text-lg mb-8'>
-                    <Link to='/shop' className='text-inherit'>
+                    <Link href='/shop' className='text-inherit'>
                       Men's Fashion
                     </Link>
                   </h6>

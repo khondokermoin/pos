@@ -59,17 +59,26 @@ class QuotationController extends Controller
 
     public function store(Request $request)
     {
+        $companyId = $this->companyId();
+
         $data = $request->validate([
-            'customer_id'        => 'nullable|exists:customers,id',
+            // Security: customer must belong to this company.
+            'customer_id'        => 'nullable|exists:customers,id,company_id,' . $companyId,
             'valid_until'        => 'nullable|date|after_or_equal:today',
             'notes'              => 'nullable|string|max:1000',
             'items'              => 'required|array|min:1',
-            'items.*.variant_id' => 'required|exists:product_variants,id',
+            // Security: variant_id must belong to a product owned by this company —
+            // prevents cross-tenant quotation items with foreign variant_id FKs.
+            'items.*.variant_id' => [
+                'required',
+                \Illuminate\Validation\Rule::exists('product_variants', 'id')->whereIn(
+                    'product_id',
+                    \App\Models\Product::where('company_id', $companyId)->pluck('id')
+                ),
+            ],
             'items.*.qty'        => 'required|integer|min:1',
             'items.*.price'      => 'required|numeric|min:0',
         ]);
-
-        $companyId = $this->companyId();
 
         DB::transaction(function () use ($data, $companyId) {
             // lockForUpdate serializes concurrent requests for this company so two

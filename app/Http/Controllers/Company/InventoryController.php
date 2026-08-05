@@ -69,8 +69,18 @@ class InventoryController extends Controller
         $companyId = Auth::user()->company_id;
 
         $request->validate([
-            'variant_id' => 'required|exists:product_variants,id',
-            'branch_id'  => 'nullable|exists:branches,id',
+            // Security: variant_id must belong to a product owned by this company —
+            // prevents cross-tenant stock adjustments that write Stock/StockMovement
+            // rows with a foreign variant_id pointing into another tenant's data.
+            'variant_id' => [
+                'required',
+                \Illuminate\Validation\Rule::exists('product_variants', 'id')->whereIn(
+                    'product_id',
+                    \App\Models\Product::where('company_id', $companyId)->pluck('id')
+                ),
+            ],
+            // Security: branch_id must belong to this company.
+            'branch_id'  => 'nullable|exists:branches,id,company_id,' . $companyId,
             'type'       => 'required|in:add,subtract,set',
             'quantity'   => 'required|integer|min:1',
             'reason'     => 'nullable|string|max:500',

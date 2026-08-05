@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "@inertiajs/react";
 
 const DeliveryOne = () => {
     return (
@@ -24,7 +24,7 @@ const DeliveryOne = () => {
                                 </h4>
                                 <p className="text-white">For Orders starts from $100</p>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="mt-16 btn btn-main-two fw-medium d-inline-flex align-items-center rounded-pill gap-8"
                                     tabIndex={0}
                                 >

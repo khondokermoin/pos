@@ -64,12 +64,22 @@ class TransferController extends Controller
         $companyId = Auth::user()->company_id;
 
         $request->validate([
-            'from_branch_id'     => 'nullable|exists:branches,id',
-            'to_branch_id'       => 'required|exists:branches,id',
+            // Security: branch_id must belong to this company — prevents cross-tenant
+            // stock transfers that would write Stock/StockMovement rows with a foreign
+            // branch_id pointing into another tenant's data.
+            'from_branch_id'     => 'nullable|exists:branches,id,company_id,' . $companyId,
+            'to_branch_id'       => 'required|exists:branches,id,company_id,' . $companyId,
             'transfer_date'      => 'required|date',
             'note'               => 'nullable|string|max:500',
             'items'              => 'required|array|min:1',
-            'items.*.variant_id' => 'required|exists:product_variants,id',
+            // Security: variant_id must belong to a product owned by this company.
+            'items.*.variant_id' => [
+                'required',
+                \Illuminate\Validation\Rule::exists('product_variants', 'id')->whereIn(
+                    'product_id',
+                    \App\Models\Product::where('company_id', $companyId)->pluck('id')
+                ),
+            ],
             'items.*.quantity'   => 'required|integer|min:1',
         ]);
 
@@ -93,6 +103,12 @@ class TransferController extends Controller
             ]);
 
             $itemCount = 0;
+
+            // Performance: resolve branch names ONCE before the loop — not on every item.
+            $toBranchName   = Branch::find($request->to_branch_id)?->name ?? 'Unknown';
+            $fromBranchName = $request->from_branch_id
+                ? (Branch::find($request->from_branch_id)?->name ?? 'Unknown')
+                : 'Central Warehouse';
 
             foreach ($request->items as $item) {
                 $variantId = $item['variant_id'];
@@ -128,11 +144,6 @@ class TransferController extends Controller
                     ->where('variant_id', $variantId)
                     ->where('branch_id', $request->to_branch_id)
                     ->increment('quantity', $qty);
-
-                $toBranchName   = Branch::find($request->to_branch_id)?->name ?? 'Unknown';
-                $fromBranchName = $request->from_branch_id
-                    ? (Branch::find($request->from_branch_id)?->name ?? 'Unknown')
-                    : 'Central Warehouse';
 
                 // 5. Log stock movements
                 StockMovement::create([

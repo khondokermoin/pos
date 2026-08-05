@@ -84,14 +84,9 @@ use App\Http\Controllers\Branch\ReportController as BranchReportController;
 use App\Http\Controllers\Branch\SalesReturnController as BranchSalesReturnController;
 use App\Http\Controllers\Branch\BarcodeController as BranchBarcodeController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin'       => Route::has('login'),
-        'canRegister'    => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion'     => PHP_VERSION,
-    ]);
-})->middleware(['web', 'inertia']);
+// NOTE: The root GET / route is handled by frontend.php (ShopController::home).
+// That file is require'd at the bottom of this file and takes precedence.
+// This stub is intentionally removed to avoid a duplicate route registration.
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -345,6 +340,9 @@ Route::middleware(['auth', 'verified', 'role:Company Admin', 'tenant.access', 's
         Route::get('/reports/expenses', [CompanyReportController::class, 'expenses'])->name('reports.expenses');
         Route::get('/reports/supplier-payable', [CompanyReportController::class, 'supplierPayable'])->name('reports.supplier-payable');
         Route::get('/reports/client-receivable', [CompanyReportController::class, 'clientReceivable'])->name('reports.client-receivable');
+
+        // ── Online Orders Report (Location-Based Routing) ─────────────────────
+        Route::get('/reports/online-orders', [\App\Http\Controllers\Company\OnlineOrderReportController::class, 'index'])->name('reports.online-orders');
     });
 
 // ==========================================

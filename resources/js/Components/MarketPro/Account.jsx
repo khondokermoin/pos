@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "@inertiajs/react";
 
 const Account = () => {
     return (
@@ -16,7 +16,10 @@ const Account = () => {
                                         htmlFor="username"
                                         className="text-neutral-900 text-lg mb-8 fw-medium"
                                     >
-                                        Username or email address <span className="text-danger">*</span>{" "}
+                                        Username or email address{" "}
+                                        <span className="text-danger">
+                                            *
+                                        </span>{" "}
                                     </label>
                                     <input
                                         type="text"
@@ -48,7 +51,10 @@ const Account = () => {
                                 </div>
                                 <div className="mb-24 mt-48">
                                     <div className="flex-align gap-48 flex-wrap">
-                                        <button type="submit" className="btn btn-main py-18 px-40">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-main py-18 px-40"
+                                        >
                                             Log in
                                         </button>
                                         <div className="form-check common-check">
@@ -87,7 +93,10 @@ const Account = () => {
                                         htmlFor="usernameTwo"
                                         className="text-neutral-900 text-lg mb-8 fw-medium"
                                     >
-                                        Username <span className="text-danger">*</span>{" "}
+                                        Username{" "}
+                                        <span className="text-danger">
+                                            *
+                                        </span>{" "}
                                     </label>
                                     <input
                                         type="text"
@@ -102,7 +111,9 @@ const Account = () => {
                                         className="text-neutral-900 text-lg mb-8 fw-medium"
                                     >
                                         Email address
-                                        <span className="text-danger">*</span>{" "}
+                                        <span className="text-danger">
+                                            *
+                                        </span>{" "}
                                     </label>
                                     <input
                                         type="email"
@@ -135,10 +146,14 @@ const Account = () => {
                                 </div>
                                 <div className="my-48">
                                     <p className="text-gray-500">
-                                        Your personal data will be used to process your order, support
-                                        your experience throughout this website, and for other purposes
-                                        described in our
-                                        <Link to="#" className="text-main-600 text-decoration-underline">
+                                        Your personal data will be used to
+                                        process your order, support your
+                                        experience throughout this website, and
+                                        for other purposes described in our
+                                        <Link
+                                            to="#"
+                                            className="text-main-600 text-decoration-underline"
+                                        >
                                             {" "}
                                             privacy policy
                                         </Link>
@@ -146,7 +161,10 @@ const Account = () => {
                                     </p>
                                 </div>
                                 <div className="mt-48">
-                                    <button type="submit" className="btn btn-main py-18 px-40">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-main py-18 px-40"
+                                    >
                                         Register
                                     </button>
                                 </div>
@@ -157,8 +175,7 @@ const Account = () => {
                 </form>
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default Account
+export default Account;

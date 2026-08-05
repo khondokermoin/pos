@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import "animate.css";
-import { Link } from "react-router-dom";
+import { Link } from '@inertiajs/react';
 const BannerThree = () => {
     const NextArrow = ({ onClick }) => (
         <button
@@ -109,7 +109,7 @@ const BannerThree = () => {
                                             simply. We are able to help you.
                                         </p>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-lg-4 mt-sm-1 wow bounceIn"
                                             tabIndex={0}
                                         >
@@ -162,7 +162,7 @@ const BannerThree = () => {
                                             simply. We are able to help you.
                                         </p>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-48 wow bounceIn"
                                             tabIndex={0}
                                         >
@@ -216,7 +216,7 @@ const BannerThree = () => {
                                             simply. We are able to help you.
                                         </p>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-48 wow bounceIn"
                                             tabIndex={0}
                                         >

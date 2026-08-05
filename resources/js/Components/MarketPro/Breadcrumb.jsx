@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@inertiajs/react";
 
 const Breadcrumb = ({ title }) => {
   return (
@@ -10,7 +10,7 @@ const Breadcrumb = ({ title }) => {
           <ul className='flex-align gap-8 flex-wrap'>
             <li className='text-sm'>
               <Link
-                to='/'
+                href='/'
                 className='text-gray-900 flex-align gap-8 hover-text-main-600'
               >
                 <i className='ph ph-house' />

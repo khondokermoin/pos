@@ -78,6 +78,25 @@
                             </div>
 
                             <div class="mb-3 col-md-6">
+                                <label for="branch_id" class="form-label">Assign New Variant Stock To Branch <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select @error('branch_id') is-invalid @enderror" id="branch_id"
+                                    name="branch_id" required>
+                                    <option value="">Select Branch</option>
+                                    @foreach ($branches as $branch)
+                                        <option value="{{ $branch->id }}"
+                                            {{ old('branch_id') == $branch->id ? 'selected' : '' }}>
+                                            {{ $branch->name }}</option>
+                                    @endforeach
+                                </select>
+                                <small class="text-muted">If you add a brand-new variant below, its initial stock will be
+                                    added directly to this branch. Existing variants' stock is unaffected.</small>
+                                @error('branch_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-md-6">
                                 <label class="form-label d-block pt-2">Product Type</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="has_variants" name="has_variants"

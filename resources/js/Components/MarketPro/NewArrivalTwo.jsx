@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from "@inertiajs/react";
 import Slider from 'react-slick';
 
 const NewArrivalTwo = () => {
@@ -85,7 +85,7 @@ const NewArrivalTwo = () => {
                         <h5 className="mb-0">You Might Also Like</h5>
                         <div className="flex-align mr-point gap-16">
                             <Link
-                                to="/shop"
+                                href="/shop"
                                 className="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline"
                             >
                                 All Products
@@ -99,14 +99,14 @@ const NewArrivalTwo = () => {
                         <div>
                             <div className="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img7.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             C-500 Antioxidant Protect Dietary Supplement
                                         </Link>
                                     </h6>
@@ -135,7 +135,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />
@@ -150,14 +150,14 @@ const NewArrivalTwo = () => {
                                     Sale 50%{" "}
                                 </span>
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img8.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Marcel's Modern Pantry Almond Unsweetened
                                         </Link>
                                     </h6>
@@ -186,7 +186,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />
@@ -201,14 +201,14 @@ const NewArrivalTwo = () => {
                                     Sale 50%{" "}
                                 </span>
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img9.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             O Organics Milk, Whole, Vitamin D
                                         </Link>
                                     </h6>
@@ -237,7 +237,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />
@@ -252,14 +252,14 @@ const NewArrivalTwo = () => {
                                     Best Sale{" "}
                                 </span>
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img10.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Whole Grains and Seeds Organic Bread
                                         </Link>
                                     </h6>
@@ -288,7 +288,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />
@@ -300,14 +300,14 @@ const NewArrivalTwo = () => {
                         <div>
                             <div className="product-card h-100 p-8 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img11.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Lucerne Yogurt, Lowfat, Strawberry
                                         </Link>
                                     </h6>
@@ -336,7 +336,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />
@@ -351,14 +351,14 @@ const NewArrivalTwo = () => {
                                     Sale 50%{" "}
                                 </span>
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img12.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Nature Valley Whole Grain Oats and Honey Protein
                                         </Link>
                                     </h6>
@@ -387,7 +387,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />
@@ -402,14 +402,14 @@ const NewArrivalTwo = () => {
                                     Best Sale{" "}
                                 </span>
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img10.png" alt="" />
                                 </Link>
                                 <div className="product-card__content p-sm-2">
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Whole Grains and Seeds Organic Bread
                                         </Link>
                                     </h6>
@@ -438,7 +438,7 @@ const NewArrivalTwo = () => {
                                             <span className="text-xs fw-bold text-gray-600">(17k)</span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-24 w-100 justify-content-center"
                                         >
                                             Add To Cart <i className="ph ph-shopping-cart" />

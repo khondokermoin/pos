@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@inertiajs/react';
 
 const DaySaleOne = () => {
     return (
@@ -21,7 +21,7 @@ const DaySaleOne = () => {
                             COMPUTER &amp; MOBILE ACCESSORIES
                         </h6>
                         <Link
-                            to="/shop"
+                            href="/shop"
                             className="btn btn-outline-white flex-align d-inline-flex rounded-pill gap-8 mt-28"
                             tabIndex={0}
                         >

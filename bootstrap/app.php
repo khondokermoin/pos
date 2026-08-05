@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
+        channels: __DIR__ . '/../routes/channels.php',
         web: __DIR__ . '/../routes/web.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
@@ -22,14 +23,19 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         // Routes excluded:
         //   • company/subscription/payment/callback  — main success/fail/cancel POST
+        //                                              from SSLCommerz servers (cross-origin,
+        //                                              no session cookie present)
         //   • payment/result                         — GET result page (safe, no state change)
-        //   • company/subscription/subscribe/*       — plan checkout POST (user-initiated
-        //                                              but may be called from a redirect)
+        //
+        // REMOVED: company/subscription/subscribe/* was previously excluded but this is
+        // WRONG — subscribe is an authenticated, user-initiated POST inside the auth group.
+        // SSLCommerz never POSTs to it; only the user's browser does. Excluding it opened
+        // a CSRF hole where a hostile page could force a billing redirect on a logged-in
+        // Company Admin. The CSRF token is present in the Blade form, so no exemption needed.
         // ─────────────────────────────────────────────────────────────────────
         $middleware->validateCsrfTokens(except: [
             'company/subscription/payment/callback',
             'payment/result',
-            'company/subscription/subscribe/*',
         ]);
 
         $middleware->web(append: [

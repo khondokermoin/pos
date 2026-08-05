@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "@inertiajs/react";
 
 const FooterOne = () => {
     return (
@@ -13,7 +13,7 @@ const FooterOne = () => {
                 <div className="footer-item-wrapper d-flex align-items-start flex-wrap">
                     <div className="footer-item">
                         <div className="footer-item__logo">
-                            <Link to="/">
+                            <Link href="/">
                                 {" "}
                                 <img src="/assets/images/logo/logo.png" alt="" />
                             </Link>
@@ -35,14 +35,14 @@ const FooterOne = () => {
                             </span>
                             <div className="flex-align gap-16 flex-wrap">
                                 <Link
-                                    to="/tel:+00123456789"
+                                    href="/tel:+00123456789"
                                     className="text-md text-gray-900 hover-text-main-600"
                                 >
                                     +00 123 456 789
                                 </Link>
                                 <span className="text-md text-main-600 ">or</span>
                                 <Link
-                                    to="/tel:+00987654012"
+                                    href="/tel:+00987654012"
                                     className="text-md text-gray-900 hover-text-main-600"
                                 >
                                     +00 987 654 012
@@ -54,7 +54,7 @@ const FooterOne = () => {
                                 <i className="ph-fill ph-envelope" />
                             </span>
                             <Link
-                                to="/mailto:support24@marketpro.com"
+                                href="/mailto:support24@marketpro.com"
                                 className="text-md text-gray-900 hover-text-main-600"
                             >
                                 support24@marketpro.com
@@ -65,32 +65,32 @@ const FooterOne = () => {
                         <h6 className="footer-item__title">Information</h6>
                         <ul className="footer-menu">
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Become a Vendor
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Affiliate Program
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Privacy Policy
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Our Suppliers
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Extended Plan
                                 </Link>
                             </li>
                             <li className="">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Community
                                 </Link>
                             </li>
@@ -100,35 +100,35 @@ const FooterOne = () => {
                         <h6 className="footer-item__title">Customer Support</h6>
                         <ul className="footer-menu">
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Help Center
                                 </Link>
                             </li>
                             <li className="mb-16">
                                 <Link
-                                    to="/contact"
+                                    href="/contact"
                                     className="text-gray-600 hover-text-main-600"
                                 >
                                     Contact Us
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Report Abuse
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Submit and Dispute
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Policies &amp; Rules
                                 </Link>
                             </li>
                             <li className="">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Online Shopping
                                 </Link>
                             </li>
@@ -138,32 +138,32 @@ const FooterOne = () => {
                         <h6 className="footer-item__title">My Account</h6>
                         <ul className="footer-menu">
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     My Account
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Order History
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Shoping Cart
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Compare
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Help Ticket
                                 </Link>
                             </li>
                             <li className="">
-                                <Link to="/wishlist" className="text-gray-600 hover-text-main-600">
+                                <Link href="/wishlist" className="text-gray-600 hover-text-main-600">
                                     Wishlist
                                 </Link>
                             </li>
@@ -173,32 +173,32 @@ const FooterOne = () => {
                         <h6 className="footer-item__title">Daily Groceries</h6>
                         <ul className="footer-menu">
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Dairy &amp; Eggs
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Meat &amp; Seafood
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Breakfast Food
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Household Supplies
                                 </Link>
                             </li>
                             <li className="mb-16">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Bread &amp; Bakery
                                 </Link>
                             </li>
                             <li className="">
-                                <Link to="/shop" className="text-gray-600 hover-text-main-600">
+                                <Link href="/shop" className="text-gray-600 hover-text-main-600">
                                     Pantry Staples
                                 </Link>
                             </li>
@@ -208,17 +208,17 @@ const FooterOne = () => {
                         <h6 className="">Shop on The Go</h6>
                         <p className="mb-16">Marketpro App is available. Get it now</p>
                         <div className="flex-align gap-8 my-32">
-                            <Link to="/https://www.apple.com/store" className="">
+                            <Link href="/https://www.apple.com/store" className="">
                                 <img src="/assets/images/thumbs/store-img1.png" alt="" />
                             </Link>
-                            <Link to="/https://play.google.com/store/apps?hl=en" className="">
+                            <Link href="/https://play.google.com/store/apps?hl=en" className="">
                                 <img src="/assets/images/thumbs/store-img2.png" alt="" />
                             </Link>
                         </div>
                         <ul className="flex-align gap-16">
                             <li>
                                 <Link
-                                    to="/https://www.facebook.com"
+                                    href="/https://www.facebook.com"
                                     className="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white"
                                 >
                                     <i className="ph-fill ph-facebook-logo" />
@@ -226,7 +226,7 @@ const FooterOne = () => {
                             </li>
                             <li>
                                 <Link
-                                    to="/https://www.twitter.com"
+                                    href="/https://www.twitter.com"
                                     className="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white"
                                 >
                                     <i className="ph-fill ph-twitter-logo" />
@@ -234,7 +234,7 @@ const FooterOne = () => {
                             </li>
                             <li>
                                 <Link
-                                    to="/https://www.linkedin.com"
+                                    href="/https://www.linkedin.com"
                                     className="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white"
                                 >
                                     <i className="ph-fill ph-instagram-logo" />
@@ -242,7 +242,7 @@ const FooterOne = () => {
                             </li>
                             <li>
                                 <Link
-                                    to="/https://www.pinterest.com"
+                                    href="/https://www.pinterest.com"
                                     className="w-44 h-44 flex-center bg-main-100 text-main-600 text-xl rounded-circle hover-bg-main-600 hover-text-white"
                                 >
                                     <i className="ph-fill ph-linkedin-logo" />

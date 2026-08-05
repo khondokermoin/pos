@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "@inertiajs/react";
 
 const Blog = () => {
     return (
@@ -25,13 +25,16 @@ const Blog = () => {
                                     </span>
                                     <h6 className="text-2xl mb-24">
                                         <Link to="/blog-details" className="">
-                                            Legal structure, can make profit buisness
+                                            Legal structure, can make profit
+                                            buisness
                                         </Link>
                                     </h6>
                                     <p className="text-gray-700 text-line-2">
-                                        Re-engagement — objectives. As developers, we rightfully obsess
-                                        about the customer experience, relentlessly working to squeeze
-                                        every millisecond out of the critical rendering path, optimize
+                                        Re-engagement — objectives. As
+                                        developers, we rightfully obsess about
+                                        the customer experience, relentlessly
+                                        working to squeeze every millisecond out
+                                        of the critical rendering path, optimize
                                         input latency, and eliminate...
                                     </p>
                                     <div className="flex-align flex-wrap gap-24 pt-24 mt-24 border-top border-gray-100">
@@ -81,13 +84,16 @@ const Blog = () => {
                                     </span>
                                     <h6 className="text-2xl mb-24">
                                         <Link to="/blog-details" className="">
-                                            Legal structure, can make profit buisness
+                                            Legal structure, can make profit
+                                            buisness
                                         </Link>
                                     </h6>
                                     <p className="text-gray-700 text-line-2">
-                                        Re-engagement — objectives. As developers, we rightfully obsess
-                                        about the customer experience, relentlessly working to squeeze
-                                        every millisecond out of the critical rendering path, optimize
+                                        Re-engagement — objectives. As
+                                        developers, we rightfully obsess about
+                                        the customer experience, relentlessly
+                                        working to squeeze every millisecond out
+                                        of the critical rendering path, optimize
                                         input latency, and eliminate...
                                     </p>
                                     <div className="flex-align flex-wrap gap-24 pt-24 mt-24 border-top border-gray-100">
@@ -137,13 +143,16 @@ const Blog = () => {
                                     </span>
                                     <h6 className="text-2xl mb-24">
                                         <Link to="/blog-details" className="">
-                                            Legal structure, can make profit buisness
+                                            Legal structure, can make profit
+                                            buisness
                                         </Link>
                                     </h6>
                                     <p className="text-gray-700 text-line-2">
-                                        Re-engagement — objectives. As developers, we rightfully obsess
-                                        about the customer experience, relentlessly working to squeeze
-                                        every millisecond out of the critical rendering path, optimize
+                                        Re-engagement — objectives. As
+                                        developers, we rightfully obsess about
+                                        the customer experience, relentlessly
+                                        working to squeeze every millisecond out
+                                        of the critical rendering path, optimize
                                         input latency, and eliminate...
                                     </p>
                                     <div className="flex-align flex-wrap gap-24 pt-24 mt-24 border-top border-gray-100">
@@ -295,8 +304,12 @@ const Blog = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -327,8 +340,12 @@ const Blog = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -359,8 +376,12 @@ const Blog = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -391,8 +412,12 @@ const Blog = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -478,7 +503,9 @@ const Blog = () => {
                                         to="/blog-details"
                                         className="flex-between gap-8 text-gray-700 border border-gray-100 rounded-4 p-4 ps-16 hover-border-main-600 hover-text-main-600"
                                     >
-                                        <span>Mobile &amp; Accessories (16)</span>
+                                        <span>
+                                            Mobile &amp; Accessories (16)
+                                        </span>
                                         <span className="w-40 h-40 flex-center rounded-4 bg-main-50 text-main-600">
                                             <i className="ph ph-arrow-right" />
                                         </span>
@@ -502,8 +529,7 @@ const Blog = () => {
                 </div>
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default Blog
+export default Blog;

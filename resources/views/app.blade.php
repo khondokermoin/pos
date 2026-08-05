@@ -7,6 +7,14 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Phosphor Icons (used across MarketPro pages as `ph ph-*` / `ph-fill ph-*` / `ph-bold ph-*` etc.) -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/thin/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+
     <!-- Scripts -->
     @routes
     @viteReactRefresh

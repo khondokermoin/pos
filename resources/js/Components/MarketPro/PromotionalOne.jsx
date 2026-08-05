@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "@inertiajs/react";
 
 const PromotionalOne = () => {
     return (
@@ -18,7 +18,7 @@ const PromotionalOne = () => {
                                     Everyday Fresh Meat
                                 </h6>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8 mt-24"
                                 >
                                     Shop Now
@@ -41,7 +41,7 @@ const PromotionalOne = () => {
                                     Daily Fresh Vegetables
                                 </h6>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8 mt-24"
                                 >
                                     Shop Now
@@ -64,7 +64,7 @@ const PromotionalOne = () => {
                                     Everyday Fresh Milk
                                 </h6>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8 mt-24"
                                 >
                                     Shop Now
@@ -87,7 +87,7 @@ const PromotionalOne = () => {
                                     Everyday Fresh Fruits
                                 </h6>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8 mt-24"
                                 >
                                     Shop Now

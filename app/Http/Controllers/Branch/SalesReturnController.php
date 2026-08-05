@@ -58,16 +58,16 @@ class SalesReturnController extends Controller
 
     public function store(Request $request)
     {
+        $companyId = $this->companyId();
+        $branchId  = $this->branchId();
+
         $data = $request->validate([
-            'sale_id'              => 'required|exists:sales,id',
+            'sale_id'              => 'required|exists:sales,id,branch_id,' . $branchId,
             'reason'               => 'required|string|max:500',
             'items'                => 'required|array|min:1',
             'items.*.sale_item_id' => 'required|exists:sale_items,id',
             'items.*.qty'          => 'required|integer|min:1',
         ]);
-
-        $companyId = $this->companyId();
-        $branchId  = $this->branchId();
 
         DB::transaction(function () use ($data, $companyId, $branchId) {
             $lastNo   = SalesReturn::where('company_id', $companyId)->count() + 1;
@@ -86,7 +86,11 @@ class SalesReturnController extends Controller
             ]);
 
             foreach ($data['items'] as $item) {
-                $saleItem = SaleItem::findOrFail($item['sale_item_id']);
+                // Security: verify the sale_item belongs to a sale at this branch.
+                $saleItem = SaleItem::whereHas(
+                    'sale',
+                    fn($q) => $q->where('branch_id', $branchId)
+                )->findOrFail($item['sale_item_id']);
                 $subtotal = $saleItem->unit_price * $item['qty'];
                 $totalAmount += $subtotal;
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { usePage } from "@inertiajs/react";
 import Preloader from "../../Helpers/Preloader";
 import HeaderTwo from "../../Components/MarketPro/HeaderTwo";
 import BannerTwo from "../../Components/MarketPro/BannerTwo";
@@ -23,7 +24,8 @@ import ColorInit from "../../Helpers/ColorInit";
 import ScrollToTop from "react-scroll-to-top";
 
 const HomePageTwo = () => {
-
+  const { featuredProducts, newArrivals, categories, tenant } =
+    usePage().props;
 
   return (
 
@@ -38,7 +40,7 @@ const HomePageTwo = () => {
       <Preloader />
 
       {/* HeaderTwo */}
-      <HeaderTwo category={false} />
+      <HeaderTwo category={false} tenant={tenant} categories={categories} />
 
       {/* BannerTwo */}
       <BannerTwo />
@@ -47,28 +49,35 @@ const HomePageTwo = () => {
       <PromotionalTwo />
 
       {/* DealsOne */}
-      <DealsOne />
+      <DealsOne products={newArrivals} currency={tenant?.currency} />
 
       {/* TopSellingOne */}
-      <TopSellingOne />
+      <TopSellingOne products={featuredProducts} currency={tenant?.currency} />
 
       {/* TrendingOne */}
-      <TrendingOne />
+      <TrendingOne
+        products={featuredProducts}
+        currency={tenant?.currency}
+        categories={categories}
+      />
 
       {/* DiscountOne */}
       <DiscountOne />
 
       {/* FeaturedOne */}
-      <FeaturedOne />
+      <FeaturedOne products={featuredProducts} currency={tenant?.currency} />
 
       {/* BigDealOne */}
       <BigDealOne />
 
       {/* TopSellingTwo */}
-      <TopSellingTwo />
+      <TopSellingTwo products={newArrivals} currency={tenant?.currency} />
 
       {/* PopularProductsOne */}
-      <PopularProductsOne />
+      <PopularProductsOne
+        products={featuredProducts}
+        currency={tenant?.currency}
+      />
 
       {/* TopVendorsTwo */}
       <TopVendorsTwo />
@@ -77,7 +86,7 @@ const HomePageTwo = () => {
       <DaySaleOne />
 
       {/* RecentlyViewedOne */}
-      <RecentlyViewedOne />
+      <RecentlyViewedOne products={newArrivals} currency={tenant?.currency} />
 
       {/* BrandTwo */}
       <BrandTwo />
@@ -89,7 +98,7 @@ const HomePageTwo = () => {
       <NewsletterTwo />
 
       {/* FooterTwo */}
-      <FooterTwo />
+      <FooterTwo tenant={tenant} />
 
       {/* BottomFooter */}
       <BottomFooter />

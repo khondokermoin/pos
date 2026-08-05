@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "@inertiajs/react";
 
 const BlogDetails = () => {
     return (
@@ -19,28 +19,39 @@ const BlogDetails = () => {
                                         Gadget
                                     </span>
                                     <h4 className="mb-24">
-                                        Nice decoration make be distilled to a single house
+                                        Nice decoration make be distilled to a
+                                        single house
                                     </h4>
                                     <p className="text-gray-700 mb-24">
-                                        A great commerce experience cannot be distilled to a single
-                                        number. It's not a Lighthouse score, or a set of Core Web Vitals
-                                        figures, although both are important inputs. A great commerce
-                                        experience is a trilemma that carefully balances competing needs
-                                        of delivering great customer experience, dynamic storefront
-                                        capabilities, and long-term business — conversion, retention,
-                                        re-engagement — objectives. As developers, we rightfully obsess
-                                        about the customer experience, relentlessly working to squeeze
-                                        every millisecond out of the critical rendering path, optimize
-                                        input latency, and eliminate jank. At the limit, statically
-                                        generated, edge delivered, and HTML-first pages look like the
-                                        optimal strategy. That is until you are confronted with the
-                                        realization that the next step function in improving conversion
-                                        rates and business.
+                                        A great commerce experience cannot be
+                                        distilled to a single number. It's not a
+                                        Lighthouse score, or a set of Core Web
+                                        Vitals figures, although both are
+                                        important inputs. A great commerce
+                                        experience is a trilemma that carefully
+                                        balances competing needs of delivering
+                                        great customer experience, dynamic
+                                        storefront capabilities, and long-term
+                                        business — conversion, retention,
+                                        re-engagement — objectives. As
+                                        developers, we rightfully obsess about
+                                        the customer experience, relentlessly
+                                        working to squeeze every millisecond out
+                                        of the critical rendering path, optimize
+                                        input latency, and eliminate jank. At
+                                        the limit, statically generated, edge
+                                        delivered, and HTML-first pages look
+                                        like the optimal strategy. That is until
+                                        you are confronted with the realization
+                                        that the next step function in improving
+                                        conversion rates and business.
                                     </p>
                                     <p className="text-gray-700 pb-24 mb-24 border-bottom border-gray-100">
-                                        Re-engagement — objectives. As developers, we rightfully obsess
-                                        about the customer experience, relentlessly working to squeeze
-                                        every millisecond out of the critical rendering path, optimize
+                                        Re-engagement — objectives. As
+                                        developers, we rightfully obsess about
+                                        the customer experience, relentlessly
+                                        working to squeeze every millisecond out
+                                        of the critical rendering path, optimize
                                         input latency, and eliminate...
                                     </p>
                                     <div className="flex-align flex-wrap gap-24">
@@ -94,18 +105,21 @@ const BlogDetails = () => {
                         </div>
                         <div className="mt-48">
                             <p className="text-gray-700 mb-24">
-                                A great commerce experience cannot be distilled to a single number.
-                                It’s not a Lighthouse score, or a set of Core Web Vitals figures,
-                                although both are important inputs. A great commerce experience is a
-                                trilemma that carefully balances competing needs of delivering great
-                                customer experience, dynamic storefront capabilities, and long-term
-                                business.
+                                A great commerce experience cannot be distilled
+                                to a single number. It’s not a Lighthouse score,
+                                or a set of Core Web Vitals figures, although
+                                both are important inputs. A great commerce
+                                experience is a trilemma that carefully balances
+                                competing needs of delivering great customer
+                                experience, dynamic storefront capabilities, and
+                                long-term business.
                             </p>
                         </div>
                         <div className="mt-48">
                             <h6 className="mb-32">
-                                The following are the four main market segments in which e-commerce
-                                is present. These are the following:
+                                The following are the four main market segments
+                                in which e-commerce is present. These are the
+                                following:
                             </h6>
                             <div className="row gy-4">
                                 <div className="col-sm-6">
@@ -115,7 +129,8 @@ const BlogDetails = () => {
                                                 <i className="ph ph-check" />
                                             </span>
                                             <span className="text-gray-700 flex-grow-1">
-                                                A great commerce experience cannot be distilled to a single
+                                                A great commerce experience
+                                                cannot be distilled to a single
                                                 number.{" "}
                                             </span>
                                         </li>
@@ -124,7 +139,8 @@ const BlogDetails = () => {
                                                 <i className="ph ph-check" />
                                             </span>
                                             <span className="text-gray-700 flex-grow-1">
-                                                A great commerce experience cannot be distilled to a single
+                                                A great commerce experience
+                                                cannot be distilled to a single
                                                 number.{" "}
                                             </span>
                                         </li>
@@ -133,7 +149,8 @@ const BlogDetails = () => {
                                                 <i className="ph ph-check" />
                                             </span>
                                             <span className="text-gray-700 flex-grow-1">
-                                                A great commerce experience cannot be distilled to a single
+                                                A great commerce experience
+                                                cannot be distilled to a single
                                                 number.{" "}
                                             </span>
                                         </li>
@@ -146,7 +163,8 @@ const BlogDetails = () => {
                                                 <i className="ph ph-check" />
                                             </span>
                                             <span className="text-gray-700 flex-grow-1">
-                                                A great commerce experience cannot be distilled to a single
+                                                A great commerce experience
+                                                cannot be distilled to a single
                                                 number.{" "}
                                             </span>
                                         </li>
@@ -155,7 +173,8 @@ const BlogDetails = () => {
                                                 <i className="ph ph-check" />
                                             </span>
                                             <span className="text-gray-700 flex-grow-1">
-                                                A great commerce experience cannot be distilled to a single
+                                                A great commerce experience
+                                                cannot be distilled to a single
                                                 number.{" "}
                                             </span>
                                         </li>
@@ -164,7 +183,8 @@ const BlogDetails = () => {
                                                 <i className="ph ph-check" />
                                             </span>
                                             <span className="text-gray-700 flex-grow-1">
-                                                A great commerce experience cannot be distilled to a single
+                                                A great commerce experience
+                                                cannot be distilled to a single
                                                 number.{" "}
                                             </span>
                                         </li>
@@ -178,12 +198,15 @@ const BlogDetails = () => {
                                     <i className="ph ph-quotes" />
                                 </span>
                                 <p className="text-gray-700 mb-24">
-                                    A great commerce experience cannot be distilled to a single
-                                    number. It’s not a Lighthouse score, or a set of Core Web Vitals
-                                    figures, although both are important inputs. A great commerce
-                                    experience is a trilemma that carefully balances competing needs
-                                    of delivering great customer experience, dynamic storefront
-                                    capabilities, and long-term business.
+                                    A great commerce experience cannot be
+                                    distilled to a single number. It’s not a
+                                    Lighthouse score, or a set of Core Web
+                                    Vitals figures, although both are important
+                                    inputs. A great commerce experience is a
+                                    trilemma that carefully balances competing
+                                    needs of delivering great customer
+                                    experience, dynamic storefront capabilities,
+                                    and long-term business.
                                 </p>
                                 <div className="flex-align gap-8">
                                     <span className="text-15 fw-medium text-neutral-600 d-flex">
@@ -240,8 +263,8 @@ const BlogDetails = () => {
                                 </button>
                                 <h6 className="text-lg mb-0">
                                     <Link to="/blog-details" className="">
-                                        A great commerce experience cannot be distilled to a single
-                                        number.{" "}
+                                        A great commerce experience cannot be
+                                        distilled to a single number.{" "}
                                     </Link>
                                 </h6>
                             </div>
@@ -254,8 +277,8 @@ const BlogDetails = () => {
                                 </button>
                                 <h6 className="text-lg mb-0">
                                     <Link to="/blog-details" className="">
-                                        A great commerce experience cannot be distilled to a single
-                                        number.{" "}
+                                        A great commerce experience cannot be
+                                        distilled to a single number.{" "}
                                     </Link>
                                 </h6>
                             </div>
@@ -331,16 +354,21 @@ const BlogDetails = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <div className="flex-align gap-8">
-                                            <h6 className="text-md fw-bold mb-0">Marvin McKinney</h6>
+                                            <h6 className="text-md fw-bold mb-0">
+                                                Marvin McKinney
+                                            </h6>
                                             <span className="w-6 h-6 bg-gray-500 rounded-circle" />
                                             <span className="text-sm fw-medium text-gray-700">
                                                 26 Apr, 2024
                                             </span>
                                         </div>
                                         <p className="mt-16 text-gray-700">
-                                            In a nisi commodo, porttitor ligula consequat, tincidunt dui.
-                                            Nulla volutpat, metus eu aliquam malesuada, elit libero
-                                            venenatis urna, consequat maximus arcu diam non diam.
+                                            In a nisi commodo, porttitor ligula
+                                            consequat, tincidunt dui. Nulla
+                                            volutpat, metus eu aliquam
+                                            malesuada, elit libero venenatis
+                                            urna, consequat maximus arcu diam
+                                            non diam.
                                         </p>
                                     </div>
                                 </div>
@@ -352,18 +380,24 @@ const BlogDetails = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <div className="flex-align gap-8">
-                                            <h6 className="text-md fw-bold mb-0">Kristin Watson</h6>
+                                            <h6 className="text-md fw-bold mb-0">
+                                                Kristin Watson
+                                            </h6>
                                             <span className="w-6 h-6 bg-gray-500 rounded-circle" />
                                             <span className="text-sm fw-medium text-gray-700">
                                                 24 Apr, 2024
                                             </span>
                                         </div>
                                         <p className="mt-16 text-gray-700">
-                                            Quisque eget tortor lobortis, facilisis metus eu, elementum
-                                            est. Nunc sit amet erat quis ex convallis suscipit. Nam
-                                            hendrerit, velit ut aliquam euismod, nibh tortor rutrum nisi,
-                                            ac sodales nunc eros porta nisi. Sed scelerisque, est eget
-                                            aliquam venenatis, est sem tempor eros.
+                                            Quisque eget tortor lobortis,
+                                            facilisis metus eu, elementum est.
+                                            Nunc sit amet erat quis ex convallis
+                                            suscipit. Nam hendrerit, velit ut
+                                            aliquam euismod, nibh tortor rutrum
+                                            nisi, ac sodales nunc eros porta
+                                            nisi. Sed scelerisque, est eget
+                                            aliquam venenatis, est sem tempor
+                                            eros.
                                         </p>
                                     </div>
                                 </div>
@@ -375,15 +409,18 @@ const BlogDetails = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <div className="flex-align gap-8">
-                                            <h6 className="text-md fw-bold mb-0">Jenny Wilson</h6>
+                                            <h6 className="text-md fw-bold mb-0">
+                                                Jenny Wilson
+                                            </h6>
                                             <span className="w-6 h-6 bg-gray-500 rounded-circle" />
                                             <span className="text-sm fw-medium text-gray-700">
                                                 20 Apr, 2024
                                             </span>
                                         </div>
                                         <p className="mt-16 text-gray-700">
-                                            Vestibulum ante ipsum primis in faucibus orci luctus et
-                                            ultrices posuere cubilia curae.
+                                            Vestibulum ante ipsum primis in
+                                            faucibus orci luctus et ultrices
+                                            posuere cubilia curae.
                                         </p>
                                     </div>
                                 </div>
@@ -395,16 +432,20 @@ const BlogDetails = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <div className="flex-align gap-8">
-                                            <h6 className="text-md fw-bold mb-0">Robert Fox</h6>
+                                            <h6 className="text-md fw-bold mb-0">
+                                                Robert Fox
+                                            </h6>
                                             <span className="w-6 h-6 bg-gray-500 rounded-circle" />
                                             <span className="text-sm fw-medium text-gray-700">
                                                 18 Apr, 2024
                                             </span>
                                         </div>
                                         <p className="mt-16 text-gray-700">
-                                            Pellentesque feugiat, nibh vel vehicula pretium, nibh nibh
-                                            bibendum elit, a volutpat arcu dui nec orci. Aenean dui odio,
-                                            ullamcorper quis turpis ac, volutpat imperdiet ex.
+                                            Pellentesque feugiat, nibh vel
+                                            vehicula pretium, nibh nibh bibendum
+                                            elit, a volutpat arcu dui nec orci.
+                                            Aenean dui odio, ullamcorper quis
+                                            turpis ac, volutpat imperdiet ex.
                                         </p>
                                     </div>
                                 </div>
@@ -416,14 +457,17 @@ const BlogDetails = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <div className="flex-align gap-8">
-                                            <h6 className="text-md fw-bold mb-0">Eleanor Pena</h6>
+                                            <h6 className="text-md fw-bold mb-0">
+                                                Eleanor Pena
+                                            </h6>
                                             <span className="w-6 h-6 bg-gray-500 rounded-circle" />
                                             <span className="text-sm fw-medium text-gray-700">
                                                 7 Apr, 2024
                                             </span>
                                         </div>
                                         <p className="mt-16 text-gray-700">
-                                            Nulla molestie interdum ultricies.{" "}
+                                            Nulla molestie interdum
+                                            ultricies.{" "}
                                         </p>
                                     </div>
                                 </div>
@@ -432,7 +476,8 @@ const BlogDetails = () => {
                                         type="submit"
                                         className="btn btn-main py-13 flex-align gap-8"
                                     >
-                                        Load More <i className="ph ph-spinner-gap text-2xl" />
+                                        Load More{" "}
+                                        <i className="ph ph-spinner-gap text-2xl" />
                                     </button>
                                 </div>
                             </form>
@@ -479,8 +524,12 @@ const BlogDetails = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -511,8 +560,12 @@ const BlogDetails = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -543,8 +596,12 @@ const BlogDetails = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -575,8 +632,12 @@ const BlogDetails = () => {
                                 </Link>
                                 <div className="flex-grow-1">
                                     <h6 className="text-lg">
-                                        <Link to="/blog-details" className="text-line-3">
-                                            Once determined you need to come up with a name
+                                        <Link
+                                            to="/blog-details"
+                                            className="text-line-3"
+                                        >
+                                            Once determined you need to come up
+                                            with a name
                                         </Link>
                                     </h6>
                                     <div className="flex-align flex-wrap gap-8">
@@ -662,7 +723,9 @@ const BlogDetails = () => {
                                         to="/blog-details"
                                         className="flex-between gap-8 text-gray-700 border border-gray-100 rounded-4 p-4 ps-16 hover-border-main-600 hover-text-main-600"
                                     >
-                                        <span>Mobile &amp; Accessories (16)</span>
+                                        <span>
+                                            Mobile &amp; Accessories (16)
+                                        </span>
                                         <span className="w-40 h-40 flex-center rounded-4 bg-main-50 text-main-600">
                                             <i className="ph ph-arrow-right" />
                                         </span>
@@ -686,8 +749,7 @@ const BlogDetails = () => {
                 </div>
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default BlogDetails
+export default BlogDetails;

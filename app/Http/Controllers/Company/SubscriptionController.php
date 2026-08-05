@@ -598,8 +598,12 @@ class SubscriptionController extends Controller
 
             Log::info('SSLCommerz Callback: payment FAILED', ['tran_id' => $transactionId]);
 
-            // Re-login so the result page can show the "Try Again" button
-            $this->reLoginCompanyAdmin($transaction->company);
+            // SECURITY: Do NOT auto-login on failed/cancelled paths.
+            // The tran_id is visible in the browser URL bar and Referer header,
+            // so calling reLoginCompanyAdmin() here would let anyone who obtains
+            // a tran_id (from history, logs, or a shared link) gain a persistent
+            // authenticated session for that company with no password required.
+            // The result page is fully public and does not require authentication.
 
             return redirect()->route('payment.result', [
                 'status'  => 'failed',
@@ -613,8 +617,7 @@ class SubscriptionController extends Controller
 
             Log::info('SSLCommerz Callback: payment CANCELLED', ['tran_id' => $transactionId]);
 
-            // Re-login so the result page can show the "View Plans" button
-            $this->reLoginCompanyAdmin($transaction->company);
+            // SECURITY: Same reasoning as the failed path — no auto-login here.
 
             return redirect()->route('payment.result', [
                 'status'  => 'cancelled',

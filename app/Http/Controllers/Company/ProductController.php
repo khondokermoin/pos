@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Unit;
 use App\Models\Tax;
+use App\Models\Branch;
 use App\Models\Stock;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
@@ -40,12 +41,13 @@ class ProductController extends Controller
     {
         $companyId = Auth::user()->company_id;
 
-        $categories = Category::where('company_id', $companyId)->get(); 
+        $categories = Category::where('company_id', $companyId)->get();
         $brands     = Brand::where('company_id', $companyId)->get();
         $units      = Unit::where('company_id', $companyId)->get();
         $taxes      = Tax::where('company_id', $companyId)->get();
+        $branches   = Branch::where('company_id', $companyId)->where('status', 'active')->get();
 
-        return view('company.products.create', compact('categories', 'brands', 'units', 'taxes'));
+        return view('company.products.create', compact('categories', 'brands', 'units', 'taxes', 'branches'));
     }
 
     /**
@@ -64,6 +66,7 @@ class ProductController extends Controller
             'description'  => 'nullable|string',
             'has_variants' => 'nullable|boolean',
             'image'        => 'nullable|image|max:2048',
+            'branch_id'    => 'required|exists:branches,id,company_id,' . $companyId,
 
             'variants'                 => 'required|array|min:1',
             'variants.*.sku'           => 'required|string|max:255',
@@ -115,11 +118,14 @@ class ProductController extends Controller
                 $variant = ProductVariant::create($variantData);
 
                 // গ) ইনিশিয়াল স্টক এবং Stock Movement এন্ট্রি
+                // নির্বাচিত ব্রাঞ্চে সরাসরি স্টক জমা হয় (Central Warehouse-এ নয়),
+                // যাতে POS ও Online Order চেকআউট branch_id দিয়ে স্টক খুঁজে পায়।
                 $initialStock = (int) ($variantData['stock'] ?? 0);
                 if ($initialStock > 0) {
                     Stock::updateOrCreate(
                         [
                             'company_id' => $companyId,
+                            'branch_id'  => $validated['branch_id'],
                             'product_id' => $product->id,
                             'variant_id' => $variant->id,
                         ],
@@ -131,6 +137,7 @@ class ProductController extends Controller
 
                     StockMovement::create([
                         'company_id' => $companyId,
+                        'branch_id'  => $validated['branch_id'],
                         'product_id' => $product->id,
                         'variant_id' => $variant->id,
                         'type'       => 'in',
@@ -185,8 +192,9 @@ class ProductController extends Controller
         $brands     = Brand::where('company_id', $companyId)->where('is_active', true)->get();
         $units      = Unit::where('company_id', $companyId)->where('is_active', true)->get();
         $taxes      = Tax::where('company_id', $companyId)->where('is_active', true)->get();
+        $branches   = Branch::where('company_id', $companyId)->where('status', 'active')->get();
 
-        return view('company.products.edit', compact('product', 'categories', 'brands', 'units', 'taxes'));
+        return view('company.products.edit', compact('product', 'categories', 'brands', 'units', 'taxes', 'branches'));
     }
 
     /**
@@ -205,6 +213,7 @@ class ProductController extends Controller
             'description'  => 'nullable|string',
             'has_variants' => 'nullable|boolean',
             'image'        => 'nullable|image|max:2048',
+            'branch_id'    => 'required|exists:branches,id,company_id,' . $companyId,
 
             'variants'                 => 'required|array|min:1',
             'variants.*.id'            => 'nullable|exists:product_variants,id', // Edit এর জন্য নতুন যুক্ত করা হয়েছে
@@ -272,15 +281,23 @@ class ProductController extends Controller
                     $newVariant = ProductVariant::create($variantData);
                     $processedVariantIds[] = $newVariant->id;
 
-                    // নতুন ভেরিয়েন্টের জন্য স্টক এন্ট্রি
+                    // নতুন ভেরিয়েন্টের জন্য স্টক এন্ট্রি — নির্বাচিত ব্রাঞ্চে সরাসরি জমা হয় (Central Warehouse-এ নয়)
                     $initialStock = (int) ($variantData['stock'] ?? 0);
                     if ($initialStock > 0) {
                         Stock::updateOrCreate(
-                            ['company_id' => $companyId, 'product_id' => $product->id, 'variant_id' => $newVariant->id],
+                            [
+                                'company_id' => $companyId,
+                                'branch_id'  => $validated['branch_id'],
+                                'product_id' => $product->id,
+                                'variant_id' => $newVariant->id,
+                            ],
                             ['quantity' => $initialStock, 'reorder_level' => $variantData['reorder_level']]
                         );
                         StockMovement::create([
-                            'company_id' => $companyId, 'product_id' => $product->id, 'variant_id' => $newVariant->id,
+                            'company_id' => $companyId,
+                            'branch_id'  => $validated['branch_id'],
+                            'product_id' => $product->id,
+                            'variant_id' => $newVariant->id,
                             'type' => 'in', 'quantity' => $initialStock, 'reference' => 'New Variant Initial Stock', 'user_id' => $userId,
                         ]);
                     }

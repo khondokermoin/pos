@@ -9,8 +9,13 @@ class Branch extends Model
 {
     use HasCompanyScope;
 
-    // সব কলাম ফিলাবেল রাখার জন্য guarded empty রাখা হয়েছে, যা ঠিক আছে
     protected $guarded = [];
+
+    protected $casts = [
+        'coverage_areas'        => 'array',
+        'is_default'            => 'boolean',
+        'accepts_online_orders' => 'boolean',
+    ];
 
     public function company()
     {
@@ -22,12 +27,17 @@ class Branch extends Model
         return $this->hasMany(User::class);
     }
 
-    /**
-     * ✅ এই নতুন মেথডটি যুক্ত করুন
-     * এটি branches টেবিলের manager_id কলামকে users টেবিলের id এর সাথে ম্যাপ করবে
-     */
     public function manager()
     {
         return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    /**
+     * Online orders that were routed to this branch.
+     */
+    public function onlineOrders()
+    {
+        return $this->hasMany(Sale::class, 'routed_branch_id')
+            ->where('order_type', 'online');
     }
 }

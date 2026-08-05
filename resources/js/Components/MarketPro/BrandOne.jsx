@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from "@inertiajs/react";
 import Slider from 'react-slick';
 
 const BrandOne = () => {
@@ -86,7 +86,7 @@ const BrandOne = () => {
                             <h5 className="mb-0">Shop by Brands</h5>
                             <div className="flex-align mr-point gap-16">
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline"
                                 >
                                     View All Deals

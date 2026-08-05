@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import Slider from 'react-slick';
-import { getCountdown } from '../../Helpers/Countdown';
+import React, { useEffect, useState } from "react";
+import { Link } from "@inertiajs/react";
+import Slider from "react-slick";
+import { getCountdown } from "../../Helpers/Countdown";
 
 const ProductDetailsTwo = () => {
     const [timeLeft, setTimeLeft] = useState(getCountdown());
@@ -21,12 +21,11 @@ const ProductDetailsTwo = () => {
         "/assets/images/thumbs/product-details-two-thumb2.png",
     ];
 
-
     // increment & decrement
     const [quantity, setQuantity] = useState(1);
     const incrementQuantity = () => setQuantity(quantity + 1);
-    const decrementQuantity = () => setQuantity(quantity > 1 ? quantity - 1 : quantity);
-
+    const decrementQuantity = () =>
+        setQuantity(quantity > 1 ? quantity - 1 : quantity);
 
     const [mainImage, setMainImage] = useState(productImages[0]);
 
@@ -49,18 +48,35 @@ const ProductDetailsTwo = () => {
                                     <div className="product-details__thumb-slider border border-gray-100 rounded-16">
                                         <div className="">
                                             <div className="product-details__thumb flex-center h-100">
-                                                <img src={mainImage} alt="Main Product" />
+                                                <img
+                                                    src={mainImage}
+                                                    alt="Main Product"
+                                                />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-24">
                                         <div className="product-details__images-slider">
                                             <Slider {...settingsThumbs}>
-                                                {productImages.map((image, index) => (
-                                                    <div className="center max-w-120 max-h-120 h-100 flex-center border border-gray-100 rounded-16 p-8" key={index} onClick={() => setMainImage(image)}>
-                                                        <img className='thum' src={image} alt={`Thumbnail ${index}`} />
-                                                    </div>
-                                                ))}
+                                                {productImages.map(
+                                                    (image, index) => (
+                                                        <div
+                                                            className="center max-w-120 max-h-120 h-100 flex-center border border-gray-100 rounded-16 p-8"
+                                                            key={index}
+                                                            onClick={() =>
+                                                                setMainImage(
+                                                                    image,
+                                                                )
+                                                            }
+                                                        >
+                                                            <img
+                                                                className="thum"
+                                                                src={image}
+                                                                alt={`Thumbnail ${index}`}
+                                                            />
+                                                        </div>
+                                                    ),
+                                                )}
                                             </Slider>
                                         </div>
                                     </div>
@@ -75,21 +91,30 @@ const ProductDetailsTwo = () => {
                                             className="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 z-n1"
                                         />
                                         <div className="flex-align gap-16">
-                                            <span className="text-white text-sm">Special Offer:</span>
+                                            <span className="text-white text-sm">
+                                                Special Offer:
+                                            </span>
                                         </div>
-                                        <div className="countdown" id="countdown11">
+                                        <div
+                                            className="countdown"
+                                            id="countdown11"
+                                        >
                                             <ul className="countdown-list flex-align flex-wrap">
                                                 <li className="countdown-list__item text-heading flex-align gap-4 text-xs fw-medium w-28 h-28 rounded-4 border border-main-600 p-0 flex-center">
-                                                    {timeLeft.days}<span className="days" />
+                                                    {timeLeft.days}
+                                                    <span className="days" />
                                                 </li>
                                                 <li className="countdown-list__item text-heading flex-align gap-4 text-xs fw-medium w-28 h-28 rounded-4 border border-main-600 p-0 flex-center">
-                                                    {timeLeft.hours}<span className="hours" />
+                                                    {timeLeft.hours}
+                                                    <span className="hours" />
                                                 </li>
                                                 <li className="countdown-list__item text-heading flex-align gap-4 text-xs fw-medium w-28 h-28 rounded-4 border border-main-600 p-0 flex-center">
-                                                    {timeLeft.minutes}<span className="minutes" />
+                                                    {timeLeft.minutes}
+                                                    <span className="minutes" />
                                                 </li>
                                                 <li className="countdown-list__item text-heading flex-align gap-4 text-xs fw-medium w-28 h-28 rounded-4 border border-main-600 p-0 flex-center">
-                                                    {timeLeft.seconds}<span className="seconds" />
+                                                    {timeLeft.seconds}
+                                                    <span className="seconds" />
                                                 </li>
                                             </ul>
                                         </div>
@@ -98,8 +123,8 @@ const ProductDetailsTwo = () => {
                                         </span>
                                     </div>
                                     <h5 className="mb-12">
-                                        HP Chromebook With Intel Celeron, 4GB Memory &amp; 64GB eMMC -
-                                        Modern Gray
+                                        HP Chromebook With Intel Celeron, 4GB
+                                        Memory &amp; 64GB eMMC - Modern Gray
                                     </h5>
                                     <div className="flex-align flex-wrap gap-12">
                                         <div className="flex-align gap-12 flex-wrap">
@@ -127,19 +152,27 @@ const ProductDetailsTwo = () => {
                                                 (21,671)
                                             </span>
                                         </div>
-                                        <span className="text-sm fw-medium text-gray-500">|</span>
+                                        <span className="text-sm fw-medium text-gray-500">
+                                            |
+                                        </span>
                                         <span className="text-gray-900">
                                             {" "}
-                                            <span className="text-gray-400">SKU:</span>EB4DRP{" "}
+                                            <span className="text-gray-400">
+                                                SKU:
+                                            </span>
+                                            EB4DRP{" "}
                                         </span>
                                     </div>
                                     <span className="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block" />
                                     <p className="text-gray-700">
-                                        Geared up and ready to roll: Get the responsive performance
-                                        you're looking for with an Intel processor and 64 GB eMMC
-                                        storage. Stay productive with compatible apps like Microsoft
-                                        Office, Google Workspace, and more. The Chrome OS gives you a
-                                        fast, simple, and secure online experience with built-in virus
+                                        Geared up and ready to roll: Get the
+                                        responsive performance you're looking
+                                        for with an Intel processor and 64 GB
+                                        eMMC storage. Stay productive with
+                                        compatible apps like Microsoft Office,
+                                        Google Workspace, and more. The Chrome
+                                        OS gives you a fast, simple, and secure
+                                        online experience with built-in virus
                                         protection.
                                     </p>
                                     <div className="my-32 flex-align gap-16 flex-wrap">
@@ -151,7 +184,9 @@ const ProductDetailsTwo = () => {
                                             <h6 className="mb-0">USD 320.99</h6>
                                         </div>
                                         <div className="flex-align gap-8">
-                                            <span className="text-gray-700">Regular Price</span>
+                                            <span className="text-gray-700">
+                                                Regular Price
+                                            </span>
                                             <h6 className="text-xl text-gray-400 mb-0 fw-medium">
                                                 USD 452.99
                                             </h6>
@@ -182,12 +217,16 @@ const ProductDetailsTwo = () => {
                                     </div>
                                     <span className="mt-32 pt-32 text-gray-700 border-top border-gray-100 d-block" />
                                     <div className="mt-32">
-                                        <h6 className="mb-16">Quick Overview</h6>
+                                        <h6 className="mb-16">
+                                            Quick Overview
+                                        </h6>
                                         <div className="flex-between align-items-start flex-wrap gap-16">
                                             <div>
                                                 <span className="text-gray-900 d-block mb-12">
                                                     Color:
-                                                    <span className="fw-medium">Mineral Silver</span>
+                                                    <span className="fw-medium">
+                                                        Mineral Silver
+                                                    </span>
                                                 </span>
                                                 <div className="color-list flex-align gap-8">
                                                     <button
@@ -215,7 +254,9 @@ const ProductDetailsTwo = () => {
                                             <div>
                                                 <span className="text-gray-900 d-block mb-12">
                                                     Pattern Name:
-                                                    <span className="fw-medium">with offer</span>
+                                                    <span className="fw-medium">
+                                                        with offer
+                                                    </span>
                                                 </span>
                                                 <div className="flex-align gap-8 flex-wrap">
                                                     <Link
@@ -253,7 +294,10 @@ const ProductDetailsTwo = () => {
                                             100% Guarantee Safe Checkout
                                         </span>
                                         <div className="mt-10">
-                                            <img src="/assets/images/thumbs/gateway-img.png" alt="" />
+                                            <img
+                                                src="/assets/images/thumbs/gateway-img.png"
+                                                alt=""
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +317,8 @@ const ProductDetailsTwo = () => {
                                     <span className="text-xl d-flex text-main-600">
                                         <i className="ph ph-map-pin" />
                                     </span>
-                                    <select defaultValue={1}
+                                    <select
+                                        defaultValue={1}
                                         className="common-input border-0 px-8 rounded-4"
                                         id="delivery"
                                     >
@@ -295,7 +340,8 @@ const ProductDetailsTwo = () => {
                                     <i className="ph ph-location" />
                                 </span>
                                 <div className="d-flex rounded-4 overflow-hidden">
-                                    <button onClick={decrementQuantity}
+                                    <button
+                                        onClick={decrementQuantity}
                                         type="button"
                                         className="quantity__minus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white"
                                     >
@@ -305,12 +351,11 @@ const ProductDetailsTwo = () => {
                                         type="number"
                                         className="quantity__input flex-grow-1 border border-gray-100 border-start-0 border-end-0 text-center w-32 px-16"
                                         id="stock"
-                                        value={
-                                            quantity
-                                        } readOnly
-
+                                        value={quantity}
+                                        readOnly
                                     />
-                                    <button onClick={incrementQuantity}
+                                    <button
+                                        onClick={incrementQuantity}
                                         type="button"
                                         className="quantity__plus flex-shrink-0 h-48 w-48 text-neutral-600 bg-gray-50 flex-center hover-bg-main-600 hover-text-white"
                                     >
@@ -324,8 +369,12 @@ const ProductDetailsTwo = () => {
                                     <h6 className="text-lg mb-0">$150.00</h6>
                                 </div>
                                 <div className="flex-between flex-wrap gap-8">
-                                    <span className="text-gray-500">Shipping</span>
-                                    <h6 className="text-lg mb-0">From $10.00</h6>
+                                    <span className="text-gray-500">
+                                        Shipping
+                                    </span>
+                                    <h6 className="text-lg mb-0">
+                                        From $10.00
+                                    </h6>
                                 </div>
                             </div>
                             <Link
@@ -347,7 +396,10 @@ const ProductDetailsTwo = () => {
                                         <i className="ph-fill ph-truck" />
                                     </span>
                                     <span className="text-sm text-neutral-600">
-                                        Ship from <span className="fw-semibold">MarketPro</span>{" "}
+                                        Ship from{" "}
+                                        <span className="fw-semibold">
+                                            MarketPro
+                                        </span>{" "}
                                     </span>
                                 </div>
                                 <div className="px-16 py-8 bg-main-50 rounded-8 flex-between gap-24 mb-0">
@@ -356,18 +408,26 @@ const ProductDetailsTwo = () => {
                                     </span>
                                     <span className="text-sm text-neutral-600">
                                         Sold by:{" "}
-                                        <span className="fw-semibold">MR Distribution LLC</span>{" "}
+                                        <span className="fw-semibold">
+                                            MR Distribution LLC
+                                        </span>{" "}
                                     </span>
                                 </div>
                             </div>
                             <div className="mt-32">
                                 <div className="px-32 py-16 rounded-8 border border-gray-100 flex-between gap-8">
-                                    <Link to="#" className="d-flex text-main-600 text-28">
+                                    <Link
+                                        to="#"
+                                        className="d-flex text-main-600 text-28"
+                                    >
                                         <i className="ph-fill ph-chats-teardrop" />
                                     </Link>
                                     <span className="h-26 border border-gray-100" />
                                     <div className="dropdown on-hover-item">
-                                        <button className="d-flex text-main-600 text-28" type="button">
+                                        <button
+                                            className="d-flex text-main-600 text-28"
+                                            type="button"
+                                        >
                                             <i className="ph-fill ph-share-network" />
                                         </button>
                                         <div className="on-hover-dropdown common-dropdown border-0 inset-inline-start-auto inset-inline-end-0">
@@ -453,7 +513,10 @@ const ProductDetailsTwo = () => {
                                 to="#"
                                 className="btn bg-color-one rounded-16 flex-align gap-8 text-main-600 hover-bg-main-600 hover-text-white"
                             >
-                                <img src="/assets/images/icon/satisfaction-icon.png" alt="" />
+                                <img
+                                    src="/assets/images/icon/satisfaction-icon.png"
+                                    alt=""
+                                />
                                 100% Satisfaction Guaranteed
                             </Link>
                         </div>
@@ -467,44 +530,68 @@ const ProductDetailsTwo = () => {
                                     tabIndex={0}
                                 >
                                     <div className="mb-40">
-                                        <h6 className="mb-24">Product Description</h6>
+                                        <h6 className="mb-24">
+                                            Product Description
+                                        </h6>
                                         <p>
-                                            Wherever celebrations and good times happen, the LAY'S brand
-                                            will be there just as it has been for more than 75 years. With
-                                            flavors almost as rich as our history, we have a chip or crisp
-                                            flavor guaranteed to bring a smile on your face.{" "}
+                                            Wherever celebrations and good times
+                                            happen, the LAY'S brand will be
+                                            there just as it has been for more
+                                            than 75 years. With flavors almost
+                                            as rich as our history, we have a
+                                            chip or crisp flavor guaranteed to
+                                            bring a smile on your face.{" "}
                                         </p>
                                         <p>
-                                            Morbi ut sapien vitae odio accumsan gravida. Morbi vitae erat
-                                            auctor, eleifend nunc a, lobortis neque. Praesent aliquam
-                                            dignissim viverra. Maecenas lacus odio, feugiat eu nunc sit
-                                            amet, maximus sagittis dolor. Vivamus nisi sapien, elementum
-                                            sit amet eros sit amet, ultricies cursus ipsum. Sed consequat
-                                            luctus ligula. Curabitur laoreet rhoncus blandit. Aenean vel
-                                            diam ut arcu pharetra dignissim ut sed leo. Vivamus faucibus,
-                                            ipsum in vestibulum vulputate, lorem orci convallis quam, sit
-                                            amet consequat nulla felis pharetra lacus. Duis semper erat
-                                            mauris, sed egestas purus commodo vel.
+                                            Morbi ut sapien vitae odio accumsan
+                                            gravida. Morbi vitae erat auctor,
+                                            eleifend nunc a, lobortis neque.
+                                            Praesent aliquam dignissim viverra.
+                                            Maecenas lacus odio, feugiat eu nunc
+                                            sit amet, maximus sagittis dolor.
+                                            Vivamus nisi sapien, elementum sit
+                                            amet eros sit amet, ultricies cursus
+                                            ipsum. Sed consequat luctus ligula.
+                                            Curabitur laoreet rhoncus blandit.
+                                            Aenean vel diam ut arcu pharetra
+                                            dignissim ut sed leo. Vivamus
+                                            faucibus, ipsum in vestibulum
+                                            vulputate, lorem orci convallis
+                                            quam, sit amet consequat nulla felis
+                                            pharetra lacus. Duis semper erat
+                                            mauris, sed egestas purus commodo
+                                            vel.
                                         </p>
                                         <ul className="list-inside mt-32 ms-16">
                                             <li className="text-gray-400 mb-4">
-                                                8.0 oz. bag of LAY'S Classic Potato Chips
+                                                8.0 oz. bag of LAY'S Classic
+                                                Potato Chips
                                             </li>
                                             <li className="text-gray-400 mb-4">
-                                                Tasty LAY's potato chips are a great snack
+                                                Tasty LAY's potato chips are a
+                                                great snack
                                             </li>
                                             <li className="text-gray-400 mb-4">
-                                                Includes three ingredients: potatoes, oil, and salt
+                                                Includes three ingredients:
+                                                potatoes, oil, and salt
                                             </li>
-                                            <li className="text-gray-400 mb-4">Gluten free product</li>
+                                            <li className="text-gray-400 mb-4">
+                                                Gluten free product
+                                            </li>
                                         </ul>
                                         <ul className="mt-32">
-                                            <li className="text-gray-400 mb-4">Made in USA</li>
-                                            <li className="text-gray-400 mb-4">Ready To Eat.</li>
+                                            <li className="text-gray-400 mb-4">
+                                                Made in USA
+                                            </li>
+                                            <li className="text-gray-400 mb-4">
+                                                Ready To Eat.
+                                            </li>
                                         </ul>
                                     </div>
                                     <div className="mb-40">
-                                        <h6 className="mb-24">Product Specifications</h6>
+                                        <h6 className="mb-24">
+                                            Product Specifications
+                                        </h6>
                                         <ul className="mt-32">
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
                                                 <span className="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
@@ -512,7 +599,10 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-heading fw-medium">
                                                     Product Type:
-                                                    <span className="text-gray-500"> Chips &amp; Dips</span>
+                                                    <span className="text-gray-500">
+                                                        {" "}
+                                                        Chips &amp; Dips
+                                                    </span>
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -523,7 +613,8 @@ const ProductDetailsTwo = () => {
                                                     Product Name:
                                                     <span className="text-gray-500">
                                                         {" "}
-                                                        Potato Chips Classic{" "}
+                                                        Potato Chips
+                                                        Classic{" "}
                                                     </span>
                                                 </span>
                                             </li>
@@ -533,7 +624,10 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-heading fw-medium">
                                                     Brand:
-                                                    <span className="text-gray-500"> Lay's</span>
+                                                    <span className="text-gray-500">
+                                                        {" "}
+                                                        Lay's
+                                                    </span>
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -542,7 +636,10 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-heading fw-medium">
                                                     FSA Eligible:
-                                                    <span className="text-gray-500"> No</span>
+                                                    <span className="text-gray-500">
+                                                        {" "}
+                                                        No
+                                                    </span>
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -551,7 +648,10 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-heading fw-medium">
                                                     Size/Count:
-                                                    <span className="text-gray-500"> 8.0oz</span>
+                                                    <span className="text-gray-500">
+                                                        {" "}
+                                                        8.0oz
+                                                    </span>
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -560,7 +660,10 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-heading fw-medium">
                                                     Item Code:
-                                                    <span className="text-gray-500"> 331539</span>
+                                                    <span className="text-gray-500">
+                                                        {" "}
+                                                        331539
+                                                    </span>
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -571,14 +674,17 @@ const ProductDetailsTwo = () => {
                                                     Ingredients:
                                                     <span className="text-gray-500">
                                                         {" "}
-                                                        Potatoes, Vegetable Oil, and Salt.
+                                                        Potatoes, Vegetable Oil,
+                                                        and Salt.
                                                     </span>
                                                 </span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div className="mb-40">
-                                        <h6 className="mb-24">Nutrition Facts</h6>
+                                        <h6 className="mb-24">
+                                            Nutrition Facts
+                                        </h6>
                                         <ul className="mt-32">
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
                                                 <span className="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
@@ -636,7 +742,8 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-gray-500">
                                                     {" "}
-                                                    Lunarlon midsole delivers ultra-plush responsiveness
+                                                    Lunarlon midsole delivers
+                                                    ultra-plush responsiveness
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -645,7 +752,9 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-gray-500">
                                                     {" "}
-                                                    Encapsulated Air-Sole heel unit for lightweight cushioning
+                                                    Encapsulated Air-Sole heel
+                                                    unit for lightweight
+                                                    cushioning
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
@@ -654,14 +763,19 @@ const ProductDetailsTwo = () => {
                                                 </span>
                                                 <span className="text-gray-500">
                                                     {" "}
-                                                    Colour Shown: Ale Brown/Black/Goldtone/Ale Brown
+                                                    Colour Shown: Ale
+                                                    Brown/Black/Goldtone/Ale
+                                                    Brown
                                                 </span>
                                             </li>
                                             <li className="text-gray-400 mb-14 flex-align gap-14">
                                                 <span className="w-20 h-20 bg-main-50 text-main-600 text-xs flex-center rounded-circle">
                                                     <i className="ph ph-check" />
                                                 </span>
-                                                <span className="text-gray-500"> Style: 805899-202</span>
+                                                <span className="text-gray-500">
+                                                    {" "}
+                                                    Style: 805899-202
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -675,7 +789,9 @@ const ProductDetailsTwo = () => {
                                 >
                                     <div className="row g-4">
                                         <div className="col-lg-6">
-                                            <h6 className="mb-24">Product Description</h6>
+                                            <h6 className="mb-24">
+                                                Product Description
+                                            </h6>
                                             <div className="d-flex align-items-start gap-24 pb-44 border-bottom border-gray-100 mb-44">
                                                 <img
                                                     src="/assets/images/thumbs/comment-img1.png"
@@ -685,7 +801,9 @@ const ProductDetailsTwo = () => {
                                                 <div className="flex-grow-1">
                                                     <div className="flex-between align-items-start gap-8 ">
                                                         <div className="">
-                                                            <h6 className="mb-12 text-md">Nicolas cage</h6>
+                                                            <h6 className="mb-12 text-md">
+                                                                Nicolas cage
+                                                            </h6>
                                                             <div className="flex-align gap-8">
                                                                 <span className="text-15 fw-medium text-warning-600 d-flex">
                                                                     <i className="ph-fill ph-star" />
@@ -708,11 +826,17 @@ const ProductDetailsTwo = () => {
                                                             3 Days ago
                                                         </span>
                                                     </div>
-                                                    <h6 className="mb-14 text-md mt-24">Greate Product</h6>
+                                                    <h6 className="mb-14 text-md mt-24">
+                                                        Greate Product
+                                                    </h6>
                                                     <p className="text-gray-700">
-                                                        There are many variations of passages of Lorem Ipsum
-                                                        available, but the majority have suffered alteration in
-                                                        some form, by injected humour
+                                                        There are many
+                                                        variations of passages
+                                                        of Lorem Ipsum
+                                                        available, but the
+                                                        majority have suffered
+                                                        alteration in some form,
+                                                        by injected humour
                                                     </p>
                                                     <div className="flex-align gap-20 mt-44">
                                                         <button className="flex-align gap-12 text-gray-700 hover-text-main-600">
@@ -738,7 +862,9 @@ const ProductDetailsTwo = () => {
                                                 <div className="flex-grow-1">
                                                     <div className="flex-between align-items-start gap-8 ">
                                                         <div className="">
-                                                            <h6 className="mb-12 text-md">Nicolas cage</h6>
+                                                            <h6 className="mb-12 text-md">
+                                                                Nicolas cage
+                                                            </h6>
                                                             <div className="flex-align gap-8">
                                                                 <span className="text-15 fw-medium text-warning-600 d-flex">
                                                                     <i className="ph-fill ph-star" />
@@ -761,11 +887,17 @@ const ProductDetailsTwo = () => {
                                                             3 Days ago
                                                         </span>
                                                     </div>
-                                                    <h6 className="mb-14 text-md mt-24">Greate Product</h6>
+                                                    <h6 className="mb-14 text-md mt-24">
+                                                        Greate Product
+                                                    </h6>
                                                     <p className="text-gray-700">
-                                                        There are many variations of passages of Lorem Ipsum
-                                                        available, but the majority have suffered alteration in
-                                                        some form, by injected humour
+                                                        There are many
+                                                        variations of passages
+                                                        of Lorem Ipsum
+                                                        available, but the
+                                                        majority have suffered
+                                                        alteration in some form,
+                                                        by injected humour
                                                     </p>
                                                     <div className="flex-align gap-20 mt-44">
                                                         <button className="flex-align gap-12 text-gray-700 hover-text-main-600">
@@ -784,9 +916,12 @@ const ProductDetailsTwo = () => {
                                             </div>
                                             <div className="mt-56">
                                                 <div className="">
-                                                    <h6 className="mb-24">Write a Review</h6>
+                                                    <h6 className="mb-24">
+                                                        Write a Review
+                                                    </h6>
                                                     <span className="text-heading mb-8">
-                                                        What is it like to Product?
+                                                        What is it like to
+                                                        Product?
                                                     </span>
                                                     <div className="flex-align gap-8">
                                                         <span className="text-15 fw-medium text-warning-600 d-flex">
@@ -849,10 +984,14 @@ const ProductDetailsTwo = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="ms-xxl-5">
-                                                <h6 className="mb-24">Customers Feedback</h6>
+                                                <h6 className="mb-24">
+                                                    Customers Feedback
+                                                </h6>
                                                 <div className="d-flex flex-wrap gap-44">
                                                     <div className="border border-gray-100 rounded-8 px-40 py-52 flex-center flex-column flex-shrink-0 text-center">
-                                                        <h2 className="mb-6 text-main-600">4.8</h2>
+                                                        <h2 className="mb-6 text-main-600">
+                                                            4.8
+                                                        </h2>
                                                         <div className="flex-center gap-8">
                                                             <span className="text-15 fw-medium text-warning-600 d-flex">
                                                                 <i className="ph-fill ph-star" />
@@ -871,23 +1010,34 @@ const ProductDetailsTwo = () => {
                                                             </span>
                                                         </div>
                                                         <span className="mt-16 text-gray-500">
-                                                            Average Product Rating
+                                                            Average Product
+                                                            Rating
                                                         </span>
                                                     </div>
                                                     <div className="border border-gray-100 rounded-8 px-24 py-40 flex-grow-1">
                                                         <div className="flex-align gap-8 mb-20">
-                                                            <span className="text-gray-900 flex-shrink-0">5</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                5
+                                                            </span>
                                                             <div
                                                                 className="progress w-100 bg-gray-100 rounded-pill h-8"
                                                                 role="progressbar"
                                                                 aria-label="Basic example"
-                                                                aria-valuenow={70}
-                                                                aria-valuemin={0}
-                                                                aria-valuemax={100}
+                                                                aria-valuenow={
+                                                                    70
+                                                                }
+                                                                aria-valuemin={
+                                                                    0
+                                                                }
+                                                                aria-valuemax={
+                                                                    100
+                                                                }
                                                             >
                                                                 <div
                                                                     className="progress-bar bg-main-600 rounded-pill"
-                                                                    style={{ width: "70%" }}
+                                                                    style={{
+                                                                        width: "70%",
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div className="flex-align gap-4">
@@ -912,18 +1062,28 @@ const ProductDetailsTwo = () => {
                                                             </span>
                                                         </div>
                                                         <div className="flex-align gap-8 mb-20">
-                                                            <span className="text-gray-900 flex-shrink-0">4</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                4
+                                                            </span>
                                                             <div
                                                                 className="progress w-100 bg-gray-100 rounded-pill h-8"
                                                                 role="progressbar"
                                                                 aria-label="Basic example"
-                                                                aria-valuenow={50}
-                                                                aria-valuemin={0}
-                                                                aria-valuemax={100}
+                                                                aria-valuenow={
+                                                                    50
+                                                                }
+                                                                aria-valuemin={
+                                                                    0
+                                                                }
+                                                                aria-valuemax={
+                                                                    100
+                                                                }
                                                             >
                                                                 <div
                                                                     className="progress-bar bg-main-600 rounded-pill"
-                                                                    style={{ width: "50%" }}
+                                                                    style={{
+                                                                        width: "50%",
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div className="flex-align gap-4">
@@ -948,18 +1108,28 @@ const ProductDetailsTwo = () => {
                                                             </span>
                                                         </div>
                                                         <div className="flex-align gap-8 mb-20">
-                                                            <span className="text-gray-900 flex-shrink-0">3</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                3
+                                                            </span>
                                                             <div
                                                                 className="progress w-100 bg-gray-100 rounded-pill h-8"
                                                                 role="progressbar"
                                                                 aria-label="Basic example"
-                                                                aria-valuenow={35}
-                                                                aria-valuemin={0}
-                                                                aria-valuemax={100}
+                                                                aria-valuenow={
+                                                                    35
+                                                                }
+                                                                aria-valuemin={
+                                                                    0
+                                                                }
+                                                                aria-valuemax={
+                                                                    100
+                                                                }
                                                             >
                                                                 <div
                                                                     className="progress-bar bg-main-600 rounded-pill"
-                                                                    style={{ width: "35%" }}
+                                                                    style={{
+                                                                        width: "35%",
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div className="flex-align gap-4">
@@ -984,18 +1154,28 @@ const ProductDetailsTwo = () => {
                                                             </span>
                                                         </div>
                                                         <div className="flex-align gap-8 mb-20">
-                                                            <span className="text-gray-900 flex-shrink-0">2</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                2
+                                                            </span>
                                                             <div
                                                                 className="progress w-100 bg-gray-100 rounded-pill h-8"
                                                                 role="progressbar"
                                                                 aria-label="Basic example"
-                                                                aria-valuenow={20}
-                                                                aria-valuemin={0}
-                                                                aria-valuemax={100}
+                                                                aria-valuenow={
+                                                                    20
+                                                                }
+                                                                aria-valuemin={
+                                                                    0
+                                                                }
+                                                                aria-valuemax={
+                                                                    100
+                                                                }
                                                             >
                                                                 <div
                                                                     className="progress-bar bg-main-600 rounded-pill"
-                                                                    style={{ width: "20%" }}
+                                                                    style={{
+                                                                        width: "20%",
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div className="flex-align gap-4">
@@ -1015,21 +1195,33 @@ const ProductDetailsTwo = () => {
                                                                     <i className="ph-fill ph-star" />
                                                                 </span>
                                                             </div>
-                                                            <span className="text-gray-900 flex-shrink-0">5</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                5
+                                                            </span>
                                                         </div>
                                                         <div className="flex-align gap-8 mb-0">
-                                                            <span className="text-gray-900 flex-shrink-0">1</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                1
+                                                            </span>
                                                             <div
                                                                 className="progress w-100 bg-gray-100 rounded-pill h-8"
                                                                 role="progressbar"
                                                                 aria-label="Basic example"
-                                                                aria-valuenow={5}
-                                                                aria-valuemin={0}
-                                                                aria-valuemax={100}
+                                                                aria-valuenow={
+                                                                    5
+                                                                }
+                                                                aria-valuemin={
+                                                                    0
+                                                                }
+                                                                aria-valuemax={
+                                                                    100
+                                                                }
                                                             >
                                                                 <div
                                                                     className="progress-bar bg-main-600 rounded-pill"
-                                                                    style={{ width: "5%" }}
+                                                                    style={{
+                                                                        width: "5%",
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div className="flex-align gap-4">
@@ -1049,7 +1241,9 @@ const ProductDetailsTwo = () => {
                                                                     <i className="ph-fill ph-star" />
                                                                 </span>
                                                             </div>
-                                                            <span className="text-gray-900 flex-shrink-0">2</span>
+                                                            <span className="text-gray-900 flex-shrink-0">
+                                                                2
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1063,8 +1257,7 @@ const ProductDetailsTwo = () => {
                 </div>
             </div>
         </section>
+    );
+};
 
-    )
-}
-
-export default ProductDetailsTwo
+export default ProductDetailsTwo;

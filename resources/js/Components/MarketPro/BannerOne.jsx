@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from "@inertiajs/react";
 import Slider from "react-slick";
 const BannerOne = () => {
 
@@ -71,7 +71,7 @@ const BannerOne = () => {
                                             Daily Grocery Order and Get Express Delivery
                                         </h1>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8"
                                         >
                                             Explore Shop{" "}
@@ -92,7 +92,7 @@ const BannerOne = () => {
                                             Daily Grocery Order and Get Express Delivery
                                         </h1>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-main d-inline-flex align-items-center rounded-pill gap-8"
                                         >
                                             Explore Shop{" "}

@@ -59,15 +59,15 @@ class PurchaseReturnController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'purchase_id'                  => 'required|exists:purchases,id',
-            'reason'                       => 'required|string|max:500',
-            'items'                        => 'required|array|min:1',
-            'items.*.purchase_item_id'     => 'required|exists:purchase_items,id',
-            'items.*.qty'                  => 'required|integer|min:1',
-        ]);
-
         $companyId = $this->companyId();
+
+        $data = $request->validate([
+            'purchase_id'              => 'required|exists:purchases,id,company_id,' . $companyId,
+            'reason'                   => 'required|string|max:500',
+            'items'                    => 'required|array|min:1',
+            'items.*.purchase_item_id' => 'required|exists:purchase_items,id',
+            'items.*.qty'              => 'required|integer|min:1',
+        ]);
 
         DB::transaction(function () use ($data, $companyId) {
             $lastNo   = PurchaseReturn::where('company_id', $companyId)->count() + 1;
@@ -76,19 +76,23 @@ class PurchaseReturnController extends Controller
             $totalAmount = 0;
 
             $purchaseReturn = PurchaseReturn::create([
-                'company_id'  => $companyId,
-                'purchase_id' => $data['purchase_id'],
-                'return_no'   => $returnNo,
+                'company_id'   => $companyId,
+                'purchase_id'  => $data['purchase_id'],
+                'return_no'    => $returnNo,
                 'total_amount' => 0,
-                'reason'      => $data['reason'],
-                'status'      => 'approved',
-                'created_by'  => Auth::id(),
+                'reason'       => $data['reason'],
+                'status'       => 'approved',
+                'created_by'   => Auth::id(),
             ]);
 
             $purchase = Purchase::find($data['purchase_id']);
 
             foreach ($data['items'] as $item) {
-                $purchaseItem = PurchaseItem::findOrFail($item['purchase_item_id']);
+                // Security: verify the purchase_item belongs to a purchase owned by this company.
+                $purchaseItem = PurchaseItem::whereHas(
+                    'purchase',
+                    fn($q) => $q->where('company_id', $companyId)
+                )->findOrFail($item['purchase_item_id']);
                 $subtotal     = $purchaseItem->unit_price * $item['qty'];
                 $totalAmount += $subtotal;
 

@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
 import query from "jquery";
-import "select2";
+import initSelect2 from "select2";
 import "select2/dist/css/select2.min.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from '@inertiajs/react';
 
-const HeaderThree = () => {
+// select2's UMD build exports a factory — `import "select2"` alone never calls it,
+// so `$.fn.select2` is never attached under Vite. It must be invoked explicitly
+// against the same jQuery instance used below (window.jQuery so the plugin's
+// internal `require('jquery')` fallback resolves to this instance too).
+if (typeof window !== "undefined") {
+    window.jQuery = window.jQuery || query;
+    window.$ = window.$ || query;
+    if (typeof query.fn.select2 !== "function") {
+        initSelect2(window, query);
+    }
+}
+
+const HeaderThree = ({ tenant, categories } = {}) => {
   const [scroll, setScroll] = useState(false);
   useEffect(() => {
     window.onscroll = () => {
@@ -120,7 +132,7 @@ const HeaderThree = () => {
           <i className='ph ph-x' />{" "}
         </button>
         <div className='mobile-menu__inner'>
-          <Link to='/' className='mobile-menu__logo'>
+          <Link href='/' className='mobile-menu__logo'>
             <img src='/assets/images/logo/logo.png' alt='Logo' />
           </Link>
           <div className='mobile-menu__menu'>
@@ -132,7 +144,7 @@ const HeaderThree = () => {
                   activeIndex === 0 ? "d-block" : ""
                 }`}
               >
-                <Link to='#' className='nav-menu__link'>
+                <Link href='#' className='nav-menu__link'>
                   Home
                 </Link>
                 <ul
@@ -143,7 +155,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/'
+                      href='/'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Home Grocery
@@ -152,7 +164,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/index-two'
+                      href='/index-two'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -162,7 +174,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/index-three'
+                      href='/index-three'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Home Fashion
@@ -176,7 +188,7 @@ const HeaderThree = () => {
                   activeIndex === 1 ? "d-block" : ""
                 }`}
               >
-                <Link to='#' className='nav-menu__link'>
+                <Link href='#' className='nav-menu__link'>
                   Shop
                 </Link>
                 <ul
@@ -187,7 +199,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/shop'
+                      href='/shop'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -197,7 +209,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/product-details'
+                      href='/product-details'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -207,7 +219,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/product-details-two'
+                      href='/product-details-two'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -225,7 +237,7 @@ const HeaderThree = () => {
                 <span className='badge-notification bg-warning-600 text-white text-sm py-2 px-8 rounded-4'>
                   New
                 </span>
-                <Link to='#' className='nav-menu__link'>
+                <Link href='#' className='nav-menu__link'>
                   Pages
                 </Link>
                 <ul
@@ -236,7 +248,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/cart'
+                      href='/cart'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -246,7 +258,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/wishlist'
+                      href='/wishlist'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Wishlist
@@ -255,7 +267,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/checkout'
+                      href='/checkout'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Checkout
@@ -264,7 +276,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/become-seller'
+                      href='/become-seller'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Become Seller
@@ -273,7 +285,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/account'
+                      href='/account'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Account
@@ -290,7 +302,7 @@ const HeaderThree = () => {
                 <span className='badge-notification bg-tertiary-600 text-white text-sm py-2 px-8 rounded-4'>
                   New
                 </span>
-                <Link to='#' className='nav-menu__link'>
+                <Link href='#' className='nav-menu__link'>
                   Vendors
                 </Link>
                 <ul
@@ -301,7 +313,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/vendor'
+                      href='/vendor'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Vendor
@@ -310,7 +322,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/vendor-details'
+                      href='/vendor-details'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Vendor Details
@@ -319,7 +331,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/vendor-two'
+                      href='/vendor-two'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Vendors Two
@@ -328,7 +340,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/vendor-two-details'
+                      href='/vendor-two-details'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       Vendors Two Details
@@ -342,7 +354,7 @@ const HeaderThree = () => {
                   activeIndex === 4 ? "d-block" : ""
                 }`}
               >
-                <Link to='#' className='nav-menu__link'>
+                <Link href='#' className='nav-menu__link'>
                   Blog
                 </Link>
                 <ul
@@ -353,7 +365,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/blog'
+                      href='/blog'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -363,7 +375,7 @@ const HeaderThree = () => {
                   <li className='common-dropdown__item nav-submenu__item'>
                     <Link
                       onClick={() => setActiveIndex(null)}
-                      to='/blog-details'
+                      href='/blog-details'
                       className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                     >
                       {" "}
@@ -373,7 +385,7 @@ const HeaderThree = () => {
                 </ul>
               </li>
               <li className='nav-menu__item'>
-                <Link to='/contact' className='nav-menu__link'>
+                <Link href='/contact' className='nav-menu__link'>
                   Contact Us
                 </Link>
               </li>
@@ -389,8 +401,8 @@ const HeaderThree = () => {
           <nav className='header-inner flex-between'>
             {/* Logo Start */}
             <div className='logo'>
-              <Link to='/' className='link'>
-                <img src='/assets/images/logo/logo-two.png' alt='Logo' />
+              <Link href='/' className='link'>
+                <img src={tenant?.logo_url ?? '/assets/images/logo/logo-two.png'} alt={tenant?.name ?? 'Logo'} />
               </Link>
             </div>
             {/* Logo End  */}
@@ -401,7 +413,7 @@ const HeaderThree = () => {
                 <ul className='header-top__right style-two flex-align flex-wrap'>
                   <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
                     <Link
-                      to='#'
+                      href='#'
                       className='selected-text text-heading text-sm py-8'
                     >
                       {selectedLanguage}
@@ -409,7 +421,7 @@ const HeaderThree = () => {
                     <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("English")}
                         >
@@ -423,7 +435,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("Japan")}
                         >
@@ -437,7 +449,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("French")}
                         >
@@ -451,7 +463,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("Germany")}
                         >
@@ -465,7 +477,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("Bangladesh")}
                         >
@@ -479,7 +491,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("South Korea")}
                         >
@@ -495,7 +507,7 @@ const HeaderThree = () => {
                   </li>
                   <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
                     <Link
-                      to='#'
+                      href='#'
                       className='selected-text text-heading text-sm py-8'
                     >
                       {selectedCurrency}
@@ -503,7 +515,7 @@ const HeaderThree = () => {
                     <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("USD")}
                         >
@@ -517,7 +529,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("Yen")}
                         >
@@ -531,7 +543,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("Franc")}
                         >
@@ -545,7 +557,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("EURO")}
                         >
@@ -559,7 +571,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("BDT")}
                         >
@@ -573,7 +585,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("WON")}
                         >
@@ -642,7 +654,7 @@ const HeaderThree = () => {
                   </span>
                 </button>
                 <Link
-                  to='/account'
+                  href='/account'
                   className='flex-align flex-column gap-8 item-hover-two'
                 >
                   <span className='text-2xl text-white d-flex position-relative item-hover__text'>
@@ -653,7 +665,7 @@ const HeaderThree = () => {
                   </span>
                 </Link>
                 <Link
-                  to='/wishlist'
+                  href='/wishlist'
                   className='flex-align flex-column gap-8 item-hover-two'
                 >
                   <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
@@ -667,7 +679,7 @@ const HeaderThree = () => {
                   </span>
                 </Link>
                 <Link
-                  to='/cart'
+                  href='/cart'
                   className='flex-align flex-column gap-8 item-hover-two'
                 >
                   <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
@@ -681,7 +693,7 @@ const HeaderThree = () => {
                   </span>
                 </Link>
                 <Link
-                  to='/cart'
+                  href='/cart'
                   className='flex-align flex-column gap-8 item-hover-two'
                 >
                   <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
@@ -741,7 +753,7 @@ const HeaderThree = () => {
                     <i className='ph ph-x' />{" "}
                   </button>
                   <div className='logo px-16 d-lg-none d-block'>
-                    <Link to='/' className='link'>
+                    <Link href='/' className='link'>
                       <img src='/assets/images/logo/logo.png' alt='Logo' />
                     </Link>
                   </div>
@@ -754,7 +766,7 @@ const HeaderThree = () => {
                     >
                       <Link
                         onClick={() => setActiveIndexCat(null)}
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Cell Phone</span>
@@ -772,22 +784,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -799,7 +811,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Wear</span>
@@ -817,22 +829,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -844,7 +856,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Computer</span>
@@ -862,22 +874,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -889,7 +901,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Headphone</span>
@@ -907,22 +919,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -934,7 +946,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Smart Screen</span>
@@ -952,22 +964,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -979,7 +991,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Smart Home</span>
@@ -997,22 +1009,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1024,7 +1036,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Digital Accessories</span>
@@ -1042,22 +1054,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1069,7 +1081,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span> Value Added Services</span>
@@ -1088,22 +1100,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1115,7 +1127,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Car Products</span>
@@ -1133,22 +1145,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1160,7 +1172,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Ecological Products</span>
@@ -1178,22 +1190,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1205,7 +1217,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Flat</span>
@@ -1223,22 +1235,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1250,7 +1262,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Commercial Terminal</span>
@@ -1268,22 +1280,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1295,7 +1307,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Headphone</span>
@@ -1313,22 +1325,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1340,7 +1352,7 @@ const HeaderThree = () => {
                       }`}
                     >
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span>Smart Screen</span>
@@ -1358,22 +1370,22 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Samsung</Link>
+                            <Link href='/shop'>Samsung</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Iphone</Link>
+                            <Link href='/shop'>Iphone</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Vivo</Link>
+                            <Link href='/shop'>Vivo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Oppo</Link>
+                            <Link href='/shop'>Oppo</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Itel</Link>
+                            <Link href='/shop'>Itel</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Realme</Link>
+                            <Link href='/shop'>Realme</Link>
                           </li>
                         </ul>
                       </div>
@@ -1402,14 +1414,14 @@ const HeaderThree = () => {
                     <i className='ph ph-x' />{" "}
                   </button>
                   <div className='logo px-16 d-lg-none d-block'>
-                    <Link to='/' className='link'>
+                    <Link href='/' className='link'>
                       <img src='/assets/images/logo/logo.png' alt='Logo' />
                     </Link>
                   </div>
                   <ul className='scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto'>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1426,35 +1438,35 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Potato &amp; Tomato</Link>
+                            <Link href='/shop'>Potato &amp; Tomato</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Cucumber &amp; Capsicum</Link>
+                            <Link href='/shop'>Cucumber &amp; Capsicum</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Leafy Vegetables</Link>
+                            <Link href='/shop'>Leafy Vegetables</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Root Vegetables</Link>
+                            <Link href='/shop'>Root Vegetables</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Beans &amp; Okra</Link>
+                            <Link href='/shop'>Beans &amp; Okra</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Cabbage &amp; Cauliflower</Link>
+                            <Link href='/shop'>Cabbage &amp; Cauliflower</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Gourd &amp; Drumstick</Link>
+                            <Link href='/shop'>Gourd &amp; Drumstick</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Specialty</Link>
+                            <Link href='/shop'>Specialty</Link>
                           </li>
                         </ul>
                       </div>
                     </li>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1471,29 +1483,29 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'>Soda &amp; Cocktail Mix </Link>
+                            <Link href='/shop'>Soda &amp; Cocktail Mix </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Sports &amp; Energy Drinks</Link>
+                            <Link href='/shop'> Sports &amp; Energy Drinks</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Non Alcoholic Drinks</Link>
+                            <Link href='/shop'> Non Alcoholic Drinks</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Packaged Water </Link>
+                            <Link href='/shop'> Packaged Water </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Spring Water</Link>
+                            <Link href='/shop'> Spring Water</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Flavoured Water </Link>
+                            <Link href='/shop'> Flavoured Water </Link>
                           </li>
                         </ul>
                       </div>
                     </li>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1510,23 +1522,23 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'> Fresh Meat </Link>
+                            <Link href='/shop'> Fresh Meat </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Frozen Meat</Link>
+                            <Link href='/shop'> Frozen Meat</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Marinated Meat</Link>
+                            <Link href='/shop'> Marinated Meat</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Fresh &amp; Frozen Meat</Link>
+                            <Link href='/shop'> Fresh &amp; Frozen Meat</Link>
                           </li>
                         </ul>
                       </div>
                     </li>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1543,29 +1555,29 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'> Oats &amp; Porridge</Link>
+                            <Link href='/shop'> Oats &amp; Porridge</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Kids Cereal</Link>
+                            <Link href='/shop'> Kids Cereal</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Muesli</Link>
+                            <Link href='/shop'> Muesli</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Flakes</Link>
+                            <Link href='/shop'> Flakes</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Granola &amp; Cereal Bars</Link>
+                            <Link href='/shop'> Granola &amp; Cereal Bars</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Instant Noodles</Link>
+                            <Link href='/shop'> Instant Noodles</Link>
                           </li>
                         </ul>
                       </div>
                     </li>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1582,26 +1594,26 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'> Instant Noodles </Link>
+                            <Link href='/shop'> Instant Noodles </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Hakka Noodles</Link>
+                            <Link href='/shop'> Hakka Noodles</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Cup Noodles</Link>
+                            <Link href='/shop'> Cup Noodles</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Vermicelli</Link>
+                            <Link href='/shop'> Vermicelli</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Instant Pasta</Link>
+                            <Link href='/shop'> Instant Pasta</Link>
                           </li>
                         </ul>
                       </div>
                     </li>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1618,29 +1630,29 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'> Salted Biscuits </Link>
+                            <Link href='/shop'> Salted Biscuits </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Marie, Health, Digestive</Link>
+                            <Link href='/shop'> Marie, Health, Digestive</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>
+                            <Link href='/shop'>
                               {" "}
                               Cream Biscuits &amp; Wafers{" "}
                             </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Glucose &amp; Milk biscuits</Link>
+                            <Link href='/shop'> Glucose &amp; Milk biscuits</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Cookies</Link>
+                            <Link href='/shop'> Cookies</Link>
                           </li>
                         </ul>
                       </div>
                     </li>
                     <li className='has-submenus-submenu'>
                       <Link
-                        to='#'
+                        href='#'
                         className='text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0'
                       >
                         <span className='text-xl d-flex'>
@@ -1657,25 +1669,25 @@ const HeaderThree = () => {
                         </h6>
                         <ul className='submenus-submenu__list max-h-300 overflow-y-auto scroll-sm'>
                           <li>
-                            <Link to='/shop'> Lemon, Ginger &amp; Garlic </Link>
+                            <Link href='/shop'> Lemon, Ginger &amp; Garlic </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Indian &amp; Exotic Herbs</Link>
+                            <Link href='/shop'> Indian &amp; Exotic Herbs</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Orangic Vegetables</Link>
+                            <Link href='/shop'> Orangic Vegetables</Link>
                           </li>
                           <li>
-                            <Link to='/shop'>Orangic Fruits </Link>
+                            <Link href='/shop'>Orangic Fruits </Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Orangic Dry Fruits</Link>
+                            <Link href='/shop'> Orangic Dry Fruits</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Orangic Dals &amp; pulses</Link>
+                            <Link href='/shop'> Orangic Dals &amp; pulses</Link>
                           </li>
                           <li>
-                            <Link to='/shop'> Orangic Millet &amp; Flours</Link>
+                            <Link href='/shop'> Orangic Millet &amp; Flours</Link>
                           </li>
                         </ul>
                       </div>
@@ -1689,94 +1701,70 @@ const HeaderThree = () => {
                 {/* Nav Menu Start */}
                 <ul className='nav-menu flex-align '>
                   <li className='on-hover-item nav-menu__item has-submenu activePage'>
-                    <Link to='#' className='nav-menu__link'>
+                    <Link href='#' className='nav-menu__link'>
                       Home
                     </Link>
                     <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/index'
+                        <Link
+                          href='/index'
                           //   className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Home Grocery
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/index-two'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/index-two'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Home Electronics
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item '>
-                        <NavLink
-                          to='/index-three'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/index-three'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Home Fashion
-                        </NavLink>
+                        </Link>
                       </li>
                     </ul>
                   </li>
                   <li className='on-hover-item nav-menu__item has-submenu'>
-                    <Link to='#' className='nav-menu__link'>
+                    <Link href='#' className='nav-menu__link'>
                       Shop
                     </Link>
                     <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/shop'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/shop'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Shop
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/product-details'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/product-details'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Shop Details
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/product-details-two'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/product-details-two'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Shop Details Two
-                        </NavLink>
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -1784,70 +1772,50 @@ const HeaderThree = () => {
                     <span className='badge-notification bg-warning-600 text-white text-sm py-2 px-8 rounded-4'>
                       New
                     </span>
-                    <Link to='#' className='nav-menu__link'>
+                    <Link href='#' className='nav-menu__link'>
                       Pages
                     </Link>
                     <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/cart'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/cart'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Cart
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/wishlist'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/wishlist'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Wishlist
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/checkout'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/checkout'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Checkout{" "}
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/become-seller'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/become-seller'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Become Seller
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/account'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/account'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Account
-                        </NavLink>
+                        </Link>
                       </li>
                     </ul>
                   </li>
@@ -1855,97 +1823,73 @@ const HeaderThree = () => {
                     <span className='badge-notification bg-tertiary-600 text-white text-sm py-2 px-8 rounded-4'>
                       New
                     </span>
-                    <Link to='#' className='nav-menu__link'>
+                    <Link href='#' className='nav-menu__link'>
                       Vendors
                     </Link>
                     <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/vendor'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/vendor'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Vendors{" "}
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/vendor-details'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/vendor-details'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Vendor Details{" "}
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/vendor-two'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/vendor-two'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Vendors Two
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/vendor-two-details'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/vendor-two-details'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Vendors Two Details
-                        </NavLink>
+                        </Link>
                       </li>
                     </ul>
                   </li>
                   <li className='on-hover-item nav-menu__item has-submenu'>
-                    <Link to='#' className='nav-menu__link'>
+                    <Link href='#' className='nav-menu__link'>
                       Blog
                     </Link>
                     <ul className='on-hover-dropdown common-dropdown nav-submenu scroll-sm'>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/blog'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/blog'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           Blog
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className='common-dropdown__item nav-submenu__item'>
-                        <NavLink
-                          to='/blog-details'
-                          className={(navData) =>
-                            navData.isActive
-                              ? "common-dropdown__link nav-submenu__link hover-bg-neutral-100 activePage"
-                              : "common-dropdown__link nav-submenu__link hover-bg-neutral-100"
-                          }
+                        <Link
+                          href='/blog-details'
+                          className='common-dropdown__link nav-submenu__link hover-bg-neutral-100'
                         >
                           {" "}
                           Blog Details
-                        </NavLink>
+                        </Link>
                       </li>
                     </ul>
                   </li>
                   <li className='nav-menu__item'>
-                    <NavLink to='/contact' className='nav-menu__link'>
+                    <Link href='/contact' className='nav-menu__link'>
                       Contact Us
-                    </NavLink>
+                    </Link>
                   </li>
                 </ul>
                 {/* Nav Menu End */}
@@ -1959,7 +1903,7 @@ const HeaderThree = () => {
                 <ul className='header-top__right style-two flex-align flex-wrap'>
                   <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
                     <Link
-                      to='#'
+                      href='#'
                       className='selected-text text-heading text-sm py-8'
                     >
                       {selectedLanguage}
@@ -1967,7 +1911,7 @@ const HeaderThree = () => {
                     <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("English")}
                         >
@@ -1981,7 +1925,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("Japan")}
                         >
@@ -1995,7 +1939,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("French")}
                         >
@@ -2009,7 +1953,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("Germany")}
                         >
@@ -2023,7 +1967,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("Bangladesh")}
                         >
@@ -2037,7 +1981,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleLanguageChange("South Korea")}
                         >
@@ -2053,7 +1997,7 @@ const HeaderThree = () => {
                   </li>
                   <li className='on-hover-item border-right-item border-right-item-sm-space has-submenu arrow-white'>
                     <Link
-                      to='#'
+                      href='#'
                       className='selected-text text-heading text-sm py-8'
                     >
                       {selectedCurrency}
@@ -2061,7 +2005,7 @@ const HeaderThree = () => {
                     <ul className='selectable-text-list on-hover-dropdown common-dropdown common-dropdown--sm max-h-200 scroll-sm px-0 py-8'>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("USD")}
                         >
@@ -2075,7 +2019,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("Yen")}
                         >
@@ -2089,7 +2033,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("Franc")}
                         >
@@ -2103,7 +2047,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("EURO")}
                         >
@@ -2117,7 +2061,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("BDT")}
                         >
@@ -2131,7 +2075,7 @@ const HeaderThree = () => {
                       </li>
                       <li>
                         <Link
-                          to='#'
+                          href='#'
                           className='hover-bg-gray-100 text-gray-500 text-xs py-6 px-16 flex-align gap-8 rounded-0'
                           onClick={() => handleCurrencyChange("WON")}
                         >
@@ -2160,7 +2104,7 @@ const HeaderThree = () => {
                     </span>
                   </button>
                   <Link
-                    to='/account'
+                    href='/account'
                     className='flex-align flex-column gap-8 item-hover-two'
                   >
                     <span className='text-2xl text-white d-flex position-relative item-hover__text'>
@@ -2171,7 +2115,7 @@ const HeaderThree = () => {
                     </span>
                   </Link>
                   <Link
-                    to='/wishlist'
+                    href='/wishlist'
                     className='flex-align flex-column gap-8 item-hover-two'
                   >
                     <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
@@ -2185,7 +2129,7 @@ const HeaderThree = () => {
                     </span>
                   </Link>
                   <Link
-                    to='/cart'
+                    href='/cart'
                     className='flex-align flex-column gap-8 item-hover-two'
                   >
                     <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>
@@ -2199,7 +2143,7 @@ const HeaderThree = () => {
                     </span>
                   </Link>
                   <Link
-                    to='/cart'
+                    href='/cart'
                     className='flex-align flex-column gap-8 item-hover-two'
                   >
                     <span className='text-2xl text-white d-flex position-relative me-6 mt-6 item-hover__text'>

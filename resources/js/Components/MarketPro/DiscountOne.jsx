@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@inertiajs/react';
 
 const DiscountOne = () => {
     return (
@@ -22,7 +22,7 @@ const DiscountOne = () => {
                                         57" Odyssey Neo G9 Dual 4K UHD Quantum Mini-LED
                                     </h6>
                                     <Link
-                                        to="/shop"
+                                        href="/shop"
                                         className="btn btn-outline-black rounded-pill gap-8"
                                         tabIndex={0}
                                     >
@@ -53,7 +53,7 @@ const DiscountOne = () => {
                                         57" Odyssey Neo G9 Dual 4K UHD Quantum Mini-LED
                                     </h6>
                                     <Link
-                                        to="/shop"
+                                        href="/shop"
                                         className="btn btn-outline-black rounded-pill gap-8"
                                         tabIndex={0}
                                     >

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "@inertiajs/react";
 
 const TopVendorsOne = () => {
     return (
@@ -9,7 +9,7 @@ const TopVendorsOne = () => {
                     <div className="flex-between flex-wrap gap-8">
                         <h5 className="mb-0">Weekly Top Vendors</h5>
                         <Link
-                            to="/shop"
+                            href="/shop"
                             className="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline"
                         >
                             All Vendors
@@ -30,7 +30,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -68,7 +68,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -106,7 +106,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -144,7 +144,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -182,7 +182,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -220,7 +220,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -258,7 +258,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy
@@ -296,7 +296,7 @@ const TopVendorsOne = () => {
                                     Delivery by 6:15am
                                 </span>
                                 <Link
-                                    to="/shop"
+                                    href="/shop"
                                     className="btn btn-main-two rounded-pill py-6 px-16 text-12 mt-8"
                                 >
                                     $5 off Snack &amp; Candy

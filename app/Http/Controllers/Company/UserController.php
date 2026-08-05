@@ -134,7 +134,7 @@ class UserController extends Controller
         }
 
         $request->validate([
-            'role' => 'required|string',
+            'role' => 'required|string|in:' . implode(',', $this->allowedRoles),
         ]);
 
         $user->syncRoles([$request->role]);

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 import Slider from 'react-slick';
 
 const BannerTwo = () => {
@@ -27,14 +27,14 @@ const BannerTwo = () => {
                                 <i className="ph ph-x" />{" "}
                             </button>
                             <div className="logo px-16 d-lg-none d-block">
-                                <Link to="/" className="link">
+                                <Link href="/" className="link">
                                     <img src="/assets/images/logo/logo.png" alt="Logo" />
                                 </Link>
                             </div>
                             <ul className="responsive-dropdown__list scroll-sm p-0 py-8 overflow-y-auto ">
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Cell Phone</span>
@@ -48,29 +48,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Wear</span>
@@ -82,29 +82,29 @@ const BannerTwo = () => {
                                         <h6 className="text-lg px-16 submenus-submenu__title">Wear</h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Computer</span>
@@ -118,29 +118,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Headphone</span>
@@ -154,29 +154,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Smart Screen</span>
@@ -190,29 +190,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Smart Home</span>
@@ -226,29 +226,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Digital Accessories</span>
@@ -262,29 +262,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span> Value Added Services</span>
@@ -299,29 +299,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Car Products</span>
@@ -335,29 +335,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Ecological Products</span>
@@ -371,29 +371,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Flat</span>
@@ -405,29 +405,29 @@ const BannerTwo = () => {
                                         <h6 className="text-lg px-16 submenus-submenu__title">Flat</h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Commercial Terminal</span>
@@ -441,29 +441,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Headphone</span>
@@ -477,29 +477,29 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li className="has-submenus-submenu">
                                     <Link
-                                        to="#"
+                                        href="#"
                                         className="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0"
                                     >
                                         <span>Smart Screen</span>
@@ -513,22 +513,22 @@ const BannerTwo = () => {
                                         </h6>
                                         <ul className="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
                                             <li>
-                                                <Link to="/shop">Samsung</Link>
+                                                <Link href="/shop">Samsung</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Iphone</Link>
+                                                <Link href="/shop">Iphone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Vivo</Link>
+                                                <Link href="/shop">Vivo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Oppo</Link>
+                                                <Link href="/shop">Oppo</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Itel</Link>
+                                                <Link href="/shop">Itel</Link>
                                             </li>
                                             <li>
-                                                <Link to="/shop">Realme</Link>
+                                                <Link href="/shop">Realme</Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -551,7 +551,7 @@ const BannerTwo = () => {
                                             Get The Sound You Love For Less
                                         </h2>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-48"
                                         >
                                             Shop Now
@@ -571,7 +571,7 @@ const BannerTwo = () => {
                                             Get The Sound You Love For Less
                                         </h2>
                                         <Link
-                                            to="/shop"
+                                            href="/shop"
                                             className="btn btn-outline-white d-inline-flex align-items-center rounded-pill gap-8 mt-48"
                                         >
                                             Shop Now

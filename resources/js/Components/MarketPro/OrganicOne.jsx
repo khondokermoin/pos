@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link } from "@inertiajs/react";
 import Slider from 'react-slick';
 
 const OrganicOne = () => {
@@ -80,7 +80,7 @@ const OrganicOne = () => {
                         <h5 className="mb-0">Organic Food</h5>
                         <div className="flex-align mr-point gap-16">
                             <Link
-                                to="/shop"
+                                href="/shop"
                                 className="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline"
                             >
                                 All Categories
@@ -94,7 +94,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img20.png" alt="" />
@@ -108,7 +108,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -130,7 +130,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />
@@ -142,7 +142,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img21.png" alt="" />
@@ -156,7 +156,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -178,7 +178,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />
@@ -190,7 +190,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img22.png" alt="" />
@@ -204,7 +204,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -226,7 +226,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />
@@ -238,7 +238,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img23.png" alt="" />
@@ -252,7 +252,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -274,7 +274,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />
@@ -286,7 +286,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img24.png" alt="" />
@@ -300,7 +300,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -322,7 +322,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />
@@ -334,7 +334,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img25.png" alt="" />
@@ -348,7 +348,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -370,7 +370,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />
@@ -382,7 +382,7 @@ const OrganicOne = () => {
                         <div>
                             <div className="product-card px-8 py-16 border border-gray-100 hover-border-main-600 rounded-16 position-relative transition-2">
                                 <Link
-                                    to="/product-details"
+                                    href="/product-details"
                                     className="product-card__thumb flex-center"
                                 >
                                     <img src="/assets/images/thumbs/product-img21.png" alt="" />
@@ -396,7 +396,7 @@ const OrganicOne = () => {
                                         <span className="text-xs fw-bold text-gray-500">(17k)</span>
                                     </div>
                                     <h6 className="title text-lg fw-semibold mt-12 mb-8">
-                                        <Link to="/product-details" className="link text-line-2">
+                                        <Link href="/product-details" className="link text-line-2">
                                             Taylor Farms Broccoli Florets Vegetables
                                         </Link>
                                     </h6>
@@ -418,7 +418,7 @@ const OrganicOne = () => {
                                             </span>
                                         </div>
                                         <Link
-                                            to="/cart"
+                                            href="/cart"
                                             className="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8"
                                         >
                                             Add <i className="ph ph-shopping-cart" />

@@ -96,6 +96,7 @@ class TenantService
     {
         try {
             return Company::query()
+                ->with('businessType')
                 ->where('id', $companyId)
                 ->where('status', 'active')
                 ->first();
@@ -149,6 +150,7 @@ class TenantService
                 : null,
             'currency'      => $this->tenant->currency ?? 'BDT',
             'timezone'      => $this->tenant->timezone ?? 'Asia/Dhaka',
+            'business_type' => $this->tenant->businessType?->slug,
             'theme'         => [
                 'primary_color'   => $themeSettings['primary_color'] ?? '#3B82F6',
                 'secondary_color' => $themeSettings['secondary_color'] ?? '#1E40AF',
