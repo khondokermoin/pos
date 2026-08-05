@@ -14,6 +14,7 @@ use App\Models\Stock;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -62,7 +63,8 @@ class ProductController extends Controller
             'brand_id'     => 'nullable|exists:brands,id,company_id,' . $companyId,
             'description'  => 'nullable|string',
             'has_variants' => 'nullable|boolean',
-            
+            'image'        => 'nullable|image|max:2048',
+
             'variants'                 => 'required|array|min:1',
             'variants.*.sku'           => 'required|string|max:255',
             'variants.*.barcode'       => 'nullable|string|max:255',
@@ -75,6 +77,10 @@ class ProductController extends Controller
             'variants.*.attributes'    => 'nullable|array',
         ]);
 
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('products', 'public')
+            : null;
+
         DB::beginTransaction();
 
         try {
@@ -86,6 +92,7 @@ class ProductController extends Controller
                 'brand_id'     => $validated['brand_id'] ?? null,
                 'description'  => $validated['description'] ?? null,
                 'has_variants' => $request->boolean('has_variants'),
+                'image'        => $imagePath,
             ]);
 
             // খ) ভেরিয়েন্ট(গুলো) প্রসেস এবং তৈরি করা
@@ -197,7 +204,8 @@ class ProductController extends Controller
             'brand_id'     => 'nullable|exists:brands,id,company_id,' . $companyId,
             'description'  => 'nullable|string',
             'has_variants' => 'nullable|boolean',
-            
+            'image'        => 'nullable|image|max:2048',
+
             'variants'                 => 'required|array|min:1',
             'variants.*.id'            => 'nullable|exists:product_variants,id', // Edit এর জন্য নতুন যুক্ত করা হয়েছে
             'variants.*.sku'           => 'required|string|max:255',
@@ -211,6 +219,14 @@ class ProductController extends Controller
             'variants.*.attributes'    => 'nullable|array',
         ]);
 
+        $imagePath = $product->image;
+        if ($request->hasFile('image')) {
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
         DB::beginTransaction();
 
         try {
@@ -221,6 +237,7 @@ class ProductController extends Controller
                 'brand_id'     => $validated['brand_id'] ?? null,
                 'description'  => $validated['description'] ?? null,
                 'has_variants' => $request->boolean('has_variants'),
+                'image'        => $imagePath,
             ]);
 
             $processedVariantIds = [];

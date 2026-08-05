@@ -20,9 +20,15 @@ return new class extends Migration
             if ($driver === 'sqlite') {
                 DB::statement('PRAGMA foreign_keys = OFF');
 
-                DB::statement('ALTER TABLE subscriptions RENAME TO subscriptions_old');
-
-                Schema::create('subscriptions', function (Blueprint $table) {
+                // IMPORTANT: build the replacement under a NEW name and rename it
+                // into place at the end — do NOT rename the original "subscriptions"
+                // table away. SQLite auto-rewrites other tables' FK clauses that
+                // reference a table when it is renamed (e.g. transactions.subscription_id
+                // would silently start pointing at "subscriptions_old"), and once that
+                // table is dropped those FKs are left dangling. Dropping the original
+                // by its real name does NOT trigger that rewrite, so this order keeps
+                // every other table's FK intact.
+                Schema::create('subscriptions_new', function (Blueprint $table) {
                     $table->id();
                     $table->foreignId('company_id')->constrained()->onDelete('cascade');
                     $table->foreignId('plan_id')->constrained()->onDelete('cascade');
@@ -38,11 +44,13 @@ return new class extends Migration
                     $table->timestamps();
                 });
 
-                DB::statement('INSERT INTO subscriptions (id, company_id, plan_id, status, billing_cycle, started_at, ends_at, trial_ends_at, cancelled_at, payment_gateway, transaction_id, invoice_number, created_at, updated_at)
+                DB::statement('INSERT INTO subscriptions_new (id, company_id, plan_id, status, billing_cycle, started_at, ends_at, trial_ends_at, cancelled_at, payment_gateway, transaction_id, invoice_number, created_at, updated_at)
                     SELECT id, company_id, plan_id, status, billing_cycle, started_at, ends_at, trial_ends_at, cancelled_at, payment_gateway, transaction_id, invoice_number, created_at, updated_at
-                    FROM subscriptions_old');
+                    FROM subscriptions');
 
-                DB::statement('DROP TABLE subscriptions_old');
+                Schema::drop('subscriptions');
+                Schema::rename('subscriptions_new', 'subscriptions');
+
                 DB::statement('PRAGMA foreign_keys = ON');
             }
         }

@@ -77,7 +77,7 @@ class Company extends Model
     // ৫. কোম্পানির সাবস্ক্রিপশন হিস্টরি (সর্বশেষ সাবস্ক্রিপশন)
     public function subscription()
     {
-        return $this->hasOne(Subscription::class)->latest();
+        return $this->hasOne(Subscription::class)->latestOfMany();
     }
 
     // ৬. কোম্পানির সব পেমেন্ট ট্রানজেকশন হিস্টরি

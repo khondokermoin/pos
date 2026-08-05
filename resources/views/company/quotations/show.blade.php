@@ -122,6 +122,46 @@
         </div>
     </div>
 
+    @if ($quotation->converted_to_sale_id)
+        <div class="alert alert-success mt-3">
+            <i class="ti ti-circle-check me-2"></i>Converted to Sale
+            <strong>{{ optional($quotation->convertedToSale)->invoice_no }}</strong>.
+        </div>
+    @elseif ($quotation->status === 'accepted')
+        <div class="card mt-3">
+            <div class="card-body">
+                <h6 class="fw-bold mb-3">Convert to Sale</h6>
+                <form action="{{ route('company.quotations.convert-to-sale', $quotation->id) }}" method="POST"
+                    class="row g-2 align-items-end"
+                    onsubmit="return confirm('This will deduct stock and create a completed sale from this quotation. Continue?')">
+                    @csrf
+                    <div class="col-sm-4">
+                        <label class="form-label mb-1">Branch</label>
+                        <select name="branch_id" class="form-select" required>
+                            <option value="">Select branch</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="form-label mb-1">Payment Method</label>
+                        <select name="payment_method" class="form-select" required>
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="mobile_banking">Mobile Banking</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ti ti-shopping-cart me-1"></i>Convert to Sale
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+
     <div class="mt-3">
         <form action="{{ route('company.quotations.destroy', $quotation->id) }}" method="POST" class="d-inline"
             onsubmit="return confirm('Delete this quotation?')">

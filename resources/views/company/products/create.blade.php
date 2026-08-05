@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <form id="product-form" action="{{ route('company.products.store') }}" method="POST">
+    <form id="product-form" action="{{ route('company.products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -85,6 +85,16 @@
                                 </div>
                                 <small class="text-muted">If checked, you will define specific SKUs, prices, and stock for
                                     each variant below.</small>
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label for="image" class="form-label">Product Image</label>
+                                <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                    id="image" name="image" accept="image/*">
+                                <small class="text-muted">JPG, PNG or WEBP. Max 2MB.</small>
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3 col-12">

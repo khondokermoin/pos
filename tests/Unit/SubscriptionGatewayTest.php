@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class SubscriptionGatewayTest extends TestCase
@@ -54,10 +55,22 @@ class SubscriptionGatewayTest extends TestCase
             'details' => ['billing_cycle' => 'monthly'],
         ]);
 
+        // The callback route is public and unauthenticated, so the controller
+        // re-verifies the claimed success server-to-server against SSLCommerz's
+        // Validation API (val_id) instead of trusting the client-supplied status.
+        Http::fake([
+            '*validationserverAPI.php*' => Http::response([
+                'status' => 'VALID',
+                'tran_id' => 'TXN-12345',
+                'amount' => '1500.00',
+            ], 200),
+        ]);
+
         $request = Request::create('/company/subscription/payment/callback', 'GET', [
             'status' => 'success',
             'tran_id' => 'TXN-12345',
             'plan_id' => $plan->id,
+            'val_id' => 'VAL-98765',
         ]);
 
         $controller = new SubscriptionController();

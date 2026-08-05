@@ -58,6 +58,7 @@
                                     <th>Employee</th>
                                     <th>Department</th>
                                     <th class="text-end">Basic Salary</th>
+                                    <th class="text-end">Bonus</th>
                                     <th class="text-end">Deductions</th>
                                     <th class="text-end">Net Pay</th>
                                     <th>Status</th>
@@ -71,10 +72,12 @@
                                         <td><strong>{{ $payroll->employee->name ?? '—' }}</strong></td>
                                         <td>{{ $payroll->employee->department->name ?? '—' }}</td>
                                         <td class="text-end">{{ number_format($payroll->basic_salary ?? 0, 2) }}</td>
-                                        <td class="text-end text-danger">{{ number_format($payroll->deductions ?? 0, 2) }}
+                                        <td class="text-end text-success">+{{ number_format($payroll->bonus ?? 0, 2) }}
+                                        </td>
+                                        <td class="text-end text-danger">-{{ number_format($payroll->deduction ?? 0, 2) }}
                                         </td>
                                         <td class="text-end fw-semibold text-success">
-                                            {{ number_format($payroll->net_pay ?? 0, 2) }}</td>
+                                            {{ number_format($payroll->net_salary ?? 0, 2) }}</td>
                                         <td>
                                             <span
                                                 class="badge {{ ($payroll->status ?? '') === 'paid' ? 'bg-success' : 'bg-warning text-dark' }}">
@@ -83,6 +86,10 @@
                                         </td>
                                         <td class="text-end">
                                             @if (($payroll->status ?? '') !== 'paid')
+                                                <button type="button" class="btn btn-sm btn-outline-secondary me-1"
+                                                    data-bs-toggle="modal" data-bs-target="#editPayroll{{ $payroll->id }}">
+                                                    <i class="ti ti-edit"></i>
+                                                </button>
                                                 <form action="{{ route('company.payroll.mark-paid', $payroll->id) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
@@ -105,6 +112,49 @@
                                             </form>
                                         </td>
                                     </tr>
+
+                                    @if (($payroll->status ?? '') !== 'paid')
+                                        <div class="modal fade" id="editPayroll{{ $payroll->id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form action="{{ route('company.payroll.update', $payroll->id) }}"
+                                                        method="POST">
+                                                        @csrf @method('PUT')
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Payroll —
+                                                                {{ $payroll->employee->name ?? '—' }}</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Basic Salary</label>
+                                                                <input type="text" class="form-control" disabled
+                                                                    value="{{ number_format($payroll->basic_salary, 2) }}">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Bonus</label>
+                                                                <input type="number" step="0.01" min="0" name="bonus"
+                                                                    class="form-control"
+                                                                    value="{{ $payroll->bonus }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Deduction</label>
+                                                                <input type="number" step="0.01" min="0"
+                                                                    name="deduction" class="form-control"
+                                                                    value="{{ $payroll->deduction }}" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                data-bs-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>

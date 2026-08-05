@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
+use App\Models\Sale;
+use App\Models\Stock;
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -107,11 +111,15 @@ class QuotationController extends Controller
 
     public function show(string $id)
     {
-        $quotation = Quotation::with(['customer', 'items.variant.product', 'createdBy'])
-            ->where('company_id', $this->companyId())
+        $companyId = $this->companyId();
+
+        $quotation = Quotation::with(['customer', 'items.variant.product', 'createdBy', 'convertedToSale'])
+            ->where('company_id', $companyId)
             ->findOrFail($id);
 
-        return view('company.quotations.show', compact('quotation'));
+        $branches = Branch::where('company_id', $companyId)->get();
+
+        return view('company.quotations.show', compact('quotation', 'branches'));
     }
 
     public function updateStatus(Request $request, string $id)
@@ -126,6 +134,98 @@ class QuotationController extends Controller
 
         return redirect()->route('company.quotations.show', $id)
             ->with('success', 'Quotation status updated.');
+    }
+
+    public function convertToSale(Request $request, string $id)
+    {
+        $companyId = $this->companyId();
+
+        $quotation = Quotation::with('items')
+            ->where('company_id', $companyId)
+            ->findOrFail($id);
+
+        if ($quotation->status !== 'accepted') {
+            return back()->with('error', 'Only accepted quotations can be converted to a sale.');
+        }
+
+        if ($quotation->converted_to_sale_id) {
+            return back()->with('error', 'This quotation has already been converted to a sale.');
+        }
+
+        $data = $request->validate([
+            'branch_id'      => 'required|exists:branches,id,company_id,' . $companyId,
+            'payment_method' => 'required|in:cash,card,mobile_banking',
+        ]);
+
+        try {
+            $sale = DB::transaction(function () use ($quotation, $data, $companyId) {
+                $branchId = $data['branch_id'];
+
+                foreach ($quotation->items as $item) {
+                    $stock = Stock::where('variant_id', $item->variant_id)
+                        ->where('branch_id', $branchId)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (! $stock || $stock->quantity < $item->qty) {
+                        $variantName = optional(optional($item->variant)->product)->name ?? 'item';
+                        throw new \RuntimeException(
+                            "Insufficient stock for \"{$variantName}\" at the selected branch. Available: " . ($stock->quantity ?? 0) . ", required: {$item->qty}."
+                        );
+                    }
+                }
+
+                $invoiceNo = 'INV-' . strtoupper(base_convert(time(), 10, 36)) . '-' . strtoupper(substr(uniqid(), -4));
+
+                $sale = Sale::create([
+                    'company_id'      => $companyId,
+                    'branch_id'       => $branchId,
+                    'customer_id'     => $quotation->customer_id,
+                    'user_id'         => Auth::id(),
+                    'invoice_no'      => $invoiceNo,
+                    'subtotal'        => $quotation->subtotal,
+                    'discount'        => $quotation->discount,
+                    'total_amount'    => $quotation->total_amount,
+                    'received_amount' => $quotation->total_amount,
+                    'payment_method'  => $data['payment_method'],
+                    'status'          => 'completed',
+                ]);
+
+                foreach ($quotation->items as $item) {
+                    $sale->items()->create([
+                        'variant_id'   => $item->variant_id,
+                        'product_name' => optional(optional($item->variant)->product)->name ?? 'Item',
+                        'quantity'     => $item->qty,
+                        'unit_price'   => $item->price,
+                        'subtotal'     => $item->subtotal,
+                    ]);
+
+                    Stock::where('variant_id', $item->variant_id)
+                        ->where('branch_id', $branchId)
+                        ->decrement('quantity', $item->qty);
+
+                    StockMovement::create([
+                        'company_id'     => $companyId,
+                        'branch_id'      => $branchId,
+                        'variant_id'     => $item->variant_id,
+                        'type'           => 'sale_out',
+                        'quantity'       => -$item->qty,
+                        'reference_type' => Sale::class,
+                        'reference_id'   => $sale->id,
+                        'user_id'        => Auth::id(),
+                    ]);
+                }
+
+                $quotation->update(['converted_to_sale_id' => $sale->id]);
+
+                return $sale;
+            });
+        } catch (\RuntimeException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('company.quotations.show', $quotation->id)
+            ->with('success', 'Quotation converted to Sale #' . $sale->invoice_no . ' successfully.');
     }
 
     public function destroy(string $id)

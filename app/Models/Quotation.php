@@ -18,6 +18,7 @@ class Quotation extends Model
         'total_amount',
         'valid_until',
         'status',
+        'converted_to_sale_id',
         'notes',
         'created_by',
     ];
@@ -47,6 +48,11 @@ class Quotation extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function convertedToSale()
+    {
+        return $this->belongsTo(Sale::class, 'converted_to_sale_id');
     }
 
     public function getStatusColorAttribute(): string

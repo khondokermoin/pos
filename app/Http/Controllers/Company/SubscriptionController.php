@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -188,21 +189,8 @@ class SubscriptionController extends Controller
 
         // Step 2: SSLCommerz Hosted Checkout URL তৈরি করো
         // Priority: DB settings (Super Admin → Payment Settings) → .env fallback
-
-        // Resolve store_id: DB → .env → config
-        $storeId   = Setting::get('sslcommerz_store_id',      env('SSLCOMMERZ_STORE_ID',      config('sslcommerz.store_id',      '')));
-        $storePass = Setting::get('sslcommerz_store_password', env('SSLCOMMERZ_STORE_PASSWORD', config('sslcommerz.store_password', '')));
-
-        // Resolve environment: DB → .env (SSLCOMMERZ_IS_SANDBOX=false means live)
-        // env() returns a STRING "false"/"true", so we must filter it properly.
-        $dbEnvironment = Setting::get('sslcommerz_environment'); // 'sandbox' | 'live' | null
-        if ($dbEnvironment) {
-            $isSandbox = ($dbEnvironment !== 'live');
-        } else {
-            // Fall back to .env: SSLCOMMERZ_IS_SANDBOX=false → live mode
-            $envSandbox = env('SSLCOMMERZ_IS_SANDBOX', 'true');
-            $isSandbox  = ! in_array(strtolower((string) $envSandbox), ['false', '0', 'no', 'off']);
-        }
+        ['store_id' => $storeId, 'store_pass' => $storePass, 'is_sandbox' => $isSandbox, 'db_environment' => $dbEnvironment]
+            = $this->resolveSslCommerzCredentials();
 
         // Guard: abort early if credentials are missing
         if (empty($storeId) || empty($storePass)) {
@@ -416,6 +404,15 @@ class SubscriptionController extends Controller
         $isSuccess   = in_array($rawStatus, ['valid', 'validated', 'success']);
         $isFailed    = in_array($rawStatus, ['failed', 'fail', 'error']);
         $isCancelled = in_array($rawStatus, ['cancelled', 'cancel', 'unattempted']);
+
+        // ── 4b. IPN verification — never trust the client-supplied `status` ──
+        // alone. Anyone can POST status=VALID to this public route, so a claimed
+        // success is re-checked server-to-server against SSLCommerz's own
+        // Validation API before we activate anything.
+        if ($isSuccess && ! $this->verifySslCommerzIpn($valId, $transactionId, (float) $transaction->amount)) {
+            $isSuccess = false;
+            $isFailed  = true;
+        }
 
         // ── 5a. SUCCESS path ─────────────────────────────────────────────────
         if ($isSuccess) {
@@ -638,6 +635,124 @@ class SubscriptionController extends Controller
             'tran_id' => $transactionId,
             'message' => 'Unknown payment status received: ' . $rawStatus,
         ]);
+    }
+
+    /**
+     * Resolve SSLCommerz store credentials and environment.
+     * Priority: DB settings (Super Admin → Payment Settings) → .env → config.
+     *
+     * @return array{store_id: string, store_pass: string, is_sandbox: bool, db_environment: string|null}
+     */
+    private function resolveSslCommerzCredentials(): array
+    {
+        $storeId   = Setting::get('sslcommerz_store_id',      env('SSLCOMMERZ_STORE_ID',      config('sslcommerz.store_id',      '')));
+        $storePass = Setting::get('sslcommerz_store_password', env('SSLCOMMERZ_STORE_PASSWORD', config('sslcommerz.store_password', '')));
+
+        // env() returns a STRING "false"/"true", so we must filter it properly.
+        $dbEnvironment = Setting::get('sslcommerz_environment'); // 'sandbox' | 'live' | null
+        if ($dbEnvironment) {
+            $isSandbox = ($dbEnvironment !== 'live');
+        } else {
+            $envSandbox = env('SSLCOMMERZ_IS_SANDBOX', 'true');
+            $isSandbox  = ! in_array(strtolower((string) $envSandbox), ['false', '0', 'no', 'off']);
+        }
+
+        return [
+            'store_id'       => $storeId,
+            'store_pass'     => $storePass,
+            'is_sandbox'     => $isSandbox,
+            'db_environment' => $dbEnvironment,
+        ];
+    }
+
+    /**
+     * Verify a payment callback against SSLCommerz's server-side Validation API
+     * (val_id) rather than trusting the client-controlled `status` POST field.
+     *
+     * WHY THIS EXISTS:
+     * Anyone can POST `status=VALID&tran_id=...` to our public callback route —
+     * it has no signature check. The Validation API call happens server-to-server
+     * using our store credentials, so its response can be trusted. We additionally
+     * confirm the returned tran_id and amount match what we expect, so a validated
+     * payment for a different (smaller) transaction can't be replayed against ours.
+     */
+    private function verifySslCommerzIpn(?string $valId, string $expectedTranId, float $expectedAmount): bool
+    {
+        if (empty($valId)) {
+            Log::warning('SSLCommerz IPN verification failed: missing val_id', [
+                'tran_id' => $expectedTranId,
+            ]);
+            return false;
+        }
+
+        ['store_id' => $storeId, 'store_pass' => $storePass, 'is_sandbox' => $isSandbox] = $this->resolveSslCommerzCredentials();
+
+        if (empty($storeId) || empty($storePass)) {
+            Log::error('SSLCommerz IPN verification failed: gateway credentials missing', [
+                'tran_id' => $expectedTranId,
+            ]);
+            return false;
+        }
+
+        $validationUrl = $isSandbox
+            ? 'https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php'
+            : 'https://securepay.sslcommerz.com/validator/api/validationserverAPI.php';
+
+        try {
+            $response = Http::withOptions(['verify' => ! $isSandbox])
+                ->timeout(30)
+                ->connectTimeout(30)
+                ->get($validationUrl, [
+                    'val_id'       => $valId,
+                    'store_id'     => $storeId,
+                    'store_passwd' => $storePass,
+                    'format'       => 'json',
+                ]);
+        } catch (\Throwable $e) {
+            Log::error('SSLCommerz IPN verification failed: validator API unreachable', [
+                'tran_id' => $expectedTranId,
+                'error'   => $e->getMessage(),
+            ]);
+            return false;
+        }
+
+        $result = $response->json();
+        if (! is_array($result)) {
+            Log::error('SSLCommerz IPN verification failed: invalid JSON from validator API', [
+                'tran_id' => $expectedTranId,
+                'raw'     => $response->body(),
+            ]);
+            return false;
+        }
+
+        $status = strtoupper($result['status'] ?? '');
+        if (! in_array($status, ['VALID', 'VALIDATED'])) {
+            Log::warning('SSLCommerz IPN verification failed: status not valid', [
+                'tran_id' => $expectedTranId,
+                'status'  => $status,
+            ]);
+            return false;
+        }
+
+        if (($result['tran_id'] ?? null) !== $expectedTranId) {
+            Log::warning('SSLCommerz IPN verification failed: tran_id mismatch', [
+                'expected' => $expectedTranId,
+                'received' => $result['tran_id'] ?? null,
+            ]);
+            return false;
+        }
+
+        $receivedAmount = (float) ($result['amount'] ?? 0);
+        if (abs($receivedAmount - $expectedAmount) > 0.01) {
+            Log::warning('SSLCommerz IPN verification failed: amount mismatch', [
+                'tran_id'  => $expectedTranId,
+                'expected' => $expectedAmount,
+                'received' => $receivedAmount,
+            ]);
+            return false;
+        }
+
+        return true;
     }
 
     /**

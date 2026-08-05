@@ -742,21 +742,23 @@ _(See BUG-010 / SEC-001)_
 | 12  | Debug payment logs expose credentials in production               | SubscriptionController.php:222 | 10 min | ✅ Fixed |
 | 13  | `env()` called directly in controller (breaks after config:cache) | SubscriptionController.php:556 | 10 min | ✅ Fixed |
 
-### 🟡 MEDIUM — Next Sprint (Open)
+### 🟡 MEDIUM — Resolved (August 2026 follow-up sprint)
 
-| #   | Issue                                                                   | Effort | Status  |
-| --- | ----------------------------------------------------------------------- | ------ | ------- |
-| 14  | `stock_movements.branch_id` NOT NULL breaks central-warehouse purchases | 30 min | 🔲 Open |
-| 15  | Fix `Company::subscription()` `hasOne()->latest()` → `latestOfMany()`   | 15 min | 🔲 Open |
-| 16  | Add subscription auto-expiry cron job (`subscriptions:expire`)          | 1 hr   | 🔲 Open |
-| 17  | Add rate limiting to POS checkout endpoint (`throttle:60,1`)            | 15 min | 🔲 Open |
-| 18  | Implement SSLCommerz IPN hash verification                              | 2 hrs  | 🔲 Open |
-| 19  | Implement Quotation → Sale conversion                                   | 4 hrs  | 🔲 Open |
-| 20  | Add product image upload to product create/edit form                    | 2 hrs  | 🔲 Open |
-| 21  | Add payroll bonus/deduction edit UI                                     | 3 hrs  | 🔲 Open |
-| 22  | Add stock alert / low-stock email notification                          | 4 hrs  | 🔲 Open |
-| 23  | Write POS checkout tests (`PosCheckoutTest`)                            | 4 hrs  | 🔲 Open |
-| 24  | Write tenant isolation tests (`TenantIsolationTest`)                    | 3 hrs  | 🔲 Open |
+| #   | Issue                                                                   | Effort | Status   |
+| --- | ----------------------------------------------------------------------- | ------ | -------- |
+| 14  | `stock_movements.branch_id` NOT NULL breaks central-warehouse purchases | 30 min | ✅ Fixed (also fixed `stocks.branch_id`, same bug) |
+| 15  | Fix `Company::subscription()` `hasOne()->latest()` → `latestOfMany()`   | 15 min | ✅ Fixed |
+| 16  | Add subscription auto-expiry cron job (`subscriptions:expire`)          | 1 hr   | ✅ Already implemented (`subscriptions:check-expired`, scheduled daily) — audit was stale |
+| 17  | Add rate limiting to POS checkout endpoint (`throttle:60,1`)            | 15 min | ✅ Fixed |
+| 18  | Implement SSLCommerz IPN hash verification                              | 2 hrs  | ✅ Fixed — val_id verified against Validation API via `Http` facade |
+| 19  | Implement Quotation → Sale conversion                                   | 4 hrs  | ✅ Fixed — `QuotationController::convertToSale()` |
+| 20  | Add product image upload to product create/edit form                    | 2 hrs  | ✅ Fixed |
+| 21  | Add payroll bonus/deduction edit UI                                     | 3 hrs  | ✅ Fixed — also fixed a real bug where the index view read nonexistent `$payroll->deductions`/`net_pay` instead of `deduction`/`net_salary` |
+| 22  | Add stock alert / low-stock email notification                          | 4 hrs  | ✅ Fixed — `stock:check-low`, scheduled daily |
+| 23  | Write POS checkout tests (`PosCheckoutTest`)                            | 4 hrs  | ✅ Done — 6 tests |
+| 24  | Write tenant isolation tests (`TenantIsolationTest`)                    | 3 hrs  | ✅ Done — 5 tests |
+
+**Bonus fixes found while implementing the above:** a SQLite-only migration bug in `2026_07_31_000002_add_suspended_status_to_subscriptions.php` (renaming `subscriptions` away caused SQLite to silently redirect `transactions.subscription_id`'s FK to the soon-to-be-dropped `subscriptions_old`, breaking every test that inserted a `Transaction`); and a nullable-parameter type bug in the new IPN verification code surfaced by the same test fix.
 
 ### 🟢 LOW — Backlog / Future
 

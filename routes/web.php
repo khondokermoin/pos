@@ -269,6 +269,7 @@ Route::middleware(['auth', 'verified', 'role:Company Admin', 'tenant.access', 's
         Route::post('/quotations', [QuotationController::class, 'store'])->name('quotations.store');
         Route::get('/quotations/{id}', [QuotationController::class, 'show'])->name('quotations.show');
         Route::patch('/quotations/{id}/status', [QuotationController::class, 'updateStatus'])->name('quotations.update-status');
+        Route::post('/quotations/{id}/convert-to-sale', [QuotationController::class, 'convertToSale'])->name('quotations.convert-to-sale');
         Route::delete('/quotations/{id}', [QuotationController::class, 'destroy'])->name('quotations.destroy');
 
         // ── ERP: Sales Returns ─────────────────────────────────────────────
@@ -332,6 +333,7 @@ Route::middleware(['auth', 'verified', 'role:Company Admin', 'tenant.access', 's
         Route::prefix('payroll')->name('payroll.')->group(function () {
             Route::get('/', [PayrollController::class, 'index'])->name('index');
             Route::post('/generate', [PayrollController::class, 'generate'])->name('generate');
+            Route::put('/{id}', [PayrollController::class, 'update'])->name('update');
             Route::post('/{id}/mark-paid', [PayrollController::class, 'markPaid'])->name('mark-paid');
             Route::get('/{id}/payslip', [PayrollController::class, 'payslip'])->name('payslip');
             Route::delete('/{id}', [PayrollController::class, 'destroy'])->name('destroy');
@@ -382,7 +384,7 @@ Route::middleware(['auth', 'verified', 'role:Manager|Salesman', 'tenant.access']
         Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
         Route::get('/pos/products', [PosController::class, 'products'])->name('pos.products');
         Route::get('/pos/search', [PosController::class, 'search'])->name('pos.search');
-        Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');
+        Route::post('/pos/checkout', [PosController::class, 'checkout'])->middleware('throttle:60,1')->name('pos.checkout');
         Route::get('/pos/invoice/{sale}/print', [PosController::class, 'printInvoice'])->name('pos.invoice-print');
         Route::post('/pos/customers/quick-create', [PosController::class, 'quickCreateCustomer'])->name('pos.customers.quick-create');
         Route::post('/pos/hold', [PosController::class, 'holdOrder'])->name('pos.hold');

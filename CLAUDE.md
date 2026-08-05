@@ -256,10 +256,25 @@ Logs are stored in `activity_logs` table and viewable at `/super-admin/system/lo
 | 13  | `env()` called directly in controller (breaks after config:cache) | SubscriptionController.php   | 🟠 HIGH     | ✅ Fixed |
 | 14  | Debug payment logs expose credentials in production               | SubscriptionController.php   | 🟠 HIGH     | ✅ Fixed |
 
-### ⚠️ Known Pre-existing Schema Issue (Not Fixed — Out of Scope)
+### ✅ Medium-priority backlog (August 2026 — resolved)
 
-- **Central-warehouse purchases** (`branch_id = NULL`) will hit a `NOT NULL` constraint on `stock_movements.branch_id`.
-  This is a pre-existing schema design issue. Needs a migration to make `stock_movements.branch_id` nullable.
+- `stock_movements.branch_id` / `stocks.branch_id` are now nullable (migration `2026_08_05_000001`), fixing central-warehouse purchases.
+- `Company::subscription()` now uses `hasOne()->latestOfMany()`.
+- POS checkout (`branch.pos.checkout`) now has `throttle:60,1`.
+- SSLCommerz payment callback now verifies `val_id` server-to-server against the Validation API (`SubscriptionController::verifySslCommerzIpn()`) before trusting a claimed success — uses the `Http` facade so it's fakeable in tests.
+- `subscriptions:check-expired` (auto-expiry + 3-day reminder emails) already existed and is scheduled daily — audit report was stale on this one.
+- `stock:check-low` — new daily-scheduled command emailing each company a low-stock digest (`LowStockAlertMail`).
+- Quotation → Sale conversion implemented (`QuotationController::convertToSale()`), gated on `status = accepted`, requires a branch, deducts stock, links via `quotations.converted_to_sale_id`.
+- Product image upload added to create/edit forms (`products` storage disk, `is_active`-scoped category/brand/unit/tax dropdowns already fixed).
+- Payroll bonus/deduction edit UI added; also fixed a real bug where the index view read `$payroll->deductions`/`$payroll->net_pay` (nonexistent) instead of `deduction`/`net_salary`.
+- Test suite added: `PosCheckoutTest` (stock deduction, price validation, insufficient-stock, shift enforcement, cross-company customer rejection, rate limiting) and `TenantIsolationTest` (product/quotation/employee/loan/cash-account cross-company access). Along the way, fixed a real SQLite migration bug in `2026_07_31_000002_add_suspended_status_to_subscriptions.php` where renaming `subscriptions` away caused SQLite to silently rewrite `transactions.subscription_id`'s FK to point at the soon-to-be-dropped `subscriptions_old`.
+
+### ⚠️ Still open
+
+- SSLCommerz IPN verification is real now, but there's still no persistent audit trail of validator API responses.
+- Asset depreciation calculation not implemented.
+- Addon Marketplace remains UI-only.
+- MarketPro React frontend still disconnected from backend.
 
 ---
 
@@ -269,14 +284,15 @@ Logs are stored in `activity_logs` table and viewable at `/super-admin/system/lo
 | ------------------------------------ | --------------------------------------------------- |
 | Sales Return stock restoration       | ✅ Already implemented (stock restored on creation) |
 | Purchase Return stock deduction      | ✅ Already implemented (stock reduced on creation)  |
-| Quotation → Sale conversion          | ❌ Not implemented                                  |
-| Payroll bonus/deduction edit UI      | ❌ Not implemented                                  |
-| Product image upload in form         | ❌ Not implemented                                  |
+| Quotation → Sale conversion          | ✅ Implemented                                      |
+| Payroll bonus/deduction edit UI      | ✅ Implemented                                      |
+| Product image upload in form         | ✅ Implemented                                      |
 | Asset depreciation calculation       | ❌ Not implemented                                  |
 | Addon Marketplace (install/activate) | ❌ UI only                                          |
 | MarketPro React frontend             | ❌ Disconnected from backend                        |
-| Subscription auto-expiry cron job    | ❌ Not implemented                                  |
-| SSLCommerz IPN hash verification     | ❌ Not implemented                                  |
+| Subscription auto-expiry cron job    | ✅ Already implemented (`subscriptions:check-expired`) |
+| SSLCommerz IPN hash verification     | ✅ Implemented (val_id Validation API check)        |
+| Low-stock email alerts               | ✅ Implemented (`stock:check-low`, daily)           |
 
 ---
 
@@ -429,31 +445,26 @@ See `docs/ENGINEER_AUDIT_REPORT.md` for the complete audit including:
 | Sales Management     | ✅ Production Ready                                       |
 | Sales Returns        | ✅ Fixed — stock restored + `unit_price` column corrected |
 | Purchase Returns     | ✅ Fixed — stock reduced + `unit_price` column corrected  |
-| Quotations           | ⚠️ Missing: convert to sale feature                       |
+| Quotations           | ✅ Fixed — convert-to-sale implemented                     |
 | Cash Book            | ✅ Fixed — account ownership validation added             |
 | Loan Management      | ✅ Fixed — company scope check added                      |
 | Asset Management     | ⚠️ Missing: depreciation calculation                      |
 | HR / Employees       | ✅ Fixed — company scope check added to increments        |
-| Payroll              | ⚠️ Missing: bonus/deduction edit UI                       |
-| SaaS Billing         | ✅ Fixed — SSL peer verify + debug logs + env() fixed     |
+| Payroll              | ✅ Fixed — bonus/deduction edit UI added                   |
+| SaaS Billing         | ✅ Fixed — SSL peer verify + debug logs + env() + IPN verification |
 | Reports              | ✅ Fixed — Balance Sheet real data + P&L uses COGS        |
 | Super Admin Panel    | ✅ Mostly complete                                        |
 | Email Templates      | ✅ Production Ready                                       |
 | Activity Logs        | ✅ Production Ready                                       |
 | Addon Marketplace    | ❌ UI only — no real install/activate logic               |
 | MarketPro Frontend   | ❌ Disconnected from backend                              |
-| Test Coverage        | ❌ ~10% — needs significant improvement                   |
+| Test Coverage        | ⚠️ Low but growing — `PosCheckoutTest` + `TenantIsolationTest` added |
 
-### 🔧 Remaining Open Issues (Medium Priority)
+### 🔧 Remaining Open Issues
 
-| #   | Issue                                                                              | Next Step                                     |
-| --- | ---------------------------------------------------------------------------------- | --------------------------------------------- |
-| 1   | `stock_movements.branch_id` NOT NULL constraint breaks central-warehouse purchases | Add migration: make `branch_id` nullable      |
-| 2   | `Company::subscription()` uses unreliable `hasOne()->latest()`                     | Change to `hasOne()->latestOfMany()`          |
-| 3   | Quotation → Sale conversion missing                                                | Add `convertToSale()` method                  |
-| 4   | Payroll bonus/deduction edit UI missing                                            | Add edit form for payroll entries             |
-| 5   | Product image upload missing from create/edit form                                 | Add file upload input                         |
-| 6   | No rate limiting on POS checkout endpoint                                          | Add `throttle:60,1` middleware                |
-| 7   | SSLCommerz IPN hash verification missing                                           | Implement val_id verification                 |
-| 8   | Subscription auto-expiry cron job missing                                          | Create `subscriptions:expire` Artisan command |
-| 9   | Test coverage ~10%                                                                 | Write PosCheckoutTest, TenantIsolationTest    |
+| #   | Issue                                        | Next Step                                     |
+| --- | --------------------------------------------- | --------------------------------------------- |
+| 1   | Asset depreciation calculation missing        | Implement straight-line/declining-balance calc |
+| 2   | Addon Marketplace is UI-only                  | Define install/activate lifecycle             |
+| 3   | MarketPro React frontend disconnected         | Connect to backend API or remove              |
+| 4   | Test coverage still low outside covered areas | Add more Feature tests per audit priority list |

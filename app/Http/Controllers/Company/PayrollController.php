@@ -85,6 +85,31 @@ class PayrollController extends Controller
             ->with('success', "Payroll generated for {$month}. {$generated} records created.");
     }
 
+    public function update(Request $request, string $id)
+    {
+        $payroll = Payroll::where('company_id', $this->companyId())->findOrFail($id);
+
+        if ($payroll->status === 'paid') {
+            return back()->with('error', 'This payroll entry has already been paid and can no longer be edited.');
+        }
+
+        $data = $request->validate([
+            'bonus'     => 'required|numeric|min:0',
+            'deduction' => 'required|numeric|min:0',
+        ]);
+
+        $netSalary = $payroll->basic_salary + $data['bonus'] - $data['deduction'];
+
+        $payroll->update([
+            'bonus'      => $data['bonus'],
+            'deduction'  => $data['deduction'],
+            'net_salary' => max($netSalary, 0),
+        ]);
+
+        return redirect()->route('company.payroll.index', ['month' => $payroll->month])
+            ->with('success', 'Payroll entry updated successfully.');
+    }
+
     public function markPaid(Request $request, string $id)
     {
         $payroll = Payroll::where('company_id', $this->companyId())->findOrFail($id);
