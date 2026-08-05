@@ -154,14 +154,36 @@ class PurchaseController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        $userId = auth()->id();
+
         DB::beginTransaction();
         try {
-            // প্রয়োজনে এখানে স্টক রিভার্স (Stock Reverse) করার লজিক যোগ করতে পারেন
+            // Reverse the stock that was added when this purchase was created,
+            // otherwise deleting the purchase leaves phantom stock behind.
+            foreach ($purchase->items as $item) {
+                Stock::where([
+                    'company_id' => $purchase->company_id,
+                    'branch_id'  => $purchase->branch_id,
+                    'variant_id' => $item->variant_id,
+                ])->decrement('quantity', $item->quantity);
+
+                StockMovement::create([
+                    'company_id' => $purchase->company_id,
+                    'branch_id'  => $purchase->branch_id,
+                    'variant_id' => $item->variant_id,
+                    'type'       => 'adjustment',
+                    'quantity'   => -$item->quantity,
+                    'reference_type' => Purchase::class,
+                    'reference_id'   => $purchase->id,
+                    'user_id'    => $userId,
+                ]);
+            }
+
             $purchase->delete();
             DB::commit();
-            
+
             return redirect()->route('company.purchases.index')
-                ->with('success', 'Purchase deleted successfully.');
+                ->with('success', 'Purchase deleted and stock reversed successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Failed to delete purchase: ' . $e->getMessage());

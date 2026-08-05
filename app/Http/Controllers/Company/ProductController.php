@@ -174,10 +174,10 @@ class ProductController extends Controller
             }
         }
 
-        $categories = Category::where('company_id', $companyId)->where('status', 'active')->get();
-        $brands     = Brand::where('company_id', $companyId)->where('status', 'active')->get();
-        $units      = Unit::where('company_id', $companyId)->where('status', 'active')->get();
-        $taxes      = Tax::where('company_id', $companyId)->where('status', 'active')->get();
+        $categories = Category::where('company_id', $companyId)->where('is_active', true)->get();
+        $brands     = Brand::where('company_id', $companyId)->where('is_active', true)->get();
+        $units      = Unit::where('company_id', $companyId)->where('is_active', true)->get();
+        $taxes      = Tax::where('company_id', $companyId)->where('is_active', true)->get();
 
         return view('company.products.edit', compact('product', 'categories', 'brands', 'units', 'taxes'));
     }

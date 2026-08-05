@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Models\Asset;
+use App\Models\CashAccount;
 use App\Models\Expense;
-use App\Models\Purchase;
+use App\Models\Loan;
 use App\Models\Sale;
 use App\Models\Stock;
 use App\Models\Supplier;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -65,10 +68,24 @@ class ReportController extends Controller
     {
         $companyId = Auth::user()->company_id;
 
-        // Placeholder totals — replace with real accounting data once cash_accounts / assets / loans tables exist
-        $totalAssets      = 0;
-        $totalLiabilities = 0;
-        $equity           = $totalAssets - $totalLiabilities;
+        $cashBalance = CashAccount::where('company_id', $companyId)
+            ->where('is_active', true)
+            ->sum('current_balance');
+
+        $assetValue = Asset::where('company_id', $companyId)
+            ->where('status', '!=', 'disposed')
+            ->sum('current_value');
+
+        $totalAssets = $cashBalance + $assetValue;
+
+        // Outstanding balance only — loans already paid off carry no liability
+        $totalLiabilities = Loan::where('company_id', $companyId)
+            ->where('status', '!=', 'paid')
+            ->withSum('payments as paid_sum', 'amount')
+            ->get()
+            ->sum(fn ($loan) => $loan->amount - ($loan->paid_sum ?? 0));
+
+        $equity = $totalAssets - $totalLiabilities;
 
         return view('company.reports.balance-sheet', compact('totalAssets', 'totalLiabilities', 'equity'));
     }
@@ -86,20 +103,25 @@ class ReportController extends Controller
             ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
             ->sum('total_amount');
 
-        $totalPurchases = Purchase::where('company_id', $companyId)
-            ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
-            ->sum('total_amount');
+        // Cost of Goods Sold — cost_price of each sold variant, not total purchases
+        // (purchases include stock that hasn't sold yet, which isn't a cost until it does).
+        $totalCogs = DB::table('sale_items')
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->join('product_variants', 'sale_items.variant_id', '=', 'product_variants.id')
+            ->where('sales.company_id', $companyId)
+            ->whereBetween('sales.created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->sum(DB::raw('sale_items.quantity * product_variants.cost_price'));
 
         $totalExpenses = Expense::where('company_id', $companyId)
             ->whereBetween('expense_date', [$from, $to])
             ->sum('amount');
 
-        $grossProfit = $totalRevenue - $totalPurchases;
+        $grossProfit = $totalRevenue - $totalCogs;
         $netProfit   = $grossProfit - $totalExpenses;
 
         return view('company.reports.profit-loss', compact(
             'totalRevenue',
-            'totalPurchases',
+            'totalCogs',
             'totalExpenses',
             'grossProfit',
             'netProfit',

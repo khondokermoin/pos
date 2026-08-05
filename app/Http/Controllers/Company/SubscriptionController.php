@@ -218,16 +218,19 @@ class SubscriptionController extends Controller
                 ->with('error', 'Payment gateway is not configured yet. Please contact the system administrator.');
         }
 
-        // DEBUG: Log exactly what is being sent to SSLCommerz
-        Log::info('SSLCommerz Request Debug', [
-            'store_id'      => $storeId,
-            'store_pass'    => substr($storePass, 0, 4) . '****', // partial for security
-            'is_sandbox'    => $isSandbox,
-            'db_environment' => $dbEnvironment,
-            'sslcz_url'     => $isSandbox
-                ? 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php'
-                : 'https://securepay.sslcommerz.com/gwprocess/v4/api.php',
-        ]);
+        // DEBUG: Log exactly what is being sent to SSLCommerz (debug builds only —
+        // even partial store credentials should never land in production logs)
+        if (config('app.debug')) {
+            Log::info('SSLCommerz Request Debug', [
+                'store_id'      => $storeId,
+                'store_pass'    => substr($storePass, 0, 4) . '****', // partial for security
+                'is_sandbox'    => $isSandbox,
+                'db_environment' => $dbEnvironment,
+                'sslcz_url'     => $isSandbox
+                    ? 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php'
+                    : 'https://securepay.sslcommerz.com/gwprocess/v4/api.php',
+            ]);
+        }
 
         // Callback URL — public route, no auth required
         $callbackUrl = route('payment.callback');
@@ -251,7 +254,7 @@ class SubscriptionController extends Controller
         curl_setopt($handle, CURLOPT_POST, 1);
         curl_setopt($handle, CURLOPT_POSTFIELDS, $formBody);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); // sandbox এর জন্য
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, ! $isSandbox); // only skip verification in sandbox mode
         curl_setopt($handle, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
         $content = curl_exec($handle);
         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
@@ -553,7 +556,7 @@ class SubscriptionController extends Controller
                         );
                     }
 
-                    $superAdminEmail = env('SUPER_ADMIN_EMAIL');
+                    $superAdminEmail = config('app.super_admin_email');
                     if ($superAdminEmail) {
                         Mail::to($superAdminEmail)->queue(
                             new NewSubscriptionAdminNotification($company, $subscription, $plan, $transaction)

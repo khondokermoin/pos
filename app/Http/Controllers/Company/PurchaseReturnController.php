@@ -89,14 +89,14 @@ class PurchaseReturnController extends Controller
 
             foreach ($data['items'] as $item) {
                 $purchaseItem = PurchaseItem::findOrFail($item['purchase_item_id']);
-                $subtotal     = $purchaseItem->price * $item['qty'];
+                $subtotal     = $purchaseItem->unit_price * $item['qty'];
                 $totalAmount += $subtotal;
 
                 PurchaseReturnItem::create([
                     'purchase_return_id' => $purchaseReturn->id,
                     'purchase_item_id'   => $item['purchase_item_id'],
                     'qty'                => $item['qty'],
-                    'price'              => $purchaseItem->price,
+                    'price'              => $purchaseItem->unit_price,
                     'subtotal'           => $subtotal,
                 ]);
 

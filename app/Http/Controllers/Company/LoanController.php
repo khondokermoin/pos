@@ -70,7 +70,7 @@ class LoanController extends Controller
     public function storeLoan(Request $request)
     {
         $data = $request->validate([
-            'loan_authority_id' => 'required|exists:loan_authorities,id',
+            'loan_authority_id' => 'required|exists:loan_authorities,id,company_id,' . $this->companyId(),
             'amount'            => 'required|numeric|min:0.01',
             'interest_rate'     => 'nullable|numeric|min:0|max:100',
             'loan_date'         => 'required|date',
@@ -115,18 +115,20 @@ class LoanController extends Controller
 
     public function storePayment(Request $request)
     {
+        $companyId = $this->companyId();
+
         $data = $request->validate([
-            'loan_id'      => 'required|exists:loans,id',
+            'loan_id'      => 'required|exists:loans,id,company_id,' . $companyId,
             'amount'       => 'required|numeric|min:0.01',
             'payment_date' => 'required|date',
             'notes'        => 'nullable|string|max:500',
         ]);
 
-        $data['company_id'] = $this->companyId();
+        $data['company_id'] = $companyId;
         LoanPayment::create($data);
 
         // Update loan status if fully paid
-        $loan      = Loan::findOrFail($data['loan_id']);
+        $loan      = Loan::where('company_id', $companyId)->findOrFail($data['loan_id']);
         $totalPaid = $loan->payments()->sum('amount');
         if ($totalPaid >= $loan->amount) {
             $loan->update(['status' => 'paid']);

@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Super Admin Notification Email
+    |--------------------------------------------------------------------------
+    |
+    | Used to notify the SaaS owner of events such as new subscriptions.
+    | Read via config() rather than env() directly so it still resolves
+    | correctly after `php artisan config:cache` is run in production.
+    |
+    */
+
+    'super_admin_email' => env('SUPER_ADMIN_EMAIL'),
+
 ];

@@ -87,14 +87,14 @@ class SalesReturnController extends Controller
 
             foreach ($data['items'] as $item) {
                 $saleItem = SaleItem::findOrFail($item['sale_item_id']);
-                $subtotal = $saleItem->price * $item['qty'];
+                $subtotal = $saleItem->unit_price * $item['qty'];
                 $totalAmount += $subtotal;
 
                 SalesReturnItem::create([
                     'sales_return_id' => $salesReturn->id,
                     'sale_item_id'    => $item['sale_item_id'],
                     'qty'             => $item['qty'],
-                    'price'           => $saleItem->price,
+                    'price'           => $saleItem->unit_price,
                     'subtotal'        => $subtotal,
                 ]);
 

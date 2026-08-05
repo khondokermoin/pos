@@ -84,15 +84,15 @@ class CashBookController extends Controller
 
     public function storeTransfer(Request $request)
     {
+        $companyId = $this->companyId();
+
         $data = $request->validate([
-            'from_account_id' => 'required|exists:cash_accounts,id',
-            'to_account_id'   => 'required|exists:cash_accounts,id|different:from_account_id',
+            'from_account_id' => 'required|exists:cash_accounts,id,company_id,' . $companyId,
+            'to_account_id'   => 'required|exists:cash_accounts,id,company_id,' . $companyId . '|different:from_account_id',
             'amount'          => 'required|numeric|min:0.01',
             'transfer_date'   => 'required|date',
             'notes'           => 'nullable|string|max:500',
         ]);
-
-        $companyId = $this->companyId();
 
         $from = CashAccount::where('company_id', $companyId)->findOrFail($data['from_account_id']);
         $to   = CashAccount::where('company_id', $companyId)->findOrFail($data['to_account_id']);

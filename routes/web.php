@@ -412,15 +412,6 @@ Route::middleware(['auth', 'verified', 'role:Manager|Salesman', 'tenant.access']
     });
 
 // ==========================================
-// 4. Global Auth Routes (Profile)
-// ==========================================
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-// ==========================================
 // 5. Smart Fallback Dashboard
 // ==========================================
 Route::middleware(['auth', 'verified'])->group(function () {

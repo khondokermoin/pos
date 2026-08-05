@@ -137,18 +137,20 @@ class EmployeeController extends Controller
 
     public function storeIncrement(Request $request)
     {
+        $companyId = $this->companyId();
+
         $data = $request->validate([
-            'employee_id'    => 'required|exists:employees,id',
+            'employee_id'    => 'required|exists:employees,id,company_id,' . $companyId,
             'amount'         => 'required|numeric|min:0.01',
             'effective_date' => 'required|date',
             'reason'         => 'nullable|string|max:500',
         ]);
 
-        $data['company_id'] = $this->companyId();
+        $data['company_id'] = $companyId;
         SalaryIncrement::create($data);
 
         // Update employee salary
-        $employee = Employee::findOrFail($data['employee_id']);
+        $employee = Employee::where('company_id', $companyId)->findOrFail($data['employee_id']);
         $employee->increment('salary', $data['amount']);
 
         return redirect()->route('company.employees.increments')

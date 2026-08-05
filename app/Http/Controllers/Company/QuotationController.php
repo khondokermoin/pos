@@ -68,8 +68,11 @@ class QuotationController extends Controller
         $companyId = $this->companyId();
 
         DB::transaction(function () use ($data, $companyId) {
-            // Generate quotation number
-            $lastNo = Quotation::where('company_id', $companyId)->count() + 1;
+            // lockForUpdate serializes concurrent requests for this company so two
+            // simultaneous quotations can't compute the same next number.
+            $lastNo = Quotation::where('company_id', $companyId)
+                ->lockForUpdate()
+                ->count() + 1;
             $quotationNo = 'QT-' . date('Ymd') . '-' . str_pad($lastNo, 4, '0', STR_PAD_LEFT);
 
             $subtotal = collect($data['items'])->sum(fn($i) => $i['qty'] * $i['price']);

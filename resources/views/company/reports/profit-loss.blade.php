@@ -48,8 +48,8 @@
             <div class="col-md-3">
                 <div class="card border-0 bg-warning text-dark">
                     <div class="card-body">
-                        <p class="mb-1 opacity-75 small">Cost of Goods (Purchases)</p>
-                        <h4 class="mb-0 fw-bold">{{ number_format($totalPurchases, 2) }}</h4>
+                        <p class="mb-1 opacity-75 small">Cost of Goods Sold</p>
+                        <h4 class="mb-0 fw-bold">{{ number_format($totalCogs, 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -83,8 +83,8 @@
                             <td class="text-end fw-semibold">{{ number_format($totalRevenue, 2) }}</td>
                         </tr>
                         <tr>
-                            <td class="ps-4 text-muted">Less: Cost of Goods Sold (Purchases)</td>
-                            <td class="text-end text-danger">({{ number_format($totalPurchases, 2) }})</td>
+                            <td class="ps-4 text-muted">Less: Cost of Goods Sold</td>
+                            <td class="text-end text-danger">({{ number_format($totalCogs, 2) }})</td>
                         </tr>
                         <tr class="table-light">
                             <td class="fw-semibold">Gross Profit</td>
